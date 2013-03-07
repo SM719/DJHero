@@ -17,7 +17,7 @@ public class songList{
 		}
 	}
 	
-	public void getListTitles(){
+	public void getListNames(){
 		for (int i=0; i<Songs.size(); i++){
 			Log.i ("song", Songs.get(i).Title);
 		}

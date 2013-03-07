@@ -2,6 +2,7 @@ package com.example.djhero;
 
 import android.os.Bundle;
 import android.app.Activity;
+import android.util.Log;
 import android.view.Menu;
 
 public class MainActivity extends Activity {
@@ -9,7 +10,7 @@ public class MainActivity extends Activity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		songList songlist = new songList("Shake it:Moe:20|Why can't you love me:Gursimran:40");
-		songlist.getListTitles();
+		songlist.getListNames();
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 	}
