@@ -1,4 +1,6 @@
 target/
+bin/
+project.properties
 .settings
 .classpath
 .project
