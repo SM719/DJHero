@@ -2,6 +2,7 @@ package com.example.djhero;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 
 import android.annotation.SuppressLint;
 import android.util.Log;
@@ -16,10 +17,10 @@ public class songList{
 			Songs.add(new Song(parsed[i]));
 		}
 	}
-	
-	public void getListNames(){
-		for (int i=0; i<Songs.size(); i++){
-			Log.i ("song", Songs.get(i).Title);
+	public void getListTitles(){
+		ListIterator<Song> it = Songs.listIterator();
+		while(it.hasNext()){
+			Log.i("songs",it.next().Title);
 		}
 	}
 }
