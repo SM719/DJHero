@@ -17,13 +17,27 @@
         android:background="@drawable/refresh"
         android:onClick="onRefreshClick"
         android:text="@string/refreshButton" />
-    
+
+	<ImageView
+	    android:id="@+id/imageView1"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_alignRight="@+id/button2"
+	    android:layout_below="@+id/button2"
+	    android:layout_marginTop="143dp"
+	    android:src="@drawable/ic_launcher" />
+
 	<ListView
-  		android:id="@+id/id_list_view"
-  		android:layout_width="fill_parent"
-  		android:layout_height="fill_parent" 
-  		android:textSize = "25dp"
-  		android:padding = "15dp"
-		android:fastScrollEnabled="true"/>
+	    android:id="@+id/id_list_view"
+	    android:layout_width="fill_parent"
+	    android:layout_height="fill_parent"
+	    android:layout_alignParentLeft="false"
+	    android:layout_below="@+id/button2"
+	    android:layout_toLeftOf="@+id/button2"
+	    android:fastScrollEnabled="true"
+	    android:padding="15dp"
+	    android:textSize="25dp" >
+
+	</ListView>
 
 </RelativeLayout>
