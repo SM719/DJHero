@@ -1,6 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/RelativeLayoutMain"
+    android:id="@+id/LinearLayoutMain"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
@@ -13,22 +13,11 @@
 	<ListView
 	    android:id="@+id/id_list_view"
 	    android:layout_width="fill_parent"
-	    android:layout_height="fill_parent"
+	    android:layout_height="wrap_content"
 	    android:fastScrollEnabled="true"
 	    android:padding="0dp"
 	    android:textSize="25sp"
 	    android:focusable="false"
         android:focusableInTouchMode="false" />
-	<TextView
-        android:id="@+id/list_item_song_title"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:padding="5dp"
-        android:textIsSelectable="true"
-        android:textSize="15sp"
-        android:focusable="false"
-        android:focusableInTouchMode="false"
-        android:singleLine="true"
-        android:onClick="onClickTextView"/>
 
 </LinearLayout>

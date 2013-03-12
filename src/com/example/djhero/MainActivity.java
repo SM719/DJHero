@@ -10,8 +10,8 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.LinearLayout;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -58,8 +58,8 @@ public class MainActivity extends Activity implements OnItemClickListener {
  
  		// Rather than writing to a pre-allocated field on the
  		// screen, create a new view, and write to it.
- 		RelativeLayout top_linear_layout = 
- 				(RelativeLayout) findViewById(R.id.RelativeLayoutMain);
+ 		LinearLayout top_linear_layout = 
+ 				(LinearLayout) findViewById(R.id.LinearLayoutMain);
 
  		TextView report_line = new TextView(this);
  		report_line.setText(strb);
