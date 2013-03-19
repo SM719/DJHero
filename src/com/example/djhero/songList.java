@@ -9,7 +9,7 @@ import android.util.Log;
 
 @SuppressLint("UseValueOf")
 public class songList{
-	public List<Song> Songs = new ArrayList<Song>();
+	public List<String> Songs = new ArrayList<Song>();
 	
 	public songList(String songliststring){
 		String[] parsed = songliststring.split("\\|");
