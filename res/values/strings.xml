@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">DJHero</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="refreshButton">Refresh</string>
+    <string name="title_activity_song_detail">SongDetailActivity</string>
+    <string name="settings_">Settings</string>
+    <string name="title_activity_third">ThirdActivity</string>
+    <string name="Song">Songname</string>
+    <string name="title_activity_play_song_page">PlaySongPage</string>
+    <string name="songName">Placeholder text</string>
+    <string name="send_signal">Send Signal</string>
+    <string name="title_activity_connect">ConnectActivity</string>
+    <string name="label_ip">IP:</string>
+    <string name="playsong">Play Song</string>
+    <string name="label_port">Port:</string>
+    <string name="printsong">Print Song on Debug</string>
+    <string name="connect">Connect</string>
+    <string name="clear">Clear</string>
+    <string name="menu_settings">Settings</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="label_myip">My IP:</string>
+    <string name="play">Play</string>
+    <string name="stop">Stop</string>
+    <string name="refresh_socket">Show Sock.</string>
+    <string name="title_activity_test">Test</string>
+    <string name="title_activity_connect_to_de2">ConnectToDE2</string>
+
+</resources>
