@@ -72,65 +72,9 @@
     </LinearLayout>
 
     <Button
+        android:id="@+id/connect"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:onClick="openSocket"
-        android:text="@string/connect" />
-
-    <Button
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:onClick="sendMessage"
-        android:text="Send Message" />
-
-    <Button
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:onClick="closeSocket"
-        android:text="Disconnect" />
-
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:gravity="left"
-        android:text="Message to send:" />
-
-    <EditText
-        android:id="@+id/MessageText"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:text="Hi" >
-
-        <requestFocus />
-    </EditText>
-
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:gravity="left"
-        android:text="Message Received:" />
-
-    <EditText
-        android:id="@+id/RecvdMessage"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="8"
-        android:ems="10"
-        android:inputType="number|textMultiLine"
-        android:maxLines="10" />
-
-    <TextView
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:gravity="left"
-        android:text="Errors:" />
-
-    <EditText
-        android:id="@+id/error_message_box"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:inputType="number" />
+        android:onClick="openSocket" />
 
 </LinearLayout>

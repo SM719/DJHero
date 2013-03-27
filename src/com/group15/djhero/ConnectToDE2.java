@@ -2,7 +2,6 @@ package com.group15.djhero;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.Socket;
@@ -12,41 +11,41 @@ import java.util.Enumeration;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import com.group15.djhero.ConnectToDE2.SocketConnect;
-import com.group15.djhero.ConnectToDE2.TCPReadTimerTask;
-
 import android.app.Activity;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
 public class ConnectToDE2 extends Activity {
 
-
+	Button button;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		
 		// This call will result in better error messages if you
 		// try to do things in the wrong thread.
-		
-//		StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
-//				.detectDiskReads().detectDiskWrites().detectNetwork()
-//				.penaltyLog().build());
 
+
+		MyApplication myApp = (MyApplication) ConnectToDE2.this.getApplication();
+		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_connect_to_de2);
 
-		EditText et = (EditText) findViewById(R.id.RecvdMessage);
-		et.setKeyListener(null);
-		et = (EditText) findViewById(R.id.error_message_box);
-		et.setKeyListener(null);
 		String s = getLocalIpAddress();
+		button = (Button) findViewById(R.id.connect);
+		if (myApp.sock != null){
+			button.setText("Disconnect");
+		}
+		else {
+			button.setText("Connect");
+		}
+		
 		// Set up a timer task.  We will use the timer to check the
 		// input queue every 500 ms
 		Log.i("gursimran:", "test up new " + s);
@@ -87,53 +86,19 @@ public class ConnectToDE2 extends Activity {
 	
 	public void openSocket(View view) {
 		MyApplication app = (MyApplication) getApplication();
-		TextView msgbox = (TextView) findViewById(R.id.error_message_box);
-
-		// Make sure the socket is not already opened 
 		
-		if (app.sock != null && app.sock.isConnected() && !app.sock.isClosed()) {
-			msgbox.setText("Socket already open");
-			return;
+
+		if (app.sock != null){
+			button.setText("Connect");
+			closeSocket(view);
 		}
-		
-		// open the socket.  SocketConnect is a new subclass
-	    // (defined below).  This creates an instance of the subclass
-		// and executes the code in it.
-		
-		new SocketConnect().execute((Void) null);
-	}
-
-	//  Called when the user wants to send a message
-	
-	public void sendMessage(View view) {
-		MyApplication app = (MyApplication) getApplication();
-		
-		// Get the message from the box
-		
-		EditText et = (EditText) findViewById(R.id.MessageText);
-		String msg = et.getText().toString();
-
-		// Create an array of bytes.  First byte will be the
-		// message length, and the next ones will be the message
-		
-		byte buf[] = new byte[msg.length() + 1];
-		buf[0] = (byte) msg.length(); 
-		System.arraycopy(msg.getBytes(), 0, buf, 1, msg.length());
-
-		// Now send through the output stream of the socket
-		
-		OutputStream out;
-		try {
-			out = app.sock.getOutputStream();
-			try {
-				out.write(buf, 0, msg.length() + 1);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		} catch (IOException e) {
-			e.printStackTrace();
+		else {
+			button.setText("Disconnect");
+			new SocketConnect().execute((Void) null);
+			
 		}
 	}
+
 
 	// Called when the user closes a socket
 	
@@ -143,6 +108,7 @@ public class ConnectToDE2 extends Activity {
 		try {
 			s.getOutputStream().close();
 			s.close();
+			app.sock = null;
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
