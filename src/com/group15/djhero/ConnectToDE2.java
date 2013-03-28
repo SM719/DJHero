@@ -37,7 +37,6 @@ public class ConnectToDE2 extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_connect_to_de2);
 
-		String s = getLocalIpAddress();
 		button = (Button) findViewById(R.id.connect);
 		if (myApp.sock != null){
 			button.setText("Disconnect");
@@ -48,32 +47,9 @@ public class ConnectToDE2 extends Activity {
 		
 		// Set up a timer task.  We will use the timer to check the
 		// input queue every 500 ms
-		Log.i("gursimran:", "test up new " + s);
 		TCPReadTimerTask tcp_task = new TCPReadTimerTask();
 		Timer tcp_timer = new Timer();
-		tcp_timer.schedule(tcp_task, 3000, 500);
-		
-		try {
-	           for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) 
-	               {
-	                    NetworkInterface intf = en.nextElement();       
-	                    for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses();enumIpAddr.hasMoreElements();) 
-	                      {
-	                        InetAddress inetAddress = enumIpAddr.nextElement();
-	                        if (!inetAddress.isLoopbackAddress())
-	                         { 
-	                               String Ip= inetAddress.getHostAddress().toString();
-	                               //Now use this Ip Address...
-	                               Log.i("gursimran:", "test up new 2 " + Ip);
-	                         }   
-	                       }
-	                  }
-
-	            }
-	     catch (SocketException obj) 
-	     { 
-	       Log.e("Error occurred during IP fetching: ", obj.toString());
-	      }
+		tcp_timer.schedule(tcp_task, 3000, 500);		
 	}
 
 	@Override
@@ -142,54 +118,7 @@ public class ConnectToDE2 extends Activity {
 		return port;
 	}
 
-	public class NetworkPing {
-		 
-		/**
-		 * JavaProgrammingForums.com
-		 */
-		public void listIps() throws IOException {
-	 
-			InetAddress localhost = InetAddress.getLocalHost();
-			// this code assumes IPv4 is used
-			byte[] ip = localhost.getAddress();
-	 
-			for (int i = 1; i <= 254; i++)
-			{
-				ip[3] = (byte)i;
-				InetAddress address = InetAddress.getByAddress(ip);
-			if (address.isReachable(1000))
-			{
-				Log.i("gursimran:", "test up: " + address + " machine is turned on and can be pinged");
-			}
-			else if (!address.getHostAddress().equals(address.getHostName()))
-			{
-				System.out.println(address + " machine is known in a DNS lookup");
-			}
-			else
-			{
-				System.out.println(address + " the host address and host name are equal, meaning the host name could not be resolved");
-			}
-			}
-	 
-		}
-	}
-
-	public String getLocalIpAddress() {
-	    try {
-	        for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces(); en.hasMoreElements();) {
-	            NetworkInterface intf = en.nextElement();
-	            for (Enumeration<InetAddress> enumIpAddr = intf.getInetAddresses(); enumIpAddr.hasMoreElements();) {
-	                InetAddress inetAddress = enumIpAddr.nextElement();
-	                if (!inetAddress.isLoopbackAddress()) {
-	                    return inetAddress.getHostAddress().toString();
-	                }
-	            }
-	        }
-	    } catch (SocketException ex) {
-	        //Log.e(ex.toString());
-	    }
-	    return null;
-	}
+	
     // This is the Socket Connect asynchronous thread.  Opening a socket
 	// has to be done in an Asynchronous thread in Android.  Be sure you
 	// have done the Asynchronous Tread tutorial before trying to understand

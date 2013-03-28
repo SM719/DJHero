@@ -32,7 +32,7 @@ public class MainScreen extends Activity implements OnItemClickListener  {
 		super.onCreate(savedInstanceState);
 		MyApplication myApp = (MyApplication) MainScreen.this.getApplication();
 		setContentView(R.layout.activity_main_scrren);
-		m_listview = (ListView) findViewById(R.id.id_list_view);
+		m_listview = (ListView) findViewById(R.id.ip_list_view);
 		m_listview.setOnItemClickListener(this);
 		
 	}
@@ -150,7 +150,8 @@ public class MainScreen extends Activity implements OnItemClickListener  {
 		
 		public void ipSettings(View view){
 			
-			Intent intent = new Intent(this, ConnectToDE2.class);
+			Intent intent = new Intent(this, AutoDetect.class);
+			intent .setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 			startActivity(intent);
 			
 		}

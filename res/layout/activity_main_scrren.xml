@@ -18,7 +18,7 @@
         android:text="@string/refreshButton" />
 
 	<ListView
-	    android:id="@+id/id_list_view"
+	    android:id="@+id/ip_list_view"
 	    android:layout_width="fill_parent"
 	    android:layout_height="fill_parent"
 	    android:layout_alignParentLeft="true"
@@ -32,7 +32,7 @@
 	    android:id="@+id/button1"
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
-	    android:layout_alignLeft="@+id/id_list_view"
+	    android:layout_alignLeft="@+id/ip_list_view"
 	    android:layout_alignTop="@+id/button2"
 	    android:onClick="ipSettings"
 	    android:text="@string/settings_"

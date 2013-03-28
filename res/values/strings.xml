@@ -27,5 +27,6 @@
     <string name="refresh_socket">Show Sock.</string>
     <string name="title_activity_test">Test</string>
     <string name="title_activity_connect_to_de2">ConnectToDE2</string>
+    <string name="title_activity_auto_detect">AutoDetect</string>
 
 </resources>
