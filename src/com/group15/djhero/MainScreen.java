@@ -106,28 +106,41 @@ public class MainScreen extends Activity implements OnItemClickListener  {
 		
 		
 		public void onRefreshClick(View view) throws InterruptedException {
-			
-			
+			// Get the global variables from myapp
 			MyApplication myApp = (MyApplication) MainScreen.this.getApplication();
-			
 			if(myApp.sock == null ){
 				//Take the user to the settings view if the socket is not open
 				Intent intent = new Intent(this, ConnectToDE2.class);
 				startActivity(intent);
 			}
 			
-			myApp.listFromDE2 = " ";
+			// Clear the songlist and prepare to get the updated song list
+			myApp.songlist.clearList();
+			
+			// Send a request for the song list string
 			SendMessage.sendMessage("l", myApp.sock);
-			while (myApp.listFromDE2.equals(" "));
 			
-			Log.i("tag", myApp.listFromDE2);
+			// DEBUG - simulate DE2 response
+			// myApp.listFromDE2 = "0:Dont's stop believeing:12|1:Greyhound:12";
 			
-			Log.i("before", myApp.listFromDE2);
+			// If the list is populated, add songs
+			boolean listComplete = false;
+			int counter = 0;
+			while(!listComplete){
+				listComplete = myApp.songlist.addSongs(myApp.listFromDE2);
+				// Empty the input list string and send acknowledgment.
+				// to DE2
+				// If there are still songs that need to be sent, the
+				myApp.listFromDE2 = "";
+				SendMessage.sendMessage("a", myApp.sock);
+				while (!listComplete || myApp.listFromDE2.isEmpty()){
+					counter++;
+					if (counter == 5000){
+						listComplete = true;
+					}
+				}
+			}
 			
-			myApp.listFromDE2 = myApp.listFromDE2.replaceAll(".WAV", "");
-			Log.i("after", myApp.listFromDE2);
-			
-			myApp.songlist = new songList(myApp.listFromDE2);
 			myApp.images.clear();
 			LazyAdapter adapter = new LazyAdapter(this, myApp.songlist);
 			m_listview.setAdapter(adapter);	
