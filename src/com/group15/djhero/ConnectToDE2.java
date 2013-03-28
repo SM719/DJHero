@@ -37,6 +37,7 @@ public class ConnectToDE2 extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_connect_to_de2);
 
+		
 		button = (Button) findViewById(R.id.connect);
 		if (myApp.sock != null){
 			button.setText("Disconnect");

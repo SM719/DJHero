@@ -32,7 +32,7 @@ public class PlaySongPage extends Activity implements OnSeekBarChangeListener {
 		setContentView(R.layout.activity_play_song_page);
 		
 		String songName = getIntent().getStringExtra("songName");
-		TextView textViewforSongPosition = (TextView) findViewById(R.id.textView1);
+		TextView textViewforSongPosition = (TextView) findViewById(R.id.connectedIPDisplay);
 		textViewforSongPosition.setText(songName);
 		
 		positionOfSong = getIntent().getIntExtra("position", 0);
@@ -88,7 +88,7 @@ public class PlaySongPage extends Activity implements OnSeekBarChangeListener {
 		Log.i("position", Integer.toString(positionOfSong));
 		Song thisSong = myApp.songlist.Songs.get(positionOfSong);
 		
-		TextView textViewforSongPosition = (TextView) findViewById(R.id.textView1);
+		TextView textViewforSongPosition = (TextView) findViewById(R.id.connectedIPDisplay);
 		textViewforSongPosition.setText(thisSong.Title);
 		if (myApp.images.get(positionOfSong) != null){
 			imageView.setImageBitmap(myApp.images.get(positionOfSong));
@@ -107,7 +107,7 @@ public class PlaySongPage extends Activity implements OnSeekBarChangeListener {
 		
 		Song thisSong = myApp.songlist.Songs.get(positionOfSong);
 		
-		TextView textViewforSongPosition = (TextView) findViewById(R.id.textView1);
+		TextView textViewforSongPosition = (TextView) findViewById(R.id.connectedIPDisplay);
 		textViewforSongPosition.setText(thisSong.Title);
 		if (myApp.images.get(positionOfSong) != null){
 			imageView.setImageBitmap(myApp.images.get(positionOfSong));

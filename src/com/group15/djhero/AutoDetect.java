@@ -15,6 +15,8 @@ import java.util.TimerTask;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,16 +26,18 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 public class AutoDetect extends Activity implements OnItemClickListener{
 
 	Button button;
 	private ListView m_listview;	
 	List<String> currentIPAddress = new ArrayList<String>();
-	
+	ListIpAddresses adapter;
+	TextView textView;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		
+		MyApplication app = (MyApplication) getApplication();
 		// This call will result in better error messages if you
 		// try to do things in the wrong thread.
 		
@@ -41,8 +45,16 @@ public class AutoDetect extends Activity implements OnItemClickListener{
 		setContentView(R.layout.activity_auto_detect);
 		m_listview = (ListView) findViewById(R.id.ip_list_view);
 		m_listview.setOnItemClickListener(this);	
-		new FindDE2sOnNetwork().execute();
-		
+		textView = (TextView) findViewById(R.id.connectedIPDisplay);
+		if(app.sock == null){
+			new FindDE2sOnNetwork().execute();
+			textView.setText("Not Connected");
+		}
+		else{
+			 adapter = new ListIpAddresses(AutoDetect.this, currentIPAddress);
+			m_listview.setAdapter(adapter);
+			textView.setText("Connected to: " + app.connectedTo);
+		}
 	}
 
 
@@ -169,6 +181,7 @@ public class AutoDetect extends Activity implements OnItemClickListener{
 	class FindDE2sOnNetwork extends AsyncTask< Void, Integer, List<String>>{
 
 		ProgressDialog progress;
+		MyApplication app = (MyApplication) AutoDetect.this.getApplication();
 		@Override
 		protected void onPreExecute(){
 			progress = new ProgressDialog(AutoDetect.this);
@@ -235,7 +248,7 @@ public class AutoDetect extends Activity implements OnItemClickListener{
 		@Override
 		protected void onPostExecute(List<String> result){
 			progress.dismiss();
-			ListIpAddresses adapter = new ListIpAddresses(AutoDetect.this, result);
+			adapter = new ListIpAddresses(AutoDetect.this, result);
 			m_listview.setAdapter(adapter);	
 			currentIPAddress.addAll(result);
 			TCPReadTimerTask tcp_task = new TCPReadTimerTask();
@@ -250,10 +263,13 @@ public class AutoDetect extends Activity implements OnItemClickListener{
 		MyApplication myApp = (MyApplication) AutoDetect.this.getApplication();
 		if(myApp.sock != null){
 			closeSocket();
+			textView.setText("Not Connected");
 		}
 		else{
 			new SocketConnect().execute(currentIPAddress.get(position));
-			
+			myApp.connectedTo = currentIPAddress.get(position);
+			textView.setText("Connected to: " + myApp.connectedTo);
+			this.adapter = new ListIpAddresses(this, currentIPAddress);	
 		}
 		
 	}

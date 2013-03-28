@@ -67,7 +67,7 @@
         android:layout_centerHorizontal="true" />
 
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/connectedIPDisplay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/seekBar1"

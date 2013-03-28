@@ -12,4 +12,6 @@ public class MyApplication extends Application {
 	songList songlist = new songList("1:believe:20|2:In+da+club:30");
 	String listFromDE2 = " ";
 	List<Bitmap> images = new ArrayList<Bitmap>();
+	String connectedTo = null;
+	Boolean listComplete = false;
 }
