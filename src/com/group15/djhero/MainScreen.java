@@ -2,7 +2,6 @@ package com.group15.djhero;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -30,7 +29,6 @@ public class MainScreen extends Activity implements OnItemClickListener  {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		MyApplication myApp = (MyApplication) MainScreen.this.getApplication();
 		setContentView(R.layout.activity_main_scrren);
 		m_listview = (ListView) findViewById(R.id.ip_list_view);
 		m_listview.setOnItemClickListener(this);

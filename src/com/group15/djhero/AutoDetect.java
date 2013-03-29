@@ -1,10 +1,14 @@
 package com.group15.djhero;
 
+import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.InetAddress;
+import java.net.InetSocketAddress;
 import java.net.NetworkInterface;
 import java.net.Socket;
+import java.net.SocketAddress;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
@@ -15,8 +19,6 @@ import java.util.TimerTask;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.res.ColorStateList;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -32,7 +34,6 @@ public class AutoDetect extends Activity implements OnItemClickListener{
 
 	Button button;
 	private ListView m_listview;	
-	List<String> currentIPAddress = new ArrayList<String>();
 	ListIpAddresses adapter;
 	TextView textView;
 	@Override
@@ -47,14 +48,15 @@ public class AutoDetect extends Activity implements OnItemClickListener{
 		m_listview.setOnItemClickListener(this);	
 		textView = (TextView) findViewById(R.id.connectedIPDisplay);
 		if(app.sock == null){
+	    	textView.setText("Not Connected");
 			new FindDE2sOnNetwork().execute();
-			textView.setText("Not Connected");
 		}
 		else{
-			 adapter = new ListIpAddresses(AutoDetect.this, currentIPAddress);
+			 adapter = new ListIpAddresses(AutoDetect.this, app.availableDE2s);
 			m_listview.setAdapter(adapter);
 			textView.setText("Connected to: " + app.connectedTo);
 		}
+		
 	}
 
 
@@ -73,7 +75,9 @@ public class AutoDetect extends Activity implements OnItemClickListener{
 			s.getOutputStream().close();
 			s.close();
 			app.sock = null;
+			textView.setText("Not Connected");
 		} catch (IOException e) {
+			textView.setText("Error: Could not disconnect!");
 			e.printStackTrace();
 		}
 	}
@@ -137,6 +141,12 @@ public class AutoDetect extends Activity implements OnItemClickListener{
 			MyApplication myApp = (MyApplication) AutoDetect.this
 					.getApplication();
 			myApp.sock = s;
+			if (myApp.sock != null){
+				textView.setText("Connected to: " + myApp.connectedTo);
+			}else{
+				textView.setText("Error: Could not connect");
+			}
+			
 		}
 	}
 
@@ -189,6 +199,7 @@ public class AutoDetect extends Activity implements OnItemClickListener{
 			progress.setMessage("Discovering DE2s");
 			progress.setIndeterminate(false);
 			progress.setMax(100);
+			progress.setCancelable(false);
 			progress.setProgressNumberFormat(null);
 			progress.show();
 		}
@@ -197,44 +208,56 @@ public class AutoDetect extends Activity implements OnItemClickListener{
 			int port = 50002;
 			List<String> result = new ArrayList<String>();
 			int count = 0;
+			String ip = getLocalIpAddress();
+			System.out.println(ip);
 			try {
-				String ip = getLocalIpAddress();
-		    NetworkInterface iFace = NetworkInterface
-		            .getByInetAddress(InetAddress.getByName(ip));
 
-		    for (int i = 0; i <= 255; i++) {
+				
+		    for (int i = 0; i < 255; i++) {
 		        // build the next IP address
-		        String addr = ip;
-		        addr = addr.substring(0, addr.lastIndexOf('.') + 1) + i;
+		    	String addr = ip.substring(0, ip.lastIndexOf('.') + 1) + (i) ;
+		    	System.out.println(addr);
 		        InetAddress pingAddr = InetAddress.getByName(addr);
+		        //System.out.println(ping(addr));
 		        // 50ms Timeout for the "ping"
-		        if (pingAddr.isReachable(iFace, 200, 50)) {
-		            Log.i("PING", pingAddr.getHostAddress());
-		            result.add(pingAddr.getHostAddress());
-		            count = count+1;
+		        //System.out.println(ping(""));
+		        
+		        publishProgress(i,count); 
+				//if(pingHost(addr) == 0){  
 		            System.out.println("--------------Testing port " + port);
-		            Socket s = null;
+		            //Socket s = null;
+		            
+		            SocketAddress socks = new InetSocketAddress(pingAddr,50002);
+		            Socket s = new Socket();
+		            System.out.println("in count: " + count);
 		            try {
-		                s = new Socket(pingAddr, port);
+		            	System.out.println("in try");
+//		            	s = new Socket(pingAddr, 50002);
+//		            	s.connect(sock, 500);
+		            	s.connect(socks, 1000);
 		                s.close();
-		            } catch (IOException e) {
-		            	
-		            } finally {
-		                if( s != null){
-		                    try {
-		                        s.close();
-		                    } catch (IOException e) {
-		                        
-		                    }
-		                }
+		                result.add(pingAddr.getHostAddress());
+			            count = count+1; 
+		            }catch (IOException e){}
+		            catch (IllegalArgumentException e){
+		            }	finally {
+		            
+//		            	System.out.println("in finally");
+//		            	
+//		                if( s != null){
+//		                    try {
+//		                        s.close();
+//		                    } catch (IOException e) {
+//		                        
+//		                    }
+//		                }
 		            }
-		        }
-		        publishProgress(i,count);
+		            
+		       // }
 		    }
 		} catch (UnknownHostException ex) {
-		} catch (IOException ex) {
-		}
-			
+		} 
+			publishProgress(100,count);
 			return result;
 		}
 		
@@ -247,10 +270,12 @@ public class AutoDetect extends Activity implements OnItemClickListener{
 		}
 		@Override
 		protected void onPostExecute(List<String> result){
+			MyApplication myApp = (MyApplication) AutoDetect.this.getApplication();
 			progress.dismiss();
-			adapter = new ListIpAddresses(AutoDetect.this, result);
+			myApp.availableDE2s.clear();
+			myApp.availableDE2s.addAll(result);
+			adapter = new ListIpAddresses(AutoDetect.this, myApp.availableDE2s);
 			m_listview.setAdapter(adapter);	
-			currentIPAddress.addAll(result);
 			TCPReadTimerTask tcp_task = new TCPReadTimerTask();
 			Timer tcp_timer = new Timer();
 			tcp_timer.schedule(tcp_task, 3000, 500);
@@ -262,16 +287,98 @@ public class AutoDetect extends Activity implements OnItemClickListener{
 			long arg3) {
 		MyApplication myApp = (MyApplication) AutoDetect.this.getApplication();
 		if(myApp.sock != null){
-			closeSocket();
-			textView.setText("Not Connected");
+			if (myApp.connectedTo.equals(myApp.availableDE2s.get(position))){
+				closeSocket();
+			}
+			else {
+				closeSocket();
+				new SocketConnect().execute(myApp.availableDE2s.get(position));
+				this.adapter = new ListIpAddresses(this, myApp.availableDE2s);	
+				myApp.connectedTo = myApp.availableDE2s.get(position);
+			}
 		}
 		else{
-			new SocketConnect().execute(currentIPAddress.get(position));
-			myApp.connectedTo = currentIPAddress.get(position);
-			textView.setText("Connected to: " + myApp.connectedTo);
-			this.adapter = new ListIpAddresses(this, currentIPAddress);	
+			new SocketConnect().execute(myApp.availableDE2s.get(position));
+			this.adapter = new ListIpAddresses(this, myApp.availableDE2s);	
+			myApp.connectedTo = myApp.availableDE2s.get(position);
 		}
 		
 	}
+	
+	
 
+	    private static final String TAG = "Network.java";   
+
+	    public String pingError = null;
+
+	    /**
+	     * Ping a host and return an int value of 0 or 1 or 2 0=success, 1=fail, 2=error
+	     * 
+	     * Does not work in Android emulator and also delay by '1' second if host not pingable
+	     * In the Android emulator only ping to 127.0.0.1 works
+	     * 
+	     * @param String host in dotted IP address format
+	     * @return
+	     * @throws IOException
+	     * @throws InterruptedException
+	     */
+	    public int pingHost(String host) throws IOException, InterruptedException {
+	    	System.out.println("trying to ping");
+	        Runtime runtime = Runtime.getRuntime();
+	        Process proc = runtime.exec("ping -W 5000 -o " + host);     
+	        proc.waitFor();     
+	        int exit = proc.exitValue();
+	        System.out.println(exit);
+	        return exit;
+	    	
+	    }
+
+	    public String ping(String host) throws IOException, InterruptedException {
+	        StringBuffer echo = new StringBuffer();
+	        Runtime runtime = Runtime.getRuntime();
+	        Log.v(TAG, "About to ping using runtime.exec");
+	        Process proc = runtime.exec("ping -W 300 -o " + host);
+	        proc.waitFor();
+	        int exit = proc.exitValue();
+	        if (exit == 0) {
+	            InputStreamReader reader = new InputStreamReader(proc.getInputStream());
+	            BufferedReader buffer = new BufferedReader(reader);
+	            String line = "";
+	            while ((line = buffer.readLine()) != null) {
+	                echo.append(line + "\n");
+	            }           
+	            return getPingStats(echo.toString());   
+	        } else if (exit == 1) {
+	            pingError = "failed, exit = 1";
+	            return null;            
+	        } else {
+	            pingError = "error, exit = 2";
+	            return null;    
+	        }       
+	    }
+
+	    public String getPingStats(String s) {
+	        if (s.contains("0% packet loss")) {
+	            int start = s.indexOf("/mdev = ");
+	            int end = s.indexOf(" ms\n", start);
+	            s = s.substring(start + 8, end);            
+	            String stats[] = s.split("/");
+	            return stats[2];
+	        } else if (s.contains("100% packet loss")) {
+	            pingError = "100% packet loss";
+	            return null;            
+	        } else if (s.contains("% packet loss")) {
+	            pingError = "partial packet loss";
+	            return null;
+	        } else if (s.contains("unknown host")) {
+	            pingError = "unknown host";
+	            return null;
+	        } else {
+	            pingError = "unknown error in getPingStats";
+	            return null;
+	        }       
+	    }
+
+	
+	
 }
