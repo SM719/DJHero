@@ -64,18 +64,20 @@ public class MainScreen extends Activity implements OnItemClickListener {
 		MyApplication myApp = (MyApplication) MainScreen.this.getApplication();
 		if (myApp.sock == null) {
 			// Take the user to the settings view if the socket is not open
-			Intent intent = new Intent(this, ConnectToDE2.class);
+			Intent intent = new Intent(this, AutoDetect.class);
+			intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 			startActivity(intent);
 		}
-
+		else{
 		// Clear the songlist and prepare to get the updated song list
-		myApp.songlist.clearList();
-
-		// Send a request for the song list string
-		SendMessage.sendMessage("l", myApp.sock);
-
-		// call aysnc
-		new RefreshProgressDialog().execute();
+			myApp.songlist.clearList();
+		
+			// Send a request for the song list string
+			SendMessage.sendMessage("l", myApp.sock);
+		
+			// call aysnc
+			new RefreshProgressDialog().execute();
+		}
 	}
 
 	public void sendSignal(View view) {
@@ -85,7 +87,8 @@ public class MainScreen extends Activity implements OnItemClickListener {
 			myApp.songlist.clearList();
 			SendMessage.sendMessage("l", myApp.sock);
 		} else {
-			Intent intent = new Intent(this, ConnectToDE2.class);
+			Intent intent = new Intent(this, AutoDetect.class);
+			intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 			startActivity(intent);
 
 		}

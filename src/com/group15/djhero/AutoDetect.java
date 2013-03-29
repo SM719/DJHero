@@ -38,7 +38,7 @@ public class AutoDetect extends Activity implements OnItemClickListener{
 	TextView textView;
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		MyApplication app = (MyApplication) getApplication();
+		MyApplication myApp = (MyApplication) getApplication();
 		// This call will result in better error messages if you
 		// try to do things in the wrong thread.
 		
@@ -47,14 +47,21 @@ public class AutoDetect extends Activity implements OnItemClickListener{
 		m_listview = (ListView) findViewById(R.id.ip_list_view);
 		m_listview.setOnItemClickListener(this);	
 		textView = (TextView) findViewById(R.id.connectedIPDisplay);
-		if(app.sock == null){
+		if(myApp.sock == null){
 	    	textView.setText("Not Connected");
-			new FindDE2sOnNetwork().execute();
+	    	//Uncomment this line to start autodetect
+			//new FindDE2sOnNetwork().execute();
+	    	
+	    	String connectTo = "172.16.1.28";
+	    	new SocketConnect().execute(connectTo);
+	    	myApp.availableDE2s.add(connectTo);
+			this.adapter = new ListIpAddresses(this, myApp.availableDE2s);	
+			myApp.connectedTo = myApp.availableDE2s.get(0);
 		}
 		else{
-			 adapter = new ListIpAddresses(AutoDetect.this, app.availableDE2s);
+			 adapter = new ListIpAddresses(AutoDetect.this, myApp.availableDE2s);
 			m_listview.setAdapter(adapter);
-			textView.setText("Connected to: " + app.connectedTo);
+			textView.setText("Connected to: " + myApp.connectedTo);
 		}
 		
 	}
@@ -155,30 +162,36 @@ public class AutoDetect extends Activity implements OnItemClickListener{
 	
 	public class TCPReadTimerTask extends TimerTask {
 		public void run() {
-			MyApplication app = (MyApplication) AutoDetect.this.getApplication();
+			MyApplication app = (MyApplication) AutoDetect.this
+					.getApplication();
 			if (app.sock != null && app.sock.isConnected()
 					&& !app.sock.isClosed()) {
-				
+
 				try {
 					InputStream in = app.sock.getInputStream();
 
 					// See if any bytes are available from the Middleman
-					
+
 					int bytes_avail = in.available();
 					if (bytes_avail > 0) {
-						
+
 						// If so, read them in and create a sring
-						
+
 						byte buf[] = new byte[bytes_avail];
 						in.read(buf);
 
-						final String s = new String(buf, 0, bytes_avail, "US-ASCII");
-		
-						MyApplication myApp = (MyApplication) AutoDetect.this.getApplication();
-						myApp.listFromDE2 = s;
-						Log.i("DE2list", myApp.listFromDE2 );
+						final String s = new String(buf, 0, bytes_avail,
+								"US-ASCII");
+
+						MyApplication myApp = (MyApplication) AutoDetect.this
+								.getApplication();
+
+						myApp.listComplete = myApp.songlist.addSongs(s);
+
+						Log.i("DE2list", s);
+						SendMessage.sendMessage("a", myApp.sock);
 						// As explained in the tutorials, the GUI can not be
-						// updated in an asyncrhonous task.  So, update the GUI
+						// updated in an asyncrhonous task. So, update the GUI
 						// using the UI thread.
 					}
 				} catch (IOException e) {
