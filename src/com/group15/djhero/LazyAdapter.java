@@ -21,63 +21,73 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 public class LazyAdapter extends BaseAdapter {
-    
-    private Activity activity;
-    private songList data;
-    private static LayoutInflater inflater=null;
-    List<View> vi_ = new ArrayList<View>();
-    int count;
-    
 
-     public LazyAdapter(Activity a, songList d) {
-        activity = a;
-        data=d;
-        inflater = (LayoutInflater)activity.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        count = 0;
-    }
+	private Activity activity;
+	private songList data;
+	private static LayoutInflater inflater = null;
+	List<View> vi_ = new ArrayList<View>();
+	int count;
 
-    public int getCount() {
-    	if(data.Songs == null )
-    		return 0;
-        return data.Songs.size();
-    }
+	public LazyAdapter(Activity a, songList d) {
+		activity = a;
+		data = d;
+		inflater = (LayoutInflater) activity
+				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+		count = 0;
+	}
 
-    public Object getItem(int position) {
-        return position;
-    }
+	@Override
+	public int getCount() {
+		if (data.Songs == null)
+			return 0;
+		return data.Songs.size();
+	}
 
-    public long getItemId(int position) {
-        return position;
-    }
-    
-    public View getView(int position, View convertView, ViewGroup parent) {
-        View vi=convertView;
-        if(convertView==null)
-            vi = inflater.inflate(R.layout.item, null);
-        
-        vi_.add(position, vi);
+	@Override
+	public Object getItem(int position) {
+		return vi_.get(position);
+	}
 
-        TextView text=(TextView)vi.findViewById(R.id.text);
-        ImageView image=(ImageView)vi.findViewById(R.id.image);
-    
-        Song song =data.Songs.get(position);
-        
-        
-        text.setText(song.Title);
-        
-     
-		new NewAsyncTask().execute ("http://server.gursimran.net/test2.php?track="+song.Title);
-		
-        return vi;
-    }
-    
+	@Override
+	public long getItemId(int position) {
+		return vi_.get(position).getId();
+	}
+
+	@Override
+	public View getView(int position, View convertView, ViewGroup parent) {
+		View vi = convertView;
+		if (convertView == null)
+			vi = inflater.inflate(R.layout.item, null);
+
+		vi_.add(position, vi);
+
+		TextView text = (TextView) vi.findViewById(R.id.text);
+		ImageView image = (ImageView) vi.findViewById(R.id.image);
+
+		Song song = data.Songs.get(position);
+
+		text.setText(song.Title);
+		MyApplication myApp = (MyApplication) activity.getApplication();
+
+		try {
+			image.setImageBitmap(myApp.images.get(position));
+
+		} catch (NullPointerException e) {
+			new NewAsyncTask()
+					.execute("http://server.gursimran.net/test2.php?track="
+							+ song.Title, String.valueOf(position));
+		}
+		return vi;
+	}
+
 	// This is the asynchronous task. It is extended from AsyncTask
-	class NewAsyncTask extends AsyncTask<String, Void, Bitmap> {
+	class NewAsyncTask extends AsyncTask<String, Void, Integer> {
 		// This is the "guts" of the asynchronus task. The code
 		// in doInBackground will be executed in a separate thread
 		@Override
-		protected Bitmap doInBackground(String... url_array) {
+		protected Integer doInBackground(String... url_array) {
 			URL url;
+			MyApplication myApp = (MyApplication) activity.getApplication();
 			Log.i("MainActivity", "Inside the asynchronous task");
 			try {
 				url = new URL(url_array[0]);
@@ -89,7 +99,8 @@ public class LazyAdapter extends BaseAdapter {
 				InputStream input = connection.getInputStream();
 				Bitmap bitmap = BitmapFactory.decodeStream(input);
 				input.close();
-				return bitmap;
+				myApp.images.add(Integer.parseInt(url_array[1]), bitmap);
+				return Integer.parseInt(url_array[1]);
 			} catch (IOException e) {
 				e.printStackTrace();
 				return null;
@@ -101,12 +112,11 @@ public class LazyAdapter extends BaseAdapter {
 		// update the GUI. The input parameter is automatically
 		// set by the output parameter of doInBackground()
 		@Override
-		protected void onPostExecute(Bitmap result) {
+		protected void onPostExecute(Integer result) {
 			MyApplication myApp = (MyApplication) activity.getApplication();
-			myApp.images.add(result);
-			ImageView image=(ImageView)vi_.get(count).findViewById(R.id.image);
-			image.setImageBitmap(result);
-			count++;
+			ImageView image = (ImageView) vi_.get(result.intValue())
+					.findViewById(R.id.image);
+			image.setImageBitmap(myApp.images.get(result.intValue()));
 		}
 	}
 }

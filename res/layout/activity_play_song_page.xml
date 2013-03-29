@@ -37,16 +37,15 @@
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="75dp"
-     	android:background="@drawable/selectable_item_bg"
-        android:onClick="PausePlay"
-         />
+        android:background="@drawable/selectable_item_bg"
+        android:onClick="PausePlay" />
 
     <ImageView
         android:id="@+id/imageView1"
         android:layout_width="300dp"
         android:layout_height="200dp"
         android:layout_above="@+id/imageButton2"
-        android:layout_alignLeft="@+id/seekBar1"
+        android:layout_centerHorizontal="true"
         android:layout_marginBottom="20dp"
         android:src="@android:drawable/alert_light_frame" />
 
@@ -59,21 +58,21 @@
         android:layout_marginBottom="15dp"
         android:max="80" />
 
-    <SeekBar
-        android:id="@+id/seekBar1"
-        android:layout_width="300dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
-
     <TextView
         android:id="@+id/connectedIPDisplay"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/seekBar1"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="25dp"
         android:text="@string/songName"
         android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <ProgressBar
+        android:id="@+id/progressBar1"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/imageView1"
+        android:layout_alignRight="@+id/imageView1" />
 
 </RelativeLayout>
