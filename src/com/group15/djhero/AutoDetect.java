@@ -53,6 +53,7 @@ public class AutoDetect extends Activity implements OnItemClickListener {
 
 			String connectTo = "172.16.1.28";
 			new SocketConnect().execute(connectTo);
+			myApp.availableDE2s.clear();
 			myApp.availableDE2s.add(connectTo);
 			this.adapter = new ListIpAddresses(this, myApp.availableDE2s);
 			myApp.connectedTo = myApp.availableDE2s.get(0);
