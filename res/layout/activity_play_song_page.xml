@@ -82,9 +82,9 @@
         android:layout_alignRight="@+id/progressBar1"
         android:layout_alignTop="@+id/progressBar1"
         android:gravity="right|center_horizontal"
-        android:text="@string/timeLeft"
+        android:text="@string/empty"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textStyle="bold"
-        android:textSize="18sp" />
+        android:textSize="18sp"
+        android:textStyle="bold" />
 
 </RelativeLayout>
