@@ -9,7 +9,7 @@ import android.graphics.Bitmap;
 
 public class MyApplication extends Application {
 	Socket sock = null;
-	songList songlist = new songList("1:believe:20|2:In+da+club:30");
+	songList songlist = new songList();
 	String listFromDE2 = "";
 	Bitmap[] images = new Bitmap[10];
 	String connectedTo = null;

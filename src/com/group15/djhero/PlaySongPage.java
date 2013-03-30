@@ -72,6 +72,20 @@ public class PlaySongPage extends Activity implements OnSeekBarChangeListener {
 		pb_timer.schedule(pb_task, 1750, 1000);
 
 	}
+	
+	@Override
+	public void onRestart(){
+		super.onRestart();
+		if (state == false){
+			imageButton.setImageResource((R.drawable.play));
+		}
+		else {
+			imageButton.setImageResource((R.drawable.pause));
+		}
+		songProgressBar.setProgress(progressTracker);
+		timeLeft.setText(String.valueOf((lengthOfCurrentSong - progressTracker+1)/60)+":"+String.format("%02d", Integer.valueOf(((lengthOfCurrentSong - progressTracker+1)%60))));
+		
+	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
