@@ -56,29 +56,28 @@ public class MainScreen extends Activity implements OnItemClickListener {
 
 		MyApplication myApp = (MyApplication) MainScreen.this.getApplication();
 		if (myApp.sock != null) {
-
-			Song thisSong = myApp.songlist.Songs.get(position);
-			Intent intent = new Intent(this, PlaySongPage.class);
-			intent.putExtra("songName", thisSong.Title);
-			intent.putExtra("position", position);
-			intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-			
-			SendMessage.sendMessage("p " + thisSong.id, myApp.sock);
-			startActivity(intent);
-		} else {
+				Song thisSong = myApp.songlist.Songs.get(position);
+				Intent intent = new Intent(this, PlaySongPage.class);
+				intent.putExtra("songName", thisSong.Title);
+				intent.putExtra("position", position);
+				intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+				startActivity(intent);
+			}
+		 else {
 			// Take the user to the settings view if the socket is not open
-			Intent intent = new Intent(this, ConnectToDE2.class);
+			Intent intent = new Intent(this, AutoDetect.class);
 			startActivity(intent);
 
 		}
 	}
 
 	public void onRefreshClick(View view) throws InterruptedException {
-		// Get the global variables from myapp
+		// Get the global variables from myApp
 		MyApplication myApp = (MyApplication) MainScreen.this.getApplication();
 		if (myApp.sock == null) {
 			// Take the user to the settings view if the socket is not open
 			Intent intent = new Intent(this, AutoDetect.class);
+			intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 			intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 			startActivity(intent);
 		} else {
@@ -86,10 +85,11 @@ public class MainScreen extends Activity implements OnItemClickListener {
 			myApp.songlist.clearList();
 
 			// Send a request for the song list string
-			SendMessage.sendMessage("l", myApp.sock);
+			//SendMessage.sendMessage("l", myApp.sock); UNCOMMENT LATER
+			SendMessage.sendMessage("l ", myApp.sock);
 
-			// call aysnc
-			new RefreshProgressDialog().execute();
+			// Display a progress dialog while we get the list from the DE2
+			new RefreshProgressDialog().execute(); 
 		}
 	}
 
@@ -119,8 +119,7 @@ public class MainScreen extends Activity implements OnItemClickListener {
 		@Override
 		protected Integer doInBackground(Void... arg0) {
 
-			while (!myApp.listComplete)
-				;
+			while (!myApp.listComplete);
 			return 0;
 
 		}
