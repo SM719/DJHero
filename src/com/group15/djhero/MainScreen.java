@@ -54,7 +54,7 @@ public class MainScreen extends Activity implements OnItemClickListener {
 			intent.putExtra("songName", thisSong.Title);
 			intent.putExtra("position", position);
 
-			SendMessage.sendMessage("play " + thisSong.id, myApp.sock);
+			SendMessage.sendMessage("p " + thisSong.id, myApp.sock);
 			startActivity(intent);
 		} else {
 			// Take the user to the settings view if the socket is not open
@@ -81,20 +81,6 @@ public class MainScreen extends Activity implements OnItemClickListener {
 
 			// call aysnc
 			new RefreshProgressDialog().execute();
-		}
-	}
-
-	public void sendSignal(View view) {
-		MyApplication myApp = (MyApplication) MainScreen.this.getApplication();
-
-		if (myApp.sock != null) {
-			myApp.songlist.clearList();
-			SendMessage.sendMessage("l", myApp.sock);
-		} else {
-			Intent intent = new Intent(this, AutoDetect.class);
-			intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-			startActivity(intent);
-
 		}
 	}
 

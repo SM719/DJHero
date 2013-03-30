@@ -75,4 +75,16 @@
         android:layout_alignLeft="@+id/imageView1"
         android:layout_alignRight="@+id/imageView1" />
 
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/progressBar1"
+        android:layout_alignTop="@+id/progressBar1"
+        android:gravity="right|center_horizontal"
+        android:text="@string/timeLeft"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textStyle="bold"
+        android:textSize="18sp" />
+
 </RelativeLayout>

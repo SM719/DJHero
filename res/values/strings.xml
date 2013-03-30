@@ -28,5 +28,6 @@
     <string name="title_activity_test">Test</string>
     <string name="title_activity_connect_to_de2">ConnectToDE2</string>
     <string name="title_activity_auto_detect">AutoDetect</string>
+    <string name="timeLeft">0:00</string>
 
 </resources>

@@ -1,6 +1,10 @@
 package com.group15.djhero;
 
+import java.util.Timer;
+import java.util.TimerTask;
+
 import android.app.Activity;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -19,8 +23,15 @@ public class PlaySongPage extends Activity implements OnSeekBarChangeListener {
 	boolean fun = false;
 	int Global_progress;
 	ImageView imageView;
+	int progressTracker = 0;
+	int lengthOfCurrentSong;
 
 	int positionOfSong;
+	ProgressBar songProgressBar;
+	Timer pb_timer = new Timer();
+	UpdateSongProgress pb_task;
+
+	TextView timeLeft;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +45,6 @@ public class PlaySongPage extends Activity implements OnSeekBarChangeListener {
 		textViewforSongPosition.setText(songName);
 
 		positionOfSong = getIntent().getIntExtra("position", 0);
-		ProgressBar pb = (ProgressBar) findViewById(R.id.progressBar1);
 
 		imageView = (ImageView) findViewById(R.id.imageView1);
 		if (myApp.images[positionOfSong] != null) {
@@ -45,7 +55,21 @@ public class PlaySongPage extends Activity implements OnSeekBarChangeListener {
 
 		bar = (SeekBar) findViewById(R.id.seekBar0); // make seekbar object
 		bar.setOnSeekBarChangeListener(this); // set seekbar listener.
-		bar.setProgress(40);
+		bar.setProgress(40); // default value for volume seekbar
+
+		lengthOfCurrentSong = (myApp.songlist.Songs.get(positionOfSong).Length) / 1000;
+		songProgressBar = (ProgressBar) findViewById(R.id.progressBar1);
+		songProgressBar.setProgress(progressTracker);
+		songProgressBar.setMax(lengthOfCurrentSong);
+
+		timeLeft = (TextView) findViewById(R.id.textView1);
+		timeLeft.setTextColor(Color.BLACK);
+		timeLeft.setText("0:00");
+
+		// Set up a timer task. We will use the timer to check the
+		// to update the song progress bar
+		pb_task = new UpdateSongProgress();
+		pb_timer.schedule(pb_task, 1750, 1000);
 
 	}
 
@@ -82,13 +106,18 @@ public class PlaySongPage extends Activity implements OnSeekBarChangeListener {
 		TextView textViewforSongPosition = (TextView) findViewById(R.id.connectedIPDisplay);
 		textViewforSongPosition.setText(thisSong.Title);
 
+		progressTracker = 0;
+		lengthOfCurrentSong = (myApp.songlist.Songs.get(positionOfSong).Length) / 1000;
+
 		try {
 			imageView.setImageBitmap(myApp.images[positionOfSong]);
 		} catch (NullPointerException e) {
 		} catch (IndexOutOfBoundsException e) {
 		}
-
-		SendMessage.sendMessage("n ", myApp.sock);
+		SendMessage.sendMessage(
+				"p "
+						+ String.valueOf((myApp.songlist.Songs
+								.get(positionOfSong).id)), myApp.sock);
 
 	}
 
@@ -105,12 +134,16 @@ public class PlaySongPage extends Activity implements OnSeekBarChangeListener {
 
 		TextView textViewforSongPosition = (TextView) findViewById(R.id.connectedIPDisplay);
 		textViewforSongPosition.setText(thisSong.Title);
+
+		progressTracker = 0;
+		lengthOfCurrentSong = (myApp.songlist.Songs.get(positionOfSong).Length) / 1000;
+
 		try {
 			imageView.setImageBitmap(myApp.images[positionOfSong]);
 		} catch (NullPointerException e) {
 		} catch (IndexOutOfBoundsException e) {
 		}
-		SendMessage.sendMessage("b ", myApp.sock);
+		SendMessage.sendMessage("p "+ String.valueOf((myApp.songlist.Songs.get(positionOfSong).id)), myApp.sock);
 	}
 
 	@Override
@@ -141,4 +174,55 @@ public class PlaySongPage extends Activity implements OnSeekBarChangeListener {
 	public void onStartTrackingTouch(SeekBar seekBar) {
 		// TODO Auto-generated method stub
 	}
+
+	public class UpdateSongProgress extends TimerTask {
+		public void run() {
+			MyApplication myApp = (MyApplication) PlaySongPage.this
+					.getApplication();
+			if (lengthOfCurrentSong +1 >= progressTracker) {
+				if (!state)
+					runOnUiThread(new Runnable() {
+						@Override
+						public void run() {	
+							timeLeft.setText(String.valueOf((lengthOfCurrentSong - progressTracker+1)/60)+":"+String.format("%02d", Integer.valueOf(((lengthOfCurrentSong - progressTracker+1)%60))));
+							
+						}
+					});
+					songProgressBar.setProgress(progressTracker++);
+				
+				
+				
+			} else {
+				positionOfSong = (++positionOfSong)% myApp.songlist.Songs.size();
+				SendMessage.sendMessage("p "+ String.valueOf((myApp.songlist.Songs.get(positionOfSong).id)), myApp.sock);
+				
+				try {
+					Thread.sleep(1750);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+				progressTracker = 0;
+				songProgressBar.setProgress(progressTracker);
+				lengthOfCurrentSong = (myApp.songlist.Songs.get(positionOfSong).Length) / 1000;
+				songProgressBar.setMax(lengthOfCurrentSong);
+				
+				runOnUiThread(new Runnable() {
+
+					@Override
+					public void run() {
+						// TODO Auto-generated method stub
+						MyApplication myApp = (MyApplication) PlaySongPage.this
+								.getApplication();
+						TextView textViewforSongPosition = (TextView) findViewById(R.id.connectedIPDisplay);
+						Song thisSong = myApp.songlist.Songs
+								.get(positionOfSong);
+						textViewforSongPosition.setText(thisSong.Title);
+						imageView.setImageBitmap(myApp.images[positionOfSong]);
+					}
+				});
+
+			}
+
+		}
+	}	
 }
