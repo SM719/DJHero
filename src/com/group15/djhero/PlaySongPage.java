@@ -74,8 +74,8 @@ public class PlaySongPage extends Activity implements OnSeekBarChangeListener {
 	}
 	
 	@Override
-	public void onRestart(){
-		super.onRestart();
+	public void onResume(){
+		super.onResume();
 		if (state == false){
 			imageButton.setImageResource((R.drawable.play));
 		}
