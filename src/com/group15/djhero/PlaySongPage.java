@@ -37,8 +37,8 @@ public class PlaySongPage extends Activity implements OnSeekBarChangeListener {
 		ProgressBar pb = (ProgressBar) findViewById(R.id.progressBar1);
 
 		imageView = (ImageView) findViewById(R.id.imageView1);
-		if (myApp.images.get(positionOfSong) != null) {
-			imageView.setImageBitmap(myApp.images.get(positionOfSong));
+		if (myApp.images[positionOfSong] != null) {
+			imageView.setImageBitmap(myApp.images[positionOfSong]);
 		}
 		imageButton = (ImageButton) findViewById(R.id.imageButton1);
 		imageButton.setImageResource((R.drawable.pause));
@@ -81,9 +81,13 @@ public class PlaySongPage extends Activity implements OnSeekBarChangeListener {
 
 		TextView textViewforSongPosition = (TextView) findViewById(R.id.connectedIPDisplay);
 		textViewforSongPosition.setText(thisSong.Title);
-		if (myApp.images.get(positionOfSong) != null) {
-			imageView.setImageBitmap(myApp.images.get(positionOfSong));
+
+		try {
+			imageView.setImageBitmap(myApp.images[positionOfSong]);
+		} catch (NullPointerException e) {
+		} catch (IndexOutOfBoundsException e) {
 		}
+
 		SendMessage.sendMessage("n ", myApp.sock);
 
 	}
@@ -101,8 +105,10 @@ public class PlaySongPage extends Activity implements OnSeekBarChangeListener {
 
 		TextView textViewforSongPosition = (TextView) findViewById(R.id.connectedIPDisplay);
 		textViewforSongPosition.setText(thisSong.Title);
-		if (myApp.images.get(positionOfSong) != null) {
-			imageView.setImageBitmap(myApp.images.get(positionOfSong));
+		try {
+			imageView.setImageBitmap(myApp.images[positionOfSong]);
+		} catch (NullPointerException e) {
+		} catch (IndexOutOfBoundsException e) {
 		}
 		SendMessage.sendMessage("b ", myApp.sock);
 	}

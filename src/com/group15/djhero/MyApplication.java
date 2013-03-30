@@ -11,7 +11,7 @@ public class MyApplication extends Application {
 	Socket sock = null;
 	songList songlist = new songList("1:believe:20|2:In+da+club:30");
 	String listFromDE2 = "";
-	ArrayList<Bitmap> images = new ArrayList<Bitmap>();
+	Bitmap[] images = new Bitmap[10];
 	String connectedTo = null;
 	List<String> availableDE2s = new ArrayList<String>();
 	Boolean listComplete = false;

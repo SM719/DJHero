@@ -1,13 +1,18 @@
 package com.group15.djhero;
 
-import java.util.ArrayList;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.widget.AdapterView;
@@ -67,14 +72,13 @@ public class MainScreen extends Activity implements OnItemClickListener {
 			Intent intent = new Intent(this, AutoDetect.class);
 			intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 			startActivity(intent);
-		}
-		else{
-		// Clear the songlist and prepare to get the updated song list
+		} else {
+			// Clear the songlist and prepare to get the updated song list
 			myApp.songlist.clearList();
-		
+
 			// Send a request for the song list string
 			SendMessage.sendMessage("l", myApp.sock);
-		
+
 			// call aysnc
 			new RefreshProgressDialog().execute();
 		}
@@ -130,12 +134,49 @@ public class MainScreen extends Activity implements OnItemClickListener {
 		protected void onPostExecute(Integer result) {
 			progress.dismiss();
 			myApp.listComplete = false;
-			myApp.images = new ArrayList<Bitmap>(myApp.songlist.Songs.size());
+			myApp.images = new Bitmap[myApp.songlist.Songs.size()];
 
 			LazyAdapter adapter = new LazyAdapter(MainScreen.this,
 					myApp.songlist);
 			m_listview.setAdapter(adapter);
 
+			for (int i = 0; i < myApp.songlist.Songs.size(); i++) {
+				new DownloadImages().execute(
+						"http://server.gursimran.net/test2.php?track="
+								+ myApp.songlist.Songs.get(i).Title,
+						String.valueOf(i));
+			}
+
+		}
+	}
+
+	// This is the asynchronous task. It is extended from AsyncTask
+	class DownloadImages extends
+			com.group15.djhero.AsyncTask<String, Void, Integer> {
+		// This is the "guts" of the asynchronus task. The code
+		// in doInBackground will be executed in a separate thread
+		@Override
+		protected Integer doInBackground(String... url_array) {
+			URL url;
+			MyApplication myApp = (MyApplication) MainScreen.this
+					.getApplication();
+			Log.i("MainActivity", "Inside the asynchronous task");
+			try {
+				url = new URL(url_array[0]);
+				HttpURLConnection connection = (HttpURLConnection) url
+						.openConnection();
+				connection.setDoInput(true);
+				connection.connect();
+				Log.i("MainActivity", "Successfully opened the web page");
+				InputStream input = connection.getInputStream();
+				Bitmap bitmap = BitmapFactory.decodeStream(input);
+				input.close();
+				myApp.images[Integer.parseInt(url_array[1])] = bitmap;
+				return Integer.parseInt(url_array[1]);
+			} catch (IOException e) {
+				e.printStackTrace();
+				return null;
+			}
 		}
 	}
 
