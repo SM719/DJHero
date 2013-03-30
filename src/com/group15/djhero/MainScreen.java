@@ -61,7 +61,8 @@ public class MainScreen extends Activity implements OnItemClickListener {
 			Intent intent = new Intent(this, PlaySongPage.class);
 			intent.putExtra("songName", thisSong.Title);
 			intent.putExtra("position", position);
-
+			intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+			
 			SendMessage.sendMessage("p " + thisSong.id, myApp.sock);
 			startActivity(intent);
 		} else {
