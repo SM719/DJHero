@@ -64,7 +64,7 @@ public class PlaySongPage extends Activity implements OnSeekBarChangeListener {
 
 		timeLeft = (TextView) findViewById(R.id.textView1);
 		timeLeft.setTextColor(Color.BLACK);
-		timeLeft.setText("0:00");
+		//timeLeft.setText("0:00");
 
 		// Set up a timer task. We will use the timer to check the
 		// to update the song progress bar
