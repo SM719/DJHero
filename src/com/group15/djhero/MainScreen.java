@@ -42,9 +42,8 @@ public class MainScreen extends Activity implements OnItemClickListener {
 		return true;
 	}
 
-	@Override
-	public void onRestart(){
-		super.onRestart();
+	public void onResume(){
+		super.onResume();
 		MyApplication myApp = (MyApplication) MainScreen.this.getApplication();
 		LazyAdapter adapter = new LazyAdapter(MainScreen.this,
 				myApp.songlist);
