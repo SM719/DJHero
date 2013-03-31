@@ -72,7 +72,7 @@ public class PlaySongPage extends Activity implements OnSeekBarChangeListener {
 		myApp.songProgressBar.setProgress(myApp.progressTracker);
 		myApp.songProgressBar.setMax(myApp.lengthOfCurrentSong);
 		
-		myApp.timeLeft.setTextColor(Color.BLACK);
+		myApp.timeLeft.setTextColor(Color.WHITE);
 		myApp.timeLeft.setText(String.valueOf((myApp.lengthOfCurrentSong - myApp.progressTracker+1)/60)+":"+String.format("%02d", Integer.valueOf(((myApp.lengthOfCurrentSong - myApp.progressTracker+1)%60))));
 
 		// Set up a timer task. We will use the timer to check the
@@ -91,11 +91,6 @@ public class PlaySongPage extends Activity implements OnSeekBarChangeListener {
 		return true;
 	}
 
-	@Override
-	public void onStop(){
-		super.onStop();
-
-	}
 	public void PausePlay(View view) {
 		MyApplication myApp = (MyApplication) PlaySongPage.this
 				.getApplication();
@@ -194,7 +189,7 @@ public class PlaySongPage extends Activity implements OnSeekBarChangeListener {
 					runOnUiThread(new Runnable() {
 						@Override
 						public void run() {	
-							myApp.timeLeft.setText(String.valueOf((myApp.lengthOfCurrentSong - myApp.progressTracker+1)/60)+":"+String.format("%02d", Integer.valueOf(((myApp.lengthOfCurrentSong - myApp.progressTracker+1)%60))));
+							myApp.timeLeft.setText(String.valueOf((myApp.lengthOfCurrentSong - myApp.progressTracker+1)/60)+":"+String.format("%02d", Integer.valueOf(((myApp.lengthOfCurrentSong - myApp.progressTracker+2)%60))));
 							
 						}
 					});

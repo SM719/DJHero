@@ -19,10 +19,12 @@ import java.util.TimerTask;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -51,7 +53,7 @@ public class AutoDetect extends Activity implements OnItemClickListener {
 		if (myApp.sock == null) {
 			textView.setText("Not Connected");
 
-			String connectTo = "172.16.1.28";
+			String connectTo = "192.168.0.102";
 			new SocketConnect().execute(connectTo);
 			myApp.availableDE2s.clear();
 			myApp.availableDE2s.add(connectTo);
@@ -65,17 +67,17 @@ public class AutoDetect extends Activity implements OnItemClickListener {
 			m_listview.setAdapter(adapter);
 			textView.setText("Connected to: " + myApp.connectedTo);
 		}
-
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		getMenuInflater().inflate(R.menu.connect_to_de2, menu);
+		getMenuInflater().inflate(R.menu.auto_detect, menu);
 		return true;
 	}
+	
+	
 
 	// Called when the user closes a socket
-
 	public void closeSocket() {
 		MyApplication app = (MyApplication) getApplication();
 		Socket s = app.sock;

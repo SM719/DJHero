@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -14,16 +15,14 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ImageView;
 import android.widget.ListView;
 
 public class MainScreen extends Activity implements OnItemClickListener {
 
-	ImageView image_view_location;
-	public final static String ITEM = "com.example.MainActivity.ITEM";
 	private ListView m_listview;
 
 	@Override
@@ -32,6 +31,11 @@ public class MainScreen extends Activity implements OnItemClickListener {
 		setContentView(R.layout.activity_main_scrren);
 		m_listview = (ListView) findViewById(R.id.main_list_view);
 		m_listview.setOnItemClickListener(this);
+		
+		// Set up the action bar.
+		final ActionBar actionBar = getActionBar();
+		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+	
 
 	}
 
@@ -40,6 +44,37 @@ public class MainScreen extends Activity implements OnItemClickListener {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.main_screen, menu);
 		return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item){
+		switch(item.getItemId()){
+		
+		case R.id.action_update:
+			try {
+				onRefreshClick();
+			} catch (InterruptedException e) {}
+			
+			return true;
+		
+		case R.id.action_settings:
+			Intent intent = new Intent(this, AutoDetect.class);
+			intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+			this.startActivity(intent);
+			return true;
+		
+		case R.id.action_dj:
+			Intent djIntent = new Intent(this, DJInterface.class);
+			djIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+			this.startActivity(djIntent);
+			return true;
+			
+		case R.id.action_music:	
+			return true;
+	
+		default:
+			return super.onOptionsItemSelected(item);
+		}
 	}
 
 	public void onResume(){
@@ -70,7 +105,7 @@ public class MainScreen extends Activity implements OnItemClickListener {
 		}
 	}
 
-	public void onRefreshClick(View view) throws InterruptedException {
+	public void onRefreshClick() throws InterruptedException {
 		// Get the global variables from myApp
 		MyApplication myApp = (MyApplication) MainScreen.this.getApplication();
 		if (myApp.sock == null) {

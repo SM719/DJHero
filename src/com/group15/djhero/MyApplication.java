@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.app.Application;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -30,4 +31,5 @@ public class MyApplication extends Application {
 	ImageView imageView;
 	TextView textViewforSongPosition;
 	int Global_progress = 40;
+	
 }
