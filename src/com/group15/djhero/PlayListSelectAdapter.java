@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -26,6 +27,10 @@ public class PlayListSelectAdapter extends BaseAdapter {
 		inflater = (LayoutInflater) activity
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		count = 0;
+	}
+	
+	public View getViewAt(int position){
+		return vi_.get(position);
 	}
 
 	@Override
@@ -49,20 +54,22 @@ public class PlayListSelectAdapter extends BaseAdapter {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View vi = convertView;
 		if (convertView == null)
-			vi = inflater.inflate(R.layout.item, null);
+			vi = inflater.inflate(R.layout.itemplaylist, null);
 
 		vi_.add(position, vi);
 
-		TextView text = (TextView) vi.findViewById(R.id.text);
-		ImageView image = (ImageView) vi.findViewById(R.id.image);
-
+		TextView text = (TextView) vi.findViewById(R.id.textPlayListSelect);
+		ImageView image = (ImageView) vi.findViewById(R.id.imagePlayListSelect);
+		CheckBox checkBox = (CheckBox) vi.findViewById(R.id.checkBoxPlayListSelect);
+		
 		Song song = data.Songs.get(position);
 
 		text.setText(song.Title);
 		MyApplication myApp = (MyApplication) activity.getApplication();
 		image.setImageBitmap(myApp.images[position]);
-
 		return vi;
 	}
+	
+	
 
 }

@@ -49,6 +49,14 @@
             android:name="com.group15.djhero.PlayLists"
             android:label="@string/title_activity_play_lists" >
         </activity>
+        <activity
+            android:name="com.group15.djhero.PlayListModify"
+            android:label="@string/title_activity_play_list_modify" >
+        </activity>
+        <activity
+            android:name="com.group15.djhero.OnePlayList"
+            android:label="@string/title_activity_one_play_list" >
+        </activity>
     </application>
 
 </manifest>

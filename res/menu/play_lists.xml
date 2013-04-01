@@ -1,7 +1,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
-   <item android:id="@+id/action_dj"
-          android:title="@string/action_dj"
-          android:showAsAction="always|withText" />
+	
+	<item android:id="@+id/action_add_new_playlist"
+          android:title="@string/action_new_playlist"
+          android:icon="@drawable/sym_action_add"
+          android:showAsAction="always|withText"/>
 
 </menu>

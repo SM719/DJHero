@@ -37,5 +37,10 @@
     <string name="title_activity_play_lists">PlayLists</string>
     <string name="Default_play_list_name">Playlist</string>
     <string name="action_search">Search</string>
+    <string name="action_new_playlist">New</string>
+    <string name="title_activity_play_list_modify">PlayListModify</string>
+    <string name="title_activity_one_play_list">OnePlayList</string>
+    <string name="action_save">Save</string>
+    <string name="action_delete">Delete</string>
 
 </resources>

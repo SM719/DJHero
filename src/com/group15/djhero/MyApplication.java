@@ -20,6 +20,8 @@ public class MyApplication extends Application {
 	String connectedTo = null;
 	List<String> availableDE2s = new ArrayList<String>();
 	Boolean listComplete = false;
+	List<String> playLists = new ArrayList<String>();
+	List<Integer> selectedSongsForPlayList = new ArrayList<Integer>();
 	
 	
 	int lengthOfCurrentSong;

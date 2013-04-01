@@ -72,6 +72,11 @@ public class MainScreen extends Activity implements OnItemClickListener {
 		case R.id.action_music:	
 			return true;
 	
+		case R.id.action_playlist:
+			Intent newPLaylist = new Intent(this, PlayLists.class);
+			newPLaylist.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+			this.startActivity(newPLaylist);
+			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
@@ -172,7 +177,7 @@ public class MainScreen extends Activity implements OnItemClickListener {
 				myApp.images[i] = null;
 				new DownloadImages().execute(
 						"http://server.gursimran.net/test2.php?track="
-								+ myApp.songlist.Songs.get(i).Title,
+								+ myApp.songlist.Songs.get(i).Title.replace(" ", "+"),
 						String.valueOf(i));
 			}
 		}

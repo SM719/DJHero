@@ -27,4 +27,9 @@
         android:icon="@drawable/ic_menu_refresh"
         android:showAsAction="always|withText"/>
     
+    <item
+        android:id="@+id/action_playlist"
+        android:title="p"
+        android:showAsAction="always|withText"/>
+    
 </menu>
