@@ -3,11 +3,13 @@ package com.group15.djhero;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -28,6 +30,8 @@ public class PlaySongPage extends Activity implements OnSeekBarChangeListener {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_play_song_page);
+		final ActionBar actionBar = getActionBar();
+		actionBar.setDisplayHomeAsUpEnabled(true);
 		
 		 myApp = (MyApplication) PlaySongPage.this.getApplication();
 		 myApp.imageView = (ImageView) findViewById(R.id.imageView1);
@@ -90,6 +94,16 @@ public class PlaySongPage extends Activity implements OnSeekBarChangeListener {
 		getMenuInflater().inflate(R.menu.play_song_page, menu);
 		return true;
 	}
+	
+	public boolean onOptionsItemSelected(MenuItem item){
+		switch(item.getItemId()){
+		case android.R.id.home:
+			super.onBackPressed();
+			return true;
+		default:
+		return super.onOptionsItemSelected(item);
+		}
+	}
 
 	public void PausePlay(View view) {
 		MyApplication myApp = (MyApplication) PlaySongPage.this
@@ -120,7 +134,9 @@ public class PlaySongPage extends Activity implements OnSeekBarChangeListener {
 		myApp.textViewforSongArtist.setText(myApp.songlist.Songs.get(myApp.positionOfSong).artist);
 
 		myApp.progressTracker = 0;
+		myApp.songProgressBar.setProgress(myApp.progressTracker);
 		myApp.lengthOfCurrentSong = (myApp.songlist.Songs.get(myApp.positionOfSong).Length) / 1000;
+		myApp.songProgressBar.setMax(myApp.lengthOfCurrentSong);
 		
 		try {
 			myApp.imageView.setImageBitmap(myApp.images[myApp.positionOfSong]);
@@ -149,7 +165,9 @@ public class PlaySongPage extends Activity implements OnSeekBarChangeListener {
 		textViewforSongPosition.setText(thisSong.Title);
 
 		myApp.progressTracker = 0;
+		myApp.songProgressBar.setProgress(myApp.progressTracker);
 		myApp.lengthOfCurrentSong = (myApp.songlist.Songs.get(myApp.positionOfSong).Length) / 1000;
+		myApp.songProgressBar.setMax(myApp.lengthOfCurrentSong);
 
 		try {
 			myApp.imageView.setImageBitmap(myApp.images[myApp.positionOfSong]);
@@ -220,6 +238,7 @@ public class PlaySongPage extends Activity implements OnSeekBarChangeListener {
 						
 						myApp.textViewforSongPosition.setText(myApp.songlist.Songs.get(myApp.positionOfSong).Title);
 						myApp.imageView.setImageBitmap(myApp.images[myApp.positionOfSong]);
+						myApp.textViewforSongArtist.setText(myApp.songlist.Songs.get(myApp.positionOfSong).artist);
 					}
 				});
 				
