@@ -64,8 +64,6 @@ public class PlaySongPage extends Activity implements OnSeekBarChangeListener {
 			myApp.imageView.setImageBitmap(myApp.images[myApp.positionOfSong]);
 		}
 		
-
-
 		bar.setOnSeekBarChangeListener(this); // set Seekbar listener.
 		bar.setProgress(myApp.Global_progress); // default value for volume Seekbar
 
@@ -120,10 +118,11 @@ public class PlaySongPage extends Activity implements OnSeekBarChangeListener {
 
 		myApp.progressTracker = 0;
 		myApp.lengthOfCurrentSong = (myApp.songlist.Songs.get(myApp.positionOfSong).Length) / 1000;
-
+		
 		try {
 			myApp.imageView.setImageBitmap(myApp.images[myApp.positionOfSong]);
 		} catch (NullPointerException e) {
+			myApp.imageView.setImageResource(R.drawable.defaultsong);
 		} catch (IndexOutOfBoundsException e) {
 		}
 		SendMessage.sendMessage("p "+ String.valueOf((myApp.songlist.Songs
@@ -151,6 +150,7 @@ public class PlaySongPage extends Activity implements OnSeekBarChangeListener {
 		try {
 			myApp.imageView.setImageBitmap(myApp.images[myApp.positionOfSong]);
 		} catch (NullPointerException e) {
+			myApp.imageView.setImageResource(R.drawable.defaultsong);
 		} catch (IndexOutOfBoundsException e) {
 		}
 		SendMessage.sendMessage("p "+ String.valueOf((myApp.songlist.Songs.get(myApp.positionOfSong).id)), myApp.sock);
