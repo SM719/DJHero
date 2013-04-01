@@ -167,14 +167,14 @@ public class MainScreen extends Activity implements OnItemClickListener {
 			LazyAdapter adapter = new LazyAdapter(MainScreen.this,
 					myApp.songlist);
 			m_listview.setAdapter(adapter);
-
+			
 			for (int i = 0; i < myApp.songlist.Songs.size(); i++) {
+				myApp.images[i] = null;
 				new DownloadImages().execute(
 						"http://server.gursimran.net/test2.php?track="
 								+ myApp.songlist.Songs.get(i).Title,
 						String.valueOf(i));
 			}
-
 		}
 	}
 
