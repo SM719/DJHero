@@ -10,7 +10,7 @@
     <string name="title_activity_third">ThirdActivity</string>
     <string name="Song">Songname</string>
     <string name="title_activity_play_song_page">PlaySongPage</string>
-    <string name="songName">Placeholder text</string>
+    <string name="songName">Song name</string>
     <string name="send_signal">Send Signal</string>
     <string name="title_activity_connect">ConnectActivity</string>
     <string name="label_ip">IP:</string>
@@ -44,5 +44,6 @@
     <string name="action_cancel">Cancel</string>
     <string name="action_delete_playlist">Delete</string>
     <string name="title_activity_delete_playlist">DeletePlaylist</string>
+    <string name="artistPlaceholder">Artist Name</string>
 
 </resources>

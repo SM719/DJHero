@@ -33,6 +33,7 @@ public class MyApplication extends Application {
 	TextView timeLeft;
 	ImageView imageView;
 	TextView textViewforSongPosition;
+	TextView textViewforSongArtist;
 	int Global_progress = 40;
 	
 }
