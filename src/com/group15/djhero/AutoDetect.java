@@ -17,12 +17,14 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -66,12 +68,24 @@ public class AutoDetect extends Activity implements OnItemClickListener {
 			m_listview.setAdapter(adapter);
 			textView.setText("Connected to: " + myApp.connectedTo);
 		}
+		final ActionBar actionBar = getActionBar();
+		actionBar.setDisplayHomeAsUpEnabled(true);
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.auto_detect, menu);
 		return true;
+	}
+	
+	public boolean onOptionsItemSelected(MenuItem item){
+		switch(item.getItemId()){
+		case android.R.id.home:
+			super.onBackPressed();
+			return true;
+		default:
+		return super.onOptionsItemSelected(item);
+		}
 	}
 	
 	

@@ -1,9 +1,11 @@
 package com.group15.djhero;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -23,6 +25,8 @@ public class OnePlayList extends Activity implements OnItemClickListener{
 		m_listview.setOnItemClickListener(this);
 		playList = myApp.allSongList.get(getIntent().getIntExtra("playlistSelected",0));
 		setTitle(myApp.playLists.get(getIntent().getIntExtra("playlistSelected",0)));
+		final ActionBar actionBar = getActionBar();
+		actionBar.setDisplayHomeAsUpEnabled(true);
 	}
 
 	@Override
@@ -30,6 +34,15 @@ public class OnePlayList extends Activity implements OnItemClickListener{
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.one_play_list, menu);
 		return true;
+	}
+	public boolean onOptionsItemSelected(MenuItem item){
+		switch(item.getItemId()){
+		case android.R.id.home:
+			super.onBackPressed();
+			return true;
+		default:
+		return super.onOptionsItemSelected(item);
+		}
 	}
 
 	@Override
