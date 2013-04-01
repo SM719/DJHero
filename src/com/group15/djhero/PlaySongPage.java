@@ -134,7 +134,9 @@ public class PlaySongPage extends Activity implements OnSeekBarChangeListener {
 		myApp.textViewforSongArtist.setText(myApp.songlist.Songs.get(myApp.positionOfSong).artist);
 
 		myApp.progressTracker = 0;
+		myApp.songProgressBar.setProgress(myApp.progressTracker);
 		myApp.lengthOfCurrentSong = (myApp.songlist.Songs.get(myApp.positionOfSong).Length) / 1000;
+		myApp.songProgressBar.setMax(myApp.lengthOfCurrentSong);
 		
 		try {
 			myApp.imageView.setImageBitmap(myApp.images[myApp.positionOfSong]);
@@ -163,7 +165,9 @@ public class PlaySongPage extends Activity implements OnSeekBarChangeListener {
 		textViewforSongPosition.setText(thisSong.Title);
 
 		myApp.progressTracker = 0;
+		myApp.songProgressBar.setProgress(myApp.progressTracker);
 		myApp.lengthOfCurrentSong = (myApp.songlist.Songs.get(myApp.positionOfSong).Length) / 1000;
+		myApp.songProgressBar.setMax(myApp.lengthOfCurrentSong);
 
 		try {
 			myApp.imageView.setImageBitmap(myApp.images[myApp.positionOfSong]);
