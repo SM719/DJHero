@@ -86,7 +86,7 @@ public class MainScreen extends Activity implements OnItemClickListener {
 		super.onResume();
 		MyApplication myApp = (MyApplication) MainScreen.this.getApplication();
 		LazyAdapter adapter = new LazyAdapter(MainScreen.this,
-				myApp.songlist);
+				myApp.mainSongList);
 		m_listview.setAdapter(adapter);
 	}
 	@Override
@@ -95,7 +95,8 @@ public class MainScreen extends Activity implements OnItemClickListener {
 
 		MyApplication myApp = (MyApplication) MainScreen.this.getApplication();
 		if (myApp.sock != null) {
-				Song thisSong = myApp.songlist.Songs.get(position);
+				Song thisSong = myApp.mainSongList.Songs.get(position);
+				myApp.songlist = myApp.mainSongList;
 				Intent intent = new Intent(this, PlaySongPage.class);
 				intent.putExtra("songName", thisSong.Title);
 				intent.putExtra("position", position);
@@ -121,7 +122,7 @@ public class MainScreen extends Activity implements OnItemClickListener {
 			startActivity(intent);
 		} else {
 			// Clear the songlist and prepare to get the updated song list
-			myApp.songlist.clearList();
+			myApp.mainSongList.clearList();
 
 			// Send a request for the song list string
 			//SendMessage.sendMessage("l", myApp.sock); UNCOMMENT LATER
@@ -167,17 +168,17 @@ public class MainScreen extends Activity implements OnItemClickListener {
 		protected void onPostExecute(Integer result) {
 			progress.dismiss();
 			myApp.listComplete = false;
-			myApp.images = new Bitmap[myApp.songlist.Songs.size()];
+			myApp.images = new Bitmap[myApp.mainSongList.Songs.size()];
 
 			LazyAdapter adapter = new LazyAdapter(MainScreen.this,
-					myApp.songlist);
+					myApp.mainSongList);
 			m_listview.setAdapter(adapter);
 			
-			for (int i = 0; i < myApp.songlist.Songs.size(); i++) {
+			for (int i = 0; i < myApp.mainSongList.Songs.size(); i++) {
 				myApp.images[i] = null;
 				new DownloadImages().execute(
 						"http://server.gursimran.net/test2.php?track="
-								+ myApp.songlist.Songs.get(i).Title.replace(" ", "+"),
+								+ myApp.mainSongList.Songs.get(i).Title.replace(" ", "+") + "&artist=" + myApp.mainSongList.Songs.get(i).artist.replace(" ", "+"),
 						String.valueOf(i));
 			}
 		}

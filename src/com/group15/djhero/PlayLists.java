@@ -14,14 +14,12 @@ public class PlayLists extends Activity implements OnItemClickListener {
 
 	private ListView p_listview;
 	ListIpAddresses adapter;
-	
+	int REQUEST_CODE;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_play_lists);
-		MyApplication myApp = (MyApplication) PlayLists.this.getApplication();
 		p_listview = (ListView) findViewById(R.id.lists_list_view);
-		myApp.playLists.add("test");
 		p_listview.setOnItemClickListener(this);
 	}
 
@@ -52,6 +50,11 @@ public class PlayLists extends Activity implements OnItemClickListener {
 			this.startActivity(newPlaylist);
 			return true;
 	
+		case R.id.action_delete_playlist:
+			Intent deletePlaylist = new Intent(this, DeletePlaylist.class);
+			deletePlaylist.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+			this.startActivity(deletePlaylist);
+			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
@@ -61,8 +64,10 @@ public class PlayLists extends Activity implements OnItemClickListener {
 	@Override
 	public void onItemClick(AdapterView<?> adapter, View arg1, int position,
 			long arg3) {
-		
 				Intent intent = new Intent(this, OnePlayList.class);
+				intent.putExtra("playlistSelected", position);
 				startActivity(intent);
 	}
+	
+
 }

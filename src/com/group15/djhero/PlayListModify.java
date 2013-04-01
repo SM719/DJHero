@@ -2,8 +2,9 @@ package com.group15.djhero;
 
 
 
+import java.util.ArrayList;
+
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -27,6 +28,11 @@ public class PlayListModify extends Activity implements OnItemClickListener{
 		p_listview = (ListView) findViewById(R.id.new_playlist_list_view);
 
 		p_listview.setOnItemClickListener(this);
+		
+		myApp.selectedSongsForPlayList = new ArrayList<Boolean>();
+		for(int i=0; i<myApp.mainSongList.Songs.size(); i++){
+			myApp.selectedSongsForPlayList.add(i, false);
+		}
 	}
 
 	@Override
@@ -43,7 +49,7 @@ public class PlayListModify extends Activity implements OnItemClickListener{
 		//call list adapter
 		super.onResume();
 		
-		adapter = new PlayListSelectAdapter(PlayListModify.this, myApp.songlist);
+		adapter = new PlayListSelectAdapter(PlayListModify.this, myApp.mainSongList, myApp);
 		p_listview.setAdapter(adapter);
 	}
 	
@@ -55,21 +61,22 @@ public class PlayListModify extends Activity implements OnItemClickListener{
 		
 		case R.id.action_delete:
 			finish();
-//			Intent newPlaylist = new Intent(this, PlayListModify.class);
-//			newPlaylist.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-//			this.startActivity(newPlaylist);
 			return true;
 	
 		case R.id.action_save:
-			CheckBox checkBox = (CheckBox) findViewById(R.id.checkBoxPlayListSelect);
-			View eachSong;
-			for (int i=0; i < myApp.songlist.Songs.size(); i++){
-				eachSong = adapter.getViewAt(i);
-				checkBox = (CheckBox)eachSong.findViewById(R.id.checkBoxPlayListSelect);
-				if(checkBox.isChecked()){
-					System.out.println(i);
+			
+			EditText editText = (EditText)findViewById(R.id.edittext_done);
+			String playListName = editText.getText().toString();
+			myApp.playLists.add(playListName);
+			songList newPLaylistsSongs = new songList();
+			for(int i =0;i<myApp.selectedSongsForPlayList.size();i++){
+				if(myApp.selectedSongsForPlayList.get(i) == true){
+					newPLaylistsSongs.addSong(myApp.mainSongList.Songs.get(i));
 				}
+				
 			}
+			myApp.allSongList.add(newPLaylistsSongs);   
+			finish();
 		default:
 			return super.onOptionsItemSelected(item);
 		}
@@ -79,8 +86,32 @@ public class PlayListModify extends Activity implements OnItemClickListener{
 	@Override
 	public void onItemClick(AdapterView<?> adapter, View arg1, int position,
 			long arg3) {
+		CheckBox checkBox = (CheckBox)arg1.findViewById(R.id.checkBoxPlayListSelect);
+		System.out.println(position + myApp.selectedSongsForPlayList.get(position).toString());
+		if(checkBox.isChecked())
+        {
+        	//checkBox.setChecked(false);                       
+            myApp.selectedSongsForPlayList.set(position, false);                      
+        }
+        else
+        {   
+        	//checkBox.setChecked(true);
+            myApp.selectedSongsForPlayList.set(position, true);           
+        }
 		
-		myApp.selectedSongsForPlayList.add(myApp.songlist.Songs.get(position).id);
+		checkBox.setChecked(myApp.selectedSongsForPlayList.get(position));
+//		if(checkBox.isChecked()){
+//			for (int i=0; i<myApp.selectedSongsForPlayList.size();i++){
+//				if(myApp.selectedSongsForPlayList.get(i).intValue() == myApp.songlist.Songs.get(position).id){
+//					myApp.selectedSongsForPlayList.remove(i);
+//				}
+//			}
+//			checkBox.setChecked(false);
+//		}else{
+//			myApp.selectedSongsForPlayList.add(myApp.songlist.Songs.get(position).id);
+//			checkBox.setChecked(true);
+//		}
+		
 	}
 	
 	

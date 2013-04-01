@@ -20,13 +20,15 @@ public class PlayListSelectAdapter extends BaseAdapter {
 	private static LayoutInflater inflater = null;
 	List<View> vi_ = new ArrayList<View>();
 	int count;
+	MyApplication myApp;
 
-	public PlayListSelectAdapter(Activity a, songList d) {
+	public PlayListSelectAdapter(Activity a, songList d, MyApplication myApp) {
 		activity = a;
 		data = d;
 		inflater = (LayoutInflater) activity
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		count = 0;
+		this.myApp = myApp;
 	}
 	
 	public View getViewAt(int position){
@@ -58,14 +60,13 @@ public class PlayListSelectAdapter extends BaseAdapter {
 
 		vi_.add(position, vi);
 
-		TextView text = (TextView) vi.findViewById(R.id.textPlayListSelect);
+		TextView text = (TextView) vi.findViewById(R.id.textViewPlayListSelect);
 		ImageView image = (ImageView) vi.findViewById(R.id.imagePlayListSelect);
 		CheckBox checkBox = (CheckBox) vi.findViewById(R.id.checkBoxPlayListSelect);
-		
+		checkBox.setChecked(myApp.selectedSongsForPlayList.get(position));
 		Song song = data.Songs.get(position);
 
 		text.setText(song.Title);
-		MyApplication myApp = (MyApplication) activity.getApplication();
 		image.setImageBitmap(myApp.images[position]);
 		return vi;
 	}
