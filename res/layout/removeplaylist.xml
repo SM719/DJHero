@@ -7,18 +7,19 @@
   <TextView
   	  android:id="@+id/text_delete_playlist"
   	  android:layout_width="fill_parent"
-	  android:layout_height="wrap_content"
-	  android:layout_weight="3" android:layout_gravity="left|center_vertical" android:textSize="20dip" android:layout_marginLeft="10dip"/>
+	  android:layout_height="64dp"
+	  android:layout_weight="3" android:textSize="30dip" android:layout_marginLeft="10dip"
+	  android:layout_gravity="left|center_vertical"/>
 
   <CheckBox
       android:id="@+id/checkBox_delete_playlist"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
+      android:layout_marginRight="10dip"
+      android:layout_marginTop="15dip"
       android:clickable="false"
       android:focusable="false"
       android:gravity="right"
-      android:layout_marginTop="10dip"
-      android:layout_marginRight="10dip"
       android:text="@string/empty" />
 
 </LinearLayout>

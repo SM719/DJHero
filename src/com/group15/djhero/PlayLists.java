@@ -21,6 +21,7 @@ public class PlayLists extends Activity implements OnItemClickListener {
 		setContentView(R.layout.activity_play_lists);
 		p_listview = (ListView) findViewById(R.id.lists_list_view);
 		p_listview.setOnItemClickListener(this);
+		setTitle("My Playlists");
 	}
 
 	

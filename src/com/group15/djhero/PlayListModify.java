@@ -26,7 +26,7 @@ public class PlayListModify extends Activity implements OnItemClickListener{
 		setContentView(R.layout.activity_play_list_modify);
 		 myApp = (MyApplication) PlayListModify.this.getApplication();
 		p_listview = (ListView) findViewById(R.id.new_playlist_list_view);
-
+		setTitle("Create playlist");
 		p_listview.setOnItemClickListener(this);
 		
 		myApp.selectedSongsForPlayList = new ArrayList<Boolean>();

@@ -48,10 +48,11 @@ public class AutoDetect extends Activity implements OnItemClickListener {
 		m_listview = (ListView) findViewById(R.id.ip_list_view);
 		m_listview.setOnItemClickListener(this);
 		textView = (TextView) findViewById(R.id.connectedIPDisplay);
+		setTitle("Connect to DE2");
 		if (myApp.sock == null) {
 			textView.setText("Not Connected");
 
-			String connectTo = "172.16.1.28";
+			String connectTo = "192.168.12.203";
 			new SocketConnect().execute(connectTo);
 			myApp.availableDE2s.clear();
 			myApp.availableDE2s.add(connectTo);

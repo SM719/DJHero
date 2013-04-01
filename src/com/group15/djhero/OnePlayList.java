@@ -22,6 +22,7 @@ public class OnePlayList extends Activity implements OnItemClickListener{
 		m_listview = (ListView) findViewById(R.id.one_lists_list_view);
 		m_listview.setOnItemClickListener(this);
 		playList = myApp.allSongList.get(getIntent().getIntExtra("playlistSelected",0));
+		setTitle(myApp.playLists.get(getIntent().getIntExtra("playlistSelected",0)));
 	}
 
 	@Override
