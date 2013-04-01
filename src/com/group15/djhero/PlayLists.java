@@ -1,5 +1,6 @@
 package com.group15.djhero;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -22,6 +23,8 @@ public class PlayLists extends Activity implements OnItemClickListener {
 		p_listview = (ListView) findViewById(R.id.lists_list_view);
 		p_listview.setOnItemClickListener(this);
 		setTitle("My Playlists");
+		final ActionBar actionBar = getActionBar();
+		actionBar.setDisplayHomeAsUpEnabled(true);
 	}
 
 	
@@ -44,6 +47,9 @@ public class PlayLists extends Activity implements OnItemClickListener {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item){
 		switch(item.getItemId()){
+		case android.R.id.home:
+			super.onBackPressed();
+			return true;
 		
 		case R.id.action_add_new_playlist:
 			Intent newPlaylist = new Intent(this, PlayListModify.class);

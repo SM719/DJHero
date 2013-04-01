@@ -4,6 +4,7 @@ package com.group15.djhero;
 
 import java.util.ArrayList;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -33,6 +34,8 @@ public class PlayListModify extends Activity implements OnItemClickListener{
 		for(int i=0; i<myApp.mainSongList.Songs.size(); i++){
 			myApp.selectedSongsForPlayList.add(i, false);
 		}
+		final ActionBar actionBar = getActionBar();
+		actionBar.setDisplayHomeAsUpEnabled(true);
 	}
 
 	@Override
@@ -58,6 +61,10 @@ public class PlayListModify extends Activity implements OnItemClickListener{
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item){
 		switch(item.getItemId()){
+		
+		case android.R.id.home:
+			super.onBackPressed();
+			return true;
 		
 		case R.id.action_delete:
 			finish();

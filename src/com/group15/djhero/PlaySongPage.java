@@ -32,6 +32,7 @@ public class PlaySongPage extends Activity implements OnSeekBarChangeListener {
 		 myApp = (MyApplication) PlaySongPage.this.getApplication();
 		 myApp.imageView = (ImageView) findViewById(R.id.imageView1);
 		 myApp.textViewforSongPosition = (TextView) findViewById(R.id.songName);
+		 myApp.textViewforSongArtist = (TextView) findViewById(R.id.artistName);
 		 imageButton = (ImageButton) findViewById(R.id.imageButton1);
 		 bar = (SeekBar) findViewById(R.id.seekBar0); // make seekbar object
 		 myApp.songProgressBar = (ProgressBar) findViewById(R.id.progressBar1);
@@ -59,6 +60,7 @@ public class PlaySongPage extends Activity implements OnSeekBarChangeListener {
 			myApp.progressTracker = 0;
 		}
 		myApp.lengthOfCurrentSong = (myApp.songlist.Songs.get(myApp.positionOfSong).Length) / 1000;
+		myApp.textViewforSongPosition.setText(myApp.songlist.Songs.get(myApp.positionOfSong).artist);
 		
 		if (myApp.images[myApp.positionOfSong] != null) {
 			myApp.imageView.setImageBitmap(myApp.images[myApp.positionOfSong]);
@@ -115,6 +117,7 @@ public class PlaySongPage extends Activity implements OnSeekBarChangeListener {
 
 		TextView textViewforSongPosition = (TextView) findViewById(R.id.songName);
 		textViewforSongPosition.setText(thisSong.Title);
+		myApp.textViewforSongPosition.setText(myApp.songlist.Songs.get(myApp.positionOfSong).artist);
 
 		myApp.progressTracker = 0;
 		myApp.lengthOfCurrentSong = (myApp.songlist.Songs.get(myApp.positionOfSong).Length) / 1000;
@@ -140,6 +143,7 @@ public class PlaySongPage extends Activity implements OnSeekBarChangeListener {
 		Log.i("positionAfter", Integer.toString(myApp.positionOfSong));
 
 		Song thisSong = myApp.songlist.Songs.get(myApp.positionOfSong);
+		myApp.textViewforSongPosition.setText(myApp.songlist.Songs.get(myApp.positionOfSong).artist);
 
 		TextView textViewforSongPosition = (TextView) findViewById(R.id.songName);
 		textViewforSongPosition.setText(thisSong.Title);
