@@ -2,6 +2,8 @@
 <resources>
 
     <string name="app_name">DJHero</string>
+    <string name="app_label">DJHero</string>
+    <string name="search_hint">Search songs</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
     <string name="refreshButton">Auto Connect</string>
