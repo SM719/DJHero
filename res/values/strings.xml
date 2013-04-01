@@ -34,5 +34,7 @@
     <string name="action_update">Update Song List</string>
     <string name="action_music">Music Player</string>
     <string name="title_activity_djinterface">DJInterface</string>
+    <string name="title_activity_play_lists">PlayLists</string>
+    <string name="Default_play_list_name">Playlist</string>
 
 </resources>
