@@ -17,9 +17,9 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -50,10 +50,11 @@ public class AutoDetect extends Activity implements OnItemClickListener {
 		m_listview = (ListView) findViewById(R.id.ip_list_view);
 		m_listview.setOnItemClickListener(this);
 		textView = (TextView) findViewById(R.id.connectedIPDisplay);
+		setTitle("Connect to DE2");
 		if (myApp.sock == null) {
 			textView.setText("Not Connected");
 
-			String connectTo = "192.168.0.102";
+			String connectTo = "192.168.12.203";
 			new SocketConnect().execute(connectTo);
 			myApp.availableDE2s.clear();
 			myApp.availableDE2s.add(connectTo);
@@ -67,12 +68,24 @@ public class AutoDetect extends Activity implements OnItemClickListener {
 			m_listview.setAdapter(adapter);
 			textView.setText("Connected to: " + myApp.connectedTo);
 		}
+		final ActionBar actionBar = getActionBar();
+		actionBar.setDisplayHomeAsUpEnabled(true);
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.auto_detect, menu);
 		return true;
+	}
+	
+	public boolean onOptionsItemSelected(MenuItem item){
+		switch(item.getItemId()){
+		case android.R.id.home:
+			super.onBackPressed();
+			return true;
+		default:
+		return super.onOptionsItemSelected(item);
+		}
 	}
 	
 	
@@ -184,8 +197,8 @@ public class AutoDetect extends Activity implements OnItemClickListener {
 
 						MyApplication myApp = (MyApplication) AutoDetect.this
 								.getApplication();
-
-						myApp.listComplete = myApp.songlist.addSongs(s);
+						
+						myApp.listComplete = myApp.mainSongList.addSongs(s);
 
 						Log.i("DE2list", s);
 						SendMessage.sendMessage("a", myApp.sock);

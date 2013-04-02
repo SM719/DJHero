@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collections;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -24,6 +26,9 @@ import android.widget.ListView;
 public class MainScreen extends Activity implements OnItemClickListener {
 
 	private ListView m_listview;
+	MyApplication myApp;
+	boolean ascendingSort = true;
+	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -35,8 +40,6 @@ public class MainScreen extends Activity implements OnItemClickListener {
 		// Set up the action bar.
 		final ActionBar actionBar = getActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-	
-
 	}
 
 	@Override
@@ -54,9 +57,34 @@ public class MainScreen extends Activity implements OnItemClickListener {
 			try {
 				onRefreshClick();
 			} catch (InterruptedException e) {}
-			
 			return true;
 		
+		case R.id.action_sort:
+			ArrayList<String> arrayList = new ArrayList<String>(myApp.mainSongList.Songs.size());
+			
+			for(int i = 0; i<myApp.mainSongList.Songs.size(); i++){
+				arrayList.add(myApp.mainSongList.Songs.get(i).Title);
+			}
+			if(ascendingSort){
+			Collections.sort(arrayList); 
+			ascendingSort = false;
+			}
+			else{
+			Collections.sort(arrayList, Collections.reverseOrder());
+			ascendingSort = true;
+			}
+			
+			songList tempSongList = new songList();
+			for(int i = 0; i<myApp.mainSongList.Songs.size(); i++){
+				for(int y = i; y < myApp.mainSongList.Songs.size(); y++){
+					if(arrayList.get(i).equals(myApp.mainSongList.Songs.get(y).Title))
+					tempSongList.addSong((myApp.mainSongList.Songs.get(i)));
+				}
+			}
+			myApp.mainSongList = tempSongList;
+			onResume();
+			return true;
+
 		case R.id.action_settings:
 			Intent intent = new Intent(this, AutoDetect.class);
 			intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
@@ -72,6 +100,11 @@ public class MainScreen extends Activity implements OnItemClickListener {
 		case R.id.action_music:	
 			return true;
 	
+		case R.id.action_playlist:
+			Intent newPLaylist = new Intent(this, PlayLists.class);
+			newPLaylist.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+			this.startActivity(newPLaylist);
+			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}
@@ -79,18 +112,18 @@ public class MainScreen extends Activity implements OnItemClickListener {
 
 	public void onResume(){
 		super.onResume();
-		MyApplication myApp = (MyApplication) MainScreen.this.getApplication();
+		myApp = (MyApplication) MainScreen.this.getApplication();
 		LazyAdapter adapter = new LazyAdapter(MainScreen.this,
-				myApp.songlist);
+				myApp.mainSongList);
 		m_listview.setAdapter(adapter);
 	}
 	@Override
 	public void onItemClick(AdapterView<?> adapter, View arg1, int position,
 			long arg3) {
 
-		MyApplication myApp = (MyApplication) MainScreen.this.getApplication();
 		if (myApp.sock != null) {
-				Song thisSong = myApp.songlist.Songs.get(position);
+				Song thisSong = myApp.mainSongList.Songs.get(position);
+				myApp.songlist = myApp.mainSongList;
 				Intent intent = new Intent(this, PlaySongPage.class);
 				intent.putExtra("songName", thisSong.Title);
 				intent.putExtra("position", position);
@@ -106,8 +139,6 @@ public class MainScreen extends Activity implements OnItemClickListener {
 	}
 
 	public void onRefreshClick() throws InterruptedException {
-		// Get the global variables from myApp
-		MyApplication myApp = (MyApplication) MainScreen.this.getApplication();
 		if (myApp.sock == null) {
 			// Take the user to the settings view if the socket is not open
 			Intent intent = new Intent(this, AutoDetect.class);
@@ -116,7 +147,7 @@ public class MainScreen extends Activity implements OnItemClickListener {
 			startActivity(intent);
 		} else {
 			// Clear the songlist and prepare to get the updated song list
-			myApp.songlist.clearList();
+			myApp.mainSongList.clearList();
 
 			// Send a request for the song list string
 			//SendMessage.sendMessage("l", myApp.sock); UNCOMMENT LATER
@@ -138,8 +169,7 @@ public class MainScreen extends Activity implements OnItemClickListener {
 	class RefreshProgressDialog extends AsyncTask<Void, Void, Integer> {
 
 		ProgressDialog progress;
-		MyApplication myApp = (MyApplication) MainScreen.this.getApplication();
-
+		
 		@Override
 		protected void onPreExecute() {
 			progress = new ProgressDialog(MainScreen.this);
@@ -162,17 +192,17 @@ public class MainScreen extends Activity implements OnItemClickListener {
 		protected void onPostExecute(Integer result) {
 			progress.dismiss();
 			myApp.listComplete = false;
-			myApp.images = new Bitmap[myApp.songlist.Songs.size()];
+			myApp.images = new Bitmap[myApp.mainSongList.Songs.size()];
 
 			LazyAdapter adapter = new LazyAdapter(MainScreen.this,
-					myApp.songlist);
+					myApp.mainSongList);
 			m_listview.setAdapter(adapter);
 			
-			for (int i = 0; i < myApp.songlist.Songs.size(); i++) {
+			for (int i = 0; i < myApp.mainSongList.Songs.size(); i++) {
 				myApp.images[i] = null;
 				new DownloadImages().execute(
 						"http://server.gursimran.net/test2.php?track="
-								+ myApp.songlist.Songs.get(i).Title,
+								+ myApp.mainSongList.Songs.get(i).Title.replace(" ", "+") + "&artist=" + myApp.mainSongList.Songs.get(i).artist.replace(" ", "+"),
 						String.valueOf(i));
 			}
 		}
@@ -186,8 +216,6 @@ public class MainScreen extends Activity implements OnItemClickListener {
 		@Override
 		protected Integer doInBackground(String... url_array) {
 			URL url;
-			MyApplication myApp = (MyApplication) MainScreen.this
-					.getApplication();
 			Log.i("MainActivity", "Inside the asynchronous task");
 			try {
 				url = new URL(url_array[0]);
