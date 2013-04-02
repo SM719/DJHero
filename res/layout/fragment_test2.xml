@@ -44,11 +44,6 @@
         android:layout_toLeftOf="@+id/imageButton1"
         android:src="@drawable/defaultsong" />
 
-    <SeekBar
-        android:id="@+id/seekBar1"
-        android:layout_width="160dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/imageView1"
-        android:layout_toLeftOf="@+id/imageButton1" />
+    
 
 </RelativeLayout>

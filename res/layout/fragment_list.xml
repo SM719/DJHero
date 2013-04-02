@@ -12,13 +12,14 @@
        android:singleLine="true" />
     
      <ListView
-        android:id="@+id/new_playlist_list_view"
-        android:layout_width="180dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:fastScrollEnabled="true"
-        android:padding="0dp"
-        android:textSize="25dp" >
+         android:id="@+id/new_playlist_list_view2"
+         android:layout_width="250dp"
+         android:layout_height="wrap_content"
+         android:layout_alignParentLeft="true"
+         android:fastScrollEnabled="true"
+         android:padding="0dp"
+         android:textSize="25dp" >
+
     </ListView>
 
 </LinearLayout>

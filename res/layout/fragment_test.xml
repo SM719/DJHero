@@ -10,7 +10,7 @@
 
 
     <TextView
-        android:id="@+id/songName"
+        android:id="@+id/songNameFrag"
         android:layout_width="160dp"
         android:layout_height="25dp"
         android:layout_alignLeft="@+id/imageView1"
@@ -27,21 +27,6 @@
 
    
 
-    <ImageView
-        android:id="@+id/imageView1"
-        android:layout_width="160dp"
-        android:layout_height="160dp"
-        android:layout_below="@+id/songName"
-        android:layout_toRightOf="@+id/imageButton1"
-        android:src="@drawable/defaultsong" />
-
-    <SeekBar
-        android:id="@+id/seekBar1"
-        android:layout_width="160dp"
-        android:layout_height="25dp"
-        android:layout_alignLeft="@+id/imageView1"
-        android:layout_below="@+id/imageView1" />
-
     <ImageButton
         android:id="@+id/fragment_play"
         android:layout_width="wrap_content"
@@ -52,15 +37,13 @@
         android:onClick="PausePlay"
         android:src="@drawable/play" />
 
-    <ImageButton
-        android:id="@+id/fragment_add"
-        android:layout_width="40dp"
-        android:layout_height="25dp"
-        android:layout_alignLeft="@+id/imageButton1"
-        android:layout_below="@+id/imageButton1"
-        android:layout_marginLeft="16dp"
-        android:background="@style/MyTheme"
-        android:src="@android:drawable/ic_menu_add"
-        android:onClick="AddSong" />
+    <ImageView
+        android:id="@+id/imageView1"
+        android:layout_width="160dp"
+        android:layout_height="160dp"
+        android:layout_below="@+id/songNameFrag"
+        android:layout_marginTop="14dp"
+        android:layout_toRightOf="@+id/fragment_play"
+        android:src="@drawable/defaultsong" />
 
 </RelativeLayout>

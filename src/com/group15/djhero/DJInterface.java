@@ -17,6 +17,7 @@ import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 public class DJInterface extends FragmentActivity {
 
@@ -34,9 +35,20 @@ public class DJInterface extends FragmentActivity {
 		fragmentTransaction.commit();
 
 		fragment2 fragment2 = new fragment2();
-		fragmentTransaction2.add(R.id.fragment_container, fragment2);
+		fragmentTransaction2.add(R.id.fragment_container2, fragment2);
 		fragmentTransaction2.commit();
 
+	}
+
+	public void PausePlay(View view) {
+
+		FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+
+		fragment_list fl = new fragment_list();
+
+		fragmentTransaction.replace(R.id.fragment_container, fl);
+		fragmentTransaction.addToBackStack(null);
+		fragmentTransaction.commit();
 	}
 
 	@Override

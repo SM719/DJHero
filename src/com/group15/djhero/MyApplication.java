@@ -10,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-
 public class MyApplication extends Application {
 	Socket sock = null;
 	songList songlist = new songList();
@@ -23,7 +22,9 @@ public class MyApplication extends Application {
 	List<String> playLists = new ArrayList<String>();
 	List<Boolean> selectedSongsForPlayList = null;
 	List<Boolean> selectedPlayListsToDelete = null;
-	
+	Song songSelectedLeft = new Song();
+	Song songSelectedRight = new Song();
+
 	int lengthOfCurrentSong;
 	int progressTracker = 0;
 	int positionOfSong;
