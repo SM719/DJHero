@@ -25,7 +25,6 @@ public class fragment_list2 extends Fragment implements OnItemClickListener {
 		m_listview = (ListView) V.findViewById(R.id.new_playlist_list_view2);
 		m_listview.setOnItemClickListener(this);
 		myApp = (MyApplication) getActivity().getApplication();
-		myApp.mainSongList.addSong(new Song("1:UBC:4000:moe|"));
 		LazyAdapter adapter = new LazyAdapter(getActivity(), myApp.mainSongList);
 		m_listview.setAdapter(adapter);
 

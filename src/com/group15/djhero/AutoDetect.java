@@ -54,7 +54,7 @@ public class AutoDetect extends Activity implements OnItemClickListener {
 		if (myApp.sock == null) {
 			textView.setText("Not Connected");
 
-			String connectTo = "192.168.12.203";
+			String connectTo = "192.168.0.102";
 			new SocketConnect().execute(connectTo);
 			myApp.availableDE2s.clear();
 			myApp.availableDE2s.add(connectTo);
@@ -77,18 +77,16 @@ public class AutoDetect extends Activity implements OnItemClickListener {
 		getMenuInflater().inflate(R.menu.auto_detect, menu);
 		return true;
 	}
-	
-	public boolean onOptionsItemSelected(MenuItem item){
-		switch(item.getItemId()){
-		case android.R.id.home:
-			super.onBackPressed();
-			return true;
-		default:
-		return super.onOptionsItemSelected(item);
+
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case android.R.id.home:
+				super.onBackPressed();
+				return true;
+			default:
+				return super.onOptionsItemSelected(item);
 		}
 	}
-	
-	
 
 	// Called when the user closes a socket
 	public void closeSocket() {
@@ -109,11 +107,11 @@ public class AutoDetect extends Activity implements OnItemClickListener {
 		try {
 			String Ip = null;
 			for (Enumeration<NetworkInterface> en = NetworkInterface
-					.getNetworkInterfaces(); en.hasMoreElements();) {
+			        .getNetworkInterfaces(); en.hasMoreElements();) {
 				NetworkInterface intf = en.nextElement();
 
 				for (Enumeration<InetAddress> enumIpAddr = intf
-						.getInetAddresses(); enumIpAddr.hasMoreElements();) {
+				        .getInetAddresses(); enumIpAddr.hasMoreElements();) {
 					InetAddress inetAddress = enumIpAddr.nextElement();
 					if (!inetAddress.isLoopbackAddress()) {
 						Ip = inetAddress.getHostAddress().toString();
@@ -158,7 +156,7 @@ public class AutoDetect extends Activity implements OnItemClickListener {
 
 		protected void onPostExecute(Socket s) {
 			MyApplication myApp = (MyApplication) AutoDetect.this
-					.getApplication();
+			        .getApplication();
 			myApp.sock = s;
 			if (myApp.sock != null) {
 				textView.setText("Connected to: " + myApp.connectedTo);
@@ -175,9 +173,9 @@ public class AutoDetect extends Activity implements OnItemClickListener {
 	public class TCPReadTimerTask extends TimerTask {
 		public void run() {
 			MyApplication app = (MyApplication) AutoDetect.this
-					.getApplication();
+			        .getApplication();
 			if (app.sock != null && app.sock.isConnected()
-					&& !app.sock.isClosed()) {
+			        && !app.sock.isClosed()) {
 
 				try {
 					InputStream in = app.sock.getInputStream();
@@ -193,11 +191,11 @@ public class AutoDetect extends Activity implements OnItemClickListener {
 						in.read(buf);
 
 						final String s = new String(buf, 0, bytes_avail,
-								"US-ASCII");
+						        "US-ASCII");
 
 						MyApplication myApp = (MyApplication) AutoDetect.this
-								.getApplication();
-						
+						        .getApplication();
+
 						myApp.listComplete = myApp.mainSongList.addSongs(s);
 
 						Log.i("DE2list", s);
@@ -242,7 +240,7 @@ public class AutoDetect extends Activity implements OnItemClickListener {
 				for (int i = 0; i < 255; i++) {
 					// build the next IP address
 					String addr = ip.substring(0, ip.lastIndexOf('.') + 1)
-							+ (i);
+					        + (i);
 					System.out.println(addr);
 					InetAddress pingAddr = InetAddress.getByName(addr);
 					// System.out.println(ping(addr));
@@ -293,14 +291,14 @@ public class AutoDetect extends Activity implements OnItemClickListener {
 			progress.setProgress((int) ((is[0].intValue() / 255.0) * 100));
 			if (is[1].intValue() > 0) {
 				progress.setMessage("Discovering DE2s...\nFound "
-						+ is[1].toString());
+				        + is[1].toString());
 			}
 		}
 
 		@Override
 		protected void onPostExecute(List<String> result) {
 			MyApplication myApp = (MyApplication) AutoDetect.this
-					.getApplication();
+			        .getApplication();
 			progress.dismiss();
 			myApp.availableDE2s.clear();
 			myApp.availableDE2s.addAll(result);
@@ -314,7 +312,7 @@ public class AutoDetect extends Activity implements OnItemClickListener {
 
 	@Override
 	public void onItemClick(AdapterView<?> adapter, View arg1, int position,
-			long arg3) {
+	        long arg3) {
 		MyApplication myApp = (MyApplication) AutoDetect.this.getApplication();
 		if (myApp.sock != null) {
 			if (myApp.connectedTo.equals(myApp.availableDE2s.get(position))) {
@@ -338,11 +336,9 @@ public class AutoDetect extends Activity implements OnItemClickListener {
 	public String pingError = null;
 
 	/**
-	 * Ping a host and return an int value of 0 or 1 or 2 0=success, 1=fail,
-	 * 2=error
-	 * 
-	 * Does not work in Android emulator and also delay by '1' second if host
-	 * not pingable In the Android emulator only ping to 127.0.0.1 works
+	 * Ping a host and return an int value of 0 or 1 or 2 0=success, 1=fail, 2=error Does not work
+	 * in Android emulator and also delay by '1' second if host not pingable In the Android emulator
+	 * only ping to 127.0.0.1 works
 	 * 
 	 * @param String
 	 *            host in dotted IP address format
@@ -370,7 +366,7 @@ public class AutoDetect extends Activity implements OnItemClickListener {
 		int exit = proc.exitValue();
 		if (exit == 0) {
 			InputStreamReader reader = new InputStreamReader(
-					proc.getInputStream());
+			        proc.getInputStream());
 			BufferedReader buffer = new BufferedReader(reader);
 			String line = "";
 			while ((line = buffer.readLine()) != null) {
