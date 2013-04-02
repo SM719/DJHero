@@ -36,7 +36,7 @@ public class MainScreen extends Activity implements OnItemClickListener {
 		setContentView(R.layout.activity_main_scrren);
 		m_listview = (ListView) findViewById(R.id.main_list_view);
 		m_listview.setOnItemClickListener(this);
-		
+		System.out.println(getApplicationContext().getFilesDir().toString());
 		// Set up the action bar.
 		final ActionBar actionBar = getActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);

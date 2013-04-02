@@ -205,6 +205,7 @@ public class AutoDetect extends Activity implements OnItemClickListener {
 						// As explained in the tutorials, the GUI can not be
 						// updated in an asyncrhonous task. So, update the GUI
 						// using the UI thread.
+						
 					}
 				} catch (IOException e) {
 					e.printStackTrace();
