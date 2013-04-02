@@ -66,10 +66,14 @@ public class MainScreen extends Activity implements OnItemClickListener {
 			for(int i = 0; i<myApp.mainSongList.Songs.size(); i++){
 				arrayList.add(myApp.mainSongList.Songs.get(i).Title);
 			}
-			if(ascendingSort)
+			if(ascendingSort){
 			Collections.sort(arrayList); 
-			else
+			ascendingSort = false;
+			}
+			else{
 			Collections.sort(arrayList, Collections.reverseOrder());
+			ascendingSort = true;
+			}
 			
 			songList tempSongList = new songList();
 			for(int i = 0; i<myApp.mainSongList.Songs.size(); i++){
