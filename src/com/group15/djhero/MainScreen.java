@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 
 import android.app.ActionBar;
@@ -27,7 +28,7 @@ public class MainScreen extends Activity implements OnItemClickListener {
 
 	private ListView m_listview;
 	MyApplication myApp;
-	boolean ascendingSort;
+	boolean ascendingSort = true;
 	
 
 	@Override
@@ -65,7 +66,11 @@ public class MainScreen extends Activity implements OnItemClickListener {
 			for(int i = 0; i<myApp.mainSongList.Songs.size(); i++){
 				arrayList.add(myApp.mainSongList.Songs.get(i).Title);
 			}
+			if(ascendingSort)
 			Collections.sort(arrayList); 
+			else
+			Collections.sort(arrayList, Collections.reverseOrder());
+			
 			songList tempSongList = new songList();
 			for(int i = 0; i<myApp.mainSongList.Songs.size(); i++){
 				for(int y = i; y < myApp.mainSongList.Songs.size(); y++){
