@@ -63,9 +63,9 @@ public class MainScreen extends Activity implements OnItemClickListener {
 
 		songList tempSongList = new songList();
 		for (int i = 0; i < myApp.mainSongList.Songs.size(); i++) {
-			for (int y = i; y < myApp.mainSongList.Songs.size(); y++) {
+			for (int y = 0; y < myApp.mainSongList.Songs.size(); y++) {
 				if (arrayList.get(i).equals(myApp.mainSongList.Songs.get(y).Title))
-					tempSongList.addSong((myApp.mainSongList.Songs.get(i)));
+					tempSongList.addSong((myApp.mainSongList.Songs.get(y)));
 			}
 		}
 		myApp.mainSongList = tempSongList;
@@ -203,7 +203,7 @@ public class MainScreen extends Activity implements OnItemClickListener {
 			progress.dismiss();
 			myApp.listComplete = false;
 			myApp.images = new Bitmap[myApp.mainSongList.Songs.size()];
-			// sortList();
+			sortList();
 			LazyAdapter adapter = new LazyAdapter(MainScreen.this,
 			        myApp.mainSongList);
 			m_listview.setAdapter(adapter);
