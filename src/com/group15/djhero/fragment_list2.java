@@ -11,7 +11,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
-public class fragment_list extends Fragment implements OnItemClickListener {
+public class fragment_list2 extends Fragment implements OnItemClickListener {
 	private ListView m_listview;
 	MyApplication myApp;
 
@@ -35,14 +35,14 @@ public class fragment_list extends Fragment implements OnItemClickListener {
 	public void onItemClick(AdapterView<?> adapter, View arg1, int position,
 	        long arg3) {
 		// TODO Auto-generated method stub
-
-		myApp.songSelectedLeft = myApp.mainSongList.Songs.get(position);
+		myApp.songSelectedRight = myApp.mainSongList.Songs.get(position);
 
 		getActivity().getFragmentManager().beginTransaction().remove(this).commit();
+
 		FragmentManager fragmentManager = getFragmentManager();
 		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-		fragment1 fragment1 = new fragment1();
-		fragmentTransaction.add(R.id.fragment_container, fragment1);
+		fragment2 fragment2 = new fragment2();
+		fragmentTransaction.add(R.id.fragment_container2, fragment2);
 		fragmentTransaction.commit();
 
 	}
