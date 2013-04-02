@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collections;
 
 import android.app.ActionBar;
 import android.app.Activity;
@@ -24,6 +26,8 @@ import android.widget.ListView;
 public class MainScreen extends Activity implements OnItemClickListener {
 
 	private ListView m_listview;
+	MyApplication myApp;
+	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -52,8 +56,25 @@ public class MainScreen extends Activity implements OnItemClickListener {
 			try {
 				onRefreshClick();
 			} catch (InterruptedException e) {}
-			
 			return true;
+		
+		case R.id.action_sort:
+			ArrayList<String> arrayList = new ArrayList<String>(myApp.mainSongList.Songs.size());
+			
+			for(int i = 0; i<myApp.mainSongList.Songs.size(); i++){
+				arrayList.add(myApp.mainSongList.Songs.get(i).Title);
+			}
+			Collections.sort(arrayList); 
+			songList tempSongList = new songList();
+			for(int i = 0; i<myApp.mainSongList.Songs.size(); i++){
+				
+				if(arrayList.get(i).equals(myApp.mainSongList.Songs.get(i).Title))
+				{
+					tempSongList.addSong((myApp.mainSongList.Songs.get(i)));
+				}
+			}
+			myApp.mainSongList = tempSongList;
+			onResume();
 		
 		case R.id.action_settings:
 			Intent intent = new Intent(this, AutoDetect.class);
@@ -82,7 +103,7 @@ public class MainScreen extends Activity implements OnItemClickListener {
 
 	public void onResume(){
 		super.onResume();
-		MyApplication myApp = (MyApplication) MainScreen.this.getApplication();
+		myApp = (MyApplication) MainScreen.this.getApplication();
 		LazyAdapter adapter = new LazyAdapter(MainScreen.this,
 				myApp.mainSongList);
 		m_listview.setAdapter(adapter);
@@ -91,7 +112,6 @@ public class MainScreen extends Activity implements OnItemClickListener {
 	public void onItemClick(AdapterView<?> adapter, View arg1, int position,
 			long arg3) {
 
-		MyApplication myApp = (MyApplication) MainScreen.this.getApplication();
 		if (myApp.sock != null) {
 				Song thisSong = myApp.mainSongList.Songs.get(position);
 				myApp.songlist = myApp.mainSongList;
@@ -110,8 +130,6 @@ public class MainScreen extends Activity implements OnItemClickListener {
 	}
 
 	public void onRefreshClick() throws InterruptedException {
-		// Get the global variables from myApp
-		MyApplication myApp = (MyApplication) MainScreen.this.getApplication();
 		if (myApp.sock == null) {
 			// Take the user to the settings view if the socket is not open
 			Intent intent = new Intent(this, AutoDetect.class);
@@ -142,8 +160,7 @@ public class MainScreen extends Activity implements OnItemClickListener {
 	class RefreshProgressDialog extends AsyncTask<Void, Void, Integer> {
 
 		ProgressDialog progress;
-		MyApplication myApp = (MyApplication) MainScreen.this.getApplication();
-
+		
 		@Override
 		protected void onPreExecute() {
 			progress = new ProgressDialog(MainScreen.this);
@@ -190,8 +207,6 @@ public class MainScreen extends Activity implements OnItemClickListener {
 		@Override
 		protected Integer doInBackground(String... url_array) {
 			URL url;
-			MyApplication myApp = (MyApplication) MainScreen.this
-					.getApplication();
 			Log.i("MainActivity", "Inside the asynchronous task");
 			try {
 				url = new URL(url_array[0]);
