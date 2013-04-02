@@ -27,6 +27,7 @@ public class MainScreen extends Activity implements OnItemClickListener {
 
 	private ListView m_listview;
 	MyApplication myApp;
+	boolean ascendingSort;
 	
 
 	@Override
@@ -67,14 +68,14 @@ public class MainScreen extends Activity implements OnItemClickListener {
 			Collections.sort(arrayList); 
 			songList tempSongList = new songList();
 			for(int i = 0; i<myApp.mainSongList.Songs.size(); i++){
-				
-				if(arrayList.get(i).equals(myApp.mainSongList.Songs.get(i).Title))
-				{
+				for(int y = i; y < myApp.mainSongList.Songs.size(); y++){
+					if(arrayList.get(i).equals(myApp.mainSongList.Songs.get(y).Title))
 					tempSongList.addSong((myApp.mainSongList.Songs.get(i)));
 				}
 			}
 			myApp.mainSongList = tempSongList;
 			onResume();
+			return true;
 		
 		case R.id.action_settings:
 			Intent intent = new Intent(this, AutoDetect.class);
