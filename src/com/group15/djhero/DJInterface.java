@@ -5,26 +5,38 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
-import com.group15.djhero.MainScreen.DownloadImages;
-import com.group15.djhero.MainScreen.RefreshProgressDialog;
-
-import android.os.AsyncTask;
-import android.os.Bundle;
-import android.app.Activity;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
+import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
-public class DJInterface extends Activity {
+public class DJInterface extends FragmentActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_djinterface);
+
+		FragmentManager fragmentManager = getFragmentManager();
+		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+		FragmentTransaction fragmentTransaction2 = fragmentManager.beginTransaction();
+
+		fragment1 fragment = new fragment1();
+		fragmentTransaction.add(R.id.fragment_container, fragment);
+		fragmentTransaction.commit();
+
+		fragment2 fragment2 = new fragment2();
+		fragmentTransaction2.add(R.id.fragment_container, fragment2);
+		fragmentTransaction2.commit();
+
 	}
 
 	@Override
@@ -33,39 +45,40 @@ public class DJInterface extends Activity {
 		getMenuInflater().inflate(R.menu.main_screen, menu);
 		return true;
 	}
-	
+
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item){
+	public boolean onOptionsItemSelected(MenuItem item) {
 		Intent djIntent = new Intent(this, DJInterface.class);
 		djIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-		
-		switch(item.getItemId()){
-		
-		case R.id.action_update:
-			try {
-				onRefreshClick();
-			} catch (InterruptedException e) {}
-			
-			return true;
-		
-		case R.id.action_settings:
-			Intent intent = new Intent(this, AutoDetect.class);
-			intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-			this.startActivity(intent);
-			return true;
-		
-		case R.id.action_dj:
-			return true;
-			
-		case R.id.action_music:
-			finish();	
-			return true;
-	
-		default:
-			return super.onOptionsItemSelected(item);
+
+		switch (item.getItemId()) {
+
+			case R.id.action_update:
+				try {
+					onRefreshClick();
+				} catch (InterruptedException e) {
+				}
+
+				return true;
+
+			case R.id.action_settings:
+				Intent intent = new Intent(this, AutoDetect.class);
+				intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+				this.startActivity(intent);
+				return true;
+
+			case R.id.action_dj:
+				return true;
+
+			case R.id.action_music:
+				finish();
+				return true;
+
+			default:
+				return super.onOptionsItemSelected(item);
 		}
 	}
-	
+
 	public void onRefreshClick() throws InterruptedException {
 		// Get the global variables from myApp
 		MyApplication myApp = (MyApplication) DJInterface.this.getApplication();
@@ -80,14 +93,14 @@ public class DJInterface extends Activity {
 			myApp.songlist.clearList();
 
 			// Send a request for the song list string
-			//SendMessage.sendMessage("l", myApp.sock); UNCOMMENT LATER
+			// SendMessage.sendMessage("l", myApp.sock); UNCOMMENT LATER
 			SendMessage.sendMessage("l ", myApp.sock);
 
 			// Display a progress dialog while we get the list from the DE2
-			new RefreshProgressDialog().execute(); 
+			new RefreshProgressDialog().execute();
 		}
 	}
-	
+
 	class RefreshProgressDialog extends AsyncTask<Void, Void, Integer> {
 
 		ProgressDialog progress;
@@ -106,7 +119,8 @@ public class DJInterface extends Activity {
 		@Override
 		protected Integer doInBackground(Void... arg0) {
 
-			while (!myApp.listComplete);
+			while (!myApp.listComplete)
+				;
 			return 0;
 
 		}
@@ -117,45 +131,44 @@ public class DJInterface extends Activity {
 			myApp.listComplete = false;
 			myApp.images = new Bitmap[myApp.songlist.Songs.size()];
 
-
 			for (int i = 0; i < myApp.songlist.Songs.size(); i++) {
 				new DownloadImages().execute(
-						"http://server.gursimran.net/test2.php?track="
-								+ myApp.songlist.Songs.get(i).Title,
-						String.valueOf(i));
+				        "http://server.gursimran.net/test2.php?track="
+				                + myApp.songlist.Songs.get(i).Title,
+				        String.valueOf(i));
 			}
 
 		}
 	}
-	
+
 	// This is the asynchronous task. It is extended from AsyncTask
-		class DownloadImages extends
-				com.group15.djhero.AsyncTask<String, Void, Integer> {
-			// This is the "guts" of the asynchronus task. The code
-			// in doInBackground will be executed in a separate thread
-			@Override
-			protected Integer doInBackground(String... url_array) {
-				URL url;
-				MyApplication myApp = (MyApplication) DJInterface.this
-						.getApplication();
-				Log.i("MainActivity", "Inside the asynchronous task");
-				try {
-					url = new URL(url_array[0]);
-					HttpURLConnection connection = (HttpURLConnection) url
-							.openConnection();
-					connection.setDoInput(true);
-					connection.connect();
-					Log.i("MainActivity", "Successfully opened the web page");
-					InputStream input = connection.getInputStream();
-					Bitmap bitmap = BitmapFactory.decodeStream(input);
-					input.close();
-					myApp.images[Integer.parseInt(url_array[1])] = bitmap;
-					return Integer.parseInt(url_array[1]);
-				} catch (IOException e) {
-					e.printStackTrace();
-					return null;
-				}
+	class DownloadImages extends
+	        com.group15.djhero.AsyncTask<String, Void, Integer> {
+		// This is the "guts" of the asynchronus task. The code
+		// in doInBackground will be executed in a separate thread
+		@Override
+		protected Integer doInBackground(String... url_array) {
+			URL url;
+			MyApplication myApp = (MyApplication) DJInterface.this
+			        .getApplication();
+			Log.i("MainActivity", "Inside the asynchronous task");
+			try {
+				url = new URL(url_array[0]);
+				HttpURLConnection connection = (HttpURLConnection) url
+				        .openConnection();
+				connection.setDoInput(true);
+				connection.connect();
+				Log.i("MainActivity", "Successfully opened the web page");
+				InputStream input = connection.getInputStream();
+				Bitmap bitmap = BitmapFactory.decodeStream(input);
+				input.close();
+				myApp.images[Integer.parseInt(url_array[1])] = bitmap;
+				return Integer.parseInt(url_array[1]);
+			} catch (IOException e) {
+				e.printStackTrace();
+				return null;
 			}
 		}
+	}
 
 }
