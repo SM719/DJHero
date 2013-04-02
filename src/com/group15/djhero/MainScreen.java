@@ -77,6 +77,10 @@ public class MainScreen extends Activity implements OnItemClickListener {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 
+			case R.id.action_search:
+				onSearchRequested();
+				return true;
+		
 			case R.id.action_update:
 				try {
 					onRefreshClick();
