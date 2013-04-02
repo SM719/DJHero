@@ -45,5 +45,7 @@
     <string name="action_delete_playlist">Delete</string>
     <string name="title_activity_delete_playlist">DeletePlaylist</string>
     <string name="artistPlaceholder">Artist Name</string>
+    <string name="action_playlist">Playlist</string>
+    <string name="action_sort">Sort</string>
 
 </resources>

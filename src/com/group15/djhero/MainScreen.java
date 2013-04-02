@@ -35,8 +35,6 @@ public class MainScreen extends Activity implements OnItemClickListener {
 		// Set up the action bar.
 		final ActionBar actionBar = getActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-	
-
 	}
 
 	@Override

@@ -35,5 +35,4 @@ public class MyApplication extends Application {
 	TextView textViewforSongPosition;
 	TextView textViewforSongArtist;
 	int Global_progress = 40;
-	
 }
