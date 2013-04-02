@@ -75,7 +75,8 @@ public class MainScreen extends Activity implements OnItemClickListener {
 			}
 			myApp.mainSongList = tempSongList;
 			onResume();
-		
+			return true;
+			
 		case R.id.action_settings:
 			Intent intent = new Intent(this, AutoDetect.class);
 			intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
