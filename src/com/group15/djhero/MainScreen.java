@@ -36,6 +36,8 @@ public class MainScreen extends Activity implements OnItemClickListener {
 		m_listview = (ListView) findViewById(R.id.main_list_view);
 		m_listview.setOnItemClickListener(this);
 
+		System.out.println(getApplicationContext().getFilesDir().toString());
+
 		// Set up the action bar.
 		final ActionBar actionBar = getActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
@@ -63,9 +65,9 @@ public class MainScreen extends Activity implements OnItemClickListener {
 
 		songList tempSongList = new songList();
 		for (int i = 0; i < myApp.mainSongList.Songs.size(); i++) {
-			for (int y = i; y < myApp.mainSongList.Songs.size(); y++) {
+			for (int y = 0; y < myApp.mainSongList.Songs.size(); y++) {
 				if (arrayList.get(i).equals(myApp.mainSongList.Songs.get(y).Title))
-					tempSongList.addSong((myApp.mainSongList.Songs.get(i)));
+					tempSongList.addSong((myApp.mainSongList.Songs.get(y)));
 			}
 		}
 		myApp.mainSongList = tempSongList;
@@ -75,6 +77,10 @@ public class MainScreen extends Activity implements OnItemClickListener {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 
+			case R.id.action_search:
+				onSearchRequested();
+				return true;
+		
 			case R.id.action_update:
 				try {
 					onRefreshClick();
@@ -121,9 +127,12 @@ public class MainScreen extends Activity implements OnItemClickListener {
 	public void onResume() {
 		super.onResume();
 		myApp = (MyApplication) MainScreen.this.getApplication();
+		try{
 		LazyAdapter adapter = new LazyAdapter(MainScreen.this,
-		        myApp.mainSongList);
-		m_listview.setAdapter(adapter);
+
+				myApp.mainSongList);
+		m_listview.setAdapter(adapter);}
+		catch(NullPointerException e){}catch(IndexOutOfBoundsException e){}
 	}
 
 	@Override
@@ -203,7 +212,7 @@ public class MainScreen extends Activity implements OnItemClickListener {
 			progress.dismiss();
 			myApp.listComplete = false;
 			myApp.images = new Bitmap[myApp.mainSongList.Songs.size()];
-			// sortList();
+			sortList();
 			LazyAdapter adapter = new LazyAdapter(MainScreen.this,
 			        myApp.mainSongList);
 			m_listview.setAdapter(adapter);

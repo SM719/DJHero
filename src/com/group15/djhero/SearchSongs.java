@@ -1,10 +1,12 @@
 package com.group15.djhero;
 
 import android.os.Bundle;
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Intent;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -14,7 +16,7 @@ public class SearchSongs extends Activity implements OnItemClickListener{
 
 	songList searchedSongs;
 	private ListView m_listview;
-	
+	MyApplication myApp;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -22,15 +24,39 @@ public class SearchSongs extends Activity implements OnItemClickListener{
 		m_listview = (ListView) findViewById(R.id.search_list_view);
 		m_listview.setOnItemClickListener(this);
 		Intent intent = getIntent();
+		searchedSongs = new songList();
+		myApp = (MyApplication)SearchSongs.this.getApplication();
 		if(Intent.ACTION_SEARCH.equals(intent.getAction())){
 			String query = intent.getStringExtra(SearchManager.QUERY);
 			doMySearch(query);
+		}
+		final ActionBar actionBar = getActionBar();
+		actionBar.setDisplayHomeAsUpEnabled(true);
+	}
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+			case android.R.id.home:
+				super.onBackPressed();
+				return true;
+			default:
+				return super.onOptionsItemSelected(item);
 		}
 	}
 
 	private void doMySearch(String query) {
 		// TODO Auto-generated method stub
-		
+		System.out.println(query);
+		for(int i=0;i<myApp.mainSongList.Songs.size(); i++){
+			if(myApp.mainSongList.Songs.get(i).Title.toLowerCase().contains(query.toLowerCase())){
+				searchedSongs.addSong(myApp.mainSongList.Songs.get(i));
+				System.out.println(myApp.mainSongList.Songs.get(i).Title);
+			}
+		}
+		try{
+		LazyAdapter adapter = new LazyAdapter(SearchSongs.this, searchedSongs);
+		m_listview.setAdapter(adapter);}
+		catch(NullPointerException e){}
+		catch(IndexOutOfBoundsException e){}
 	}
 
 	@Override
@@ -45,20 +71,12 @@ public class SearchSongs extends Activity implements OnItemClickListener{
 			long arg3) {
 		int absolutePosition = 0;
 		Boolean found = false;
-		MyApplication myApp = (MyApplication) SearchSongs.this.getApplication();
 		if (myApp.sock != null) {
 				Song thisSong = searchedSongs.Songs.get(position);
 				myApp.songlist = myApp.mainSongList;
 				for (int i=0; i<myApp.mainSongList.Songs.size(); i++){
-					for(int j=0; j<searchedSongs.Songs.size(); j++){
-						if (myApp.mainSongList.Songs.get(i).id == searchedSongs.Songs.get(j).id){
-							absolutePosition = i;
-							found = true;
-							break;
-						}
-					}
-					if(found == true){
-						break;
+					if(myApp.mainSongList.Songs.get(i).id == thisSong.id){
+						absolutePosition = i;
 					}
 				}
 				Intent intent = new Intent(this, PlaySongPage.class);
@@ -66,6 +84,7 @@ public class SearchSongs extends Activity implements OnItemClickListener{
 				intent.putExtra("position", absolutePosition);
 				intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 				startActivity(intent);
+				finish();
 			}
 		 else {
 			// Take the user to the settings view if the socket is not open
