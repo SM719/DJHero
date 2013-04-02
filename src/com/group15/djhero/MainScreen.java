@@ -76,9 +76,9 @@ public class MainScreen extends Activity implements OnItemClickListener {
 			
 			songList tempSongList = new songList();
 			for(int i = 0; i<myApp.mainSongList.Songs.size(); i++){
-				for(int y = i; y < myApp.mainSongList.Songs.size(); y++){
+				for(int y = 0; y < myApp.mainSongList.Songs.size(); y++){
 					if(arrayList.get(i).equals(myApp.mainSongList.Songs.get(y).Title))
-					tempSongList.addSong((myApp.mainSongList.Songs.get(i)));
+					tempSongList.addSong((myApp.mainSongList.Songs.get(y)));
 				}
 			}
 			myApp.mainSongList = tempSongList;
@@ -99,6 +99,11 @@ public class MainScreen extends Activity implements OnItemClickListener {
 			
 		case R.id.action_music:	
 			return true;
+			
+		case R.id.action_search:
+			System.out.println("in search");
+			onSearchRequested();
+			return true;
 	
 		case R.id.action_playlist:
 			Intent newPLaylist = new Intent(this, PlayLists.class);
@@ -113,9 +118,11 @@ public class MainScreen extends Activity implements OnItemClickListener {
 	public void onResume(){
 		super.onResume();
 		myApp = (MyApplication) MainScreen.this.getApplication();
+		try{
 		LazyAdapter adapter = new LazyAdapter(MainScreen.this,
 				myApp.mainSongList);
-		m_listview.setAdapter(adapter);
+		m_listview.setAdapter(adapter);}
+		catch(NullPointerException e){}catch(IndexOutOfBoundsException e){}
 	}
 	@Override
 	public void onItemClick(AdapterView<?> adapter, View arg1, int position,
