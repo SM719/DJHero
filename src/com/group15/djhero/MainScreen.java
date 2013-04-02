@@ -49,6 +49,28 @@ public class MainScreen extends Activity implements OnItemClickListener {
 		return true;
 	}
 	
+	public void sortList(){
+		ArrayList<String> arrayList = new ArrayList<String>(myApp.mainSongList.Songs.size());
+		
+		for(int i = 0; i<myApp.mainSongList.Songs.size(); i++){
+			arrayList.add(myApp.mainSongList.Songs.get(i).Title);
+		}
+		if(ascendingSort){
+		Collections.sort(arrayList); 
+		}
+		else{
+		Collections.sort(arrayList, Collections.reverseOrder());
+		}
+		
+		songList tempSongList = new songList();
+		for(int i = 0; i<myApp.mainSongList.Songs.size(); i++){
+			for(int y = i; y < myApp.mainSongList.Songs.size(); y++){
+				if(arrayList.get(i).equals(myApp.mainSongList.Songs.get(y).Title))
+				tempSongList.addSong((myApp.mainSongList.Songs.get(i)));
+			}
+		}
+		myApp.mainSongList = tempSongList;
+	}
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item){
 		switch(item.getItemId()){
@@ -60,28 +82,12 @@ public class MainScreen extends Activity implements OnItemClickListener {
 			return true;
 		
 		case R.id.action_sort:
-			ArrayList<String> arrayList = new ArrayList<String>(myApp.mainSongList.Songs.size());
-			
-			for(int i = 0; i<myApp.mainSongList.Songs.size(); i++){
-				arrayList.add(myApp.mainSongList.Songs.get(i).Title);
-			}
 			if(ascendingSort){
-			Collections.sort(arrayList); 
-			ascendingSort = false;
+				ascendingSort = false;
 			}
 			else{
-			Collections.sort(arrayList, Collections.reverseOrder());
-			ascendingSort = true;
+				ascendingSort = true;
 			}
-			
-			songList tempSongList = new songList();
-			for(int i = 0; i<myApp.mainSongList.Songs.size(); i++){
-				for(int y = i; y < myApp.mainSongList.Songs.size(); y++){
-					if(arrayList.get(i).equals(myApp.mainSongList.Songs.get(y).Title))
-					tempSongList.addSong((myApp.mainSongList.Songs.get(i)));
-				}
-			}
-			myApp.mainSongList = tempSongList;
 			onResume();
 			return true;
 
@@ -112,6 +118,7 @@ public class MainScreen extends Activity implements OnItemClickListener {
 
 	public void onResume(){
 		super.onResume();
+		sortList();
 		myApp = (MyApplication) MainScreen.this.getApplication();
 		LazyAdapter adapter = new LazyAdapter(MainScreen.this,
 				myApp.mainSongList);
