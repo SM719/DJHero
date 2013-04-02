@@ -3,6 +3,7 @@ package com.group15.djhero;
 import java.io.File;
 import java.io.IOException;
 
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -23,6 +24,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -55,6 +57,8 @@ public class Share extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        final ActionBar actionBar = getActionBar();
+		actionBar.setDisplayHomeAsUpEnabled(true);
 
 
         if (!Environment.MEDIA_MOUNTED.equals(
@@ -89,6 +93,16 @@ public class Share extends Activity {
             showDialog(DIALOG_NOT_INSTALLED);
         }
     }
+    
+    public boolean onOptionsItemSelected(MenuItem item){
+		switch(item.getItemId()){
+		case android.R.id.home:
+			super.onBackPressed();
+			return true;
+		default:
+		return super.onOptionsItemSelected(item);
+		}
+	}
 
     private void play(MediaPlayer.OnCompletionListener onCompletion) {
         MediaPlayer player = new MediaPlayer();

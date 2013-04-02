@@ -1,7 +1,6 @@
 package com.group15.djhero;
 
 import android.app.Fragment;
-import android.app.FragmentTransaction;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -33,31 +32,8 @@ public class fragment_list extends Fragment implements OnItemClickListener {
 
 	@Override
 	public void onItemClick(AdapterView<?> adapter, View arg1, int position,
-	        long arg3) {
-		// TODO Auto-generated method stub
-		try {
-			myApp.songSelectedLeft = myApp.songlist.Songs.get(position);
-			getActivity().getFragmentManager().beginTransaction().remove(this).commit();
-			FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-
-			fragment1 fragment = new fragment1();
-
-			fragmentTransaction.replace(R.id.fragment_container, fragment);
-			fragmentTransaction.addToBackStack(null);
-			fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-			fragmentTransaction.commit();
-		} catch (IndexOutOfBoundsException e) {
-			System.out.print("out of bounds\n");
-
+	        long arg3) { 
+			myApp.songSelectedLeft = myApp.mainSongList.Songs.get(position);
 			getActivity().getFragmentManager().popBackStack();
-			fragment1 fragment = new fragment1();
-			FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-			fragmentTransaction.replace(R.id.fragment_container, fragment);
-			fragmentTransaction.addToBackStack(null);
-			fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-			fragmentTransaction.commit();
-
 		}
-
-	}
 }
