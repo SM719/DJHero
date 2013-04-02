@@ -8,42 +8,57 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".MainActivity" >
 
-
     <TextView
         android:id="@+id/songNameFrag"
         android:layout_width="160dp"
         android:layout_height="25dp"
         android:layout_alignLeft="@+id/imageView1"
-        android:layout_below="@+id/progressBar1"
         android:text="@string/songName"
         android:textAppearance="?android:attr/textAppearanceLarge" />
-
-    <ProgressBar
-        android:id="@+id/progressBar1"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="160dp"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/songName" />
-
-   
-
-    <ImageButton
-        android:id="@+id/fragment_play"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_centerVertical="true"
-        android:background="@drawable/selectable_item_bg"
-        android:onClick="PausePlay"
-        android:src="@drawable/play" />
 
     <ImageView
         android:id="@+id/imageView1"
         android:layout_width="160dp"
         android:layout_height="160dp"
         android:layout_below="@+id/songNameFrag"
-        android:layout_marginTop="14dp"
-        android:layout_toRightOf="@+id/fragment_play"
+        android:layout_marginLeft="16dp"
+        android:layout_toRightOf="@+id/imageButton_rew"
         android:src="@drawable/defaultsong" />
+
+    <ImageButton
+        android:id="@+id/imageButton_add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/imageButton_play"
+        android:background="@drawable/selectable_item_bg"
+        android:src="@android:drawable/ic_menu_add" />
+
+    <ImageButton
+        android:id="@+id/imageButton_play"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/imageView1"
+        android:layout_toLeftOf="@+id/imageView1"
+        android:background="@drawable/selectable_item_bg"
+        android:src="@android:drawable/ic_media_play" />
+
+    <ImageButton
+        android:id="@+id/imageButton_ff"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imageButton_play"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@+id/imageView1"
+        android:background="@drawable/selectable_item_bg"
+        android:src="@android:drawable/ic_media_ff" />
+
+    <ImageButton
+        android:id="@+id/imageButton_rew"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/imageButton_ff"
+        android:background="@drawable/selectable_item_bg"
+        android:src="@android:drawable/ic_media_rew" />
 
 </RelativeLayout>

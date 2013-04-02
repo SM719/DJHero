@@ -54,7 +54,7 @@ public class DJInterface extends FragmentActivity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
-		getMenuInflater().inflate(R.menu.main_screen, menu);
+		getMenuInflater().inflate(R.menu.djinterface, menu);
 		return true;
 	}
 
@@ -64,7 +64,13 @@ public class DJInterface extends FragmentActivity {
 		djIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 
 		switch (item.getItemId()) {
-
+		
+			case R.id.action_share:
+				Intent intent = new Intent(this, Share.class);
+				intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+				this.startActivity(intent);
+				return true;
+			
 			case R.id.action_update:
 				try {
 					onRefreshClick();
@@ -74,9 +80,9 @@ public class DJInterface extends FragmentActivity {
 				return true;
 
 			case R.id.action_settings:
-				Intent intent = new Intent(this, AutoDetect.class);
-				intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-				this.startActivity(intent);
+				Intent intentSettings = new Intent(this, AutoDetect.class);
+				intentSettings.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+				this.startActivity(intentSettings);
 				return true;
 
 			case R.id.action_dj:
