@@ -88,7 +88,6 @@
      android:layout_height="30dp"
      android:layout_marginBottom="10dp"
      android:layout_below="@+id/fragment_container2"
-     android:layout_centerHorizontal="true"
      android:background="@drawable/selectable_item_bg"
      android:layout_gravity="center"
      android:max="140" />
