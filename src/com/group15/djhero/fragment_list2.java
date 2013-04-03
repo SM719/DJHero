@@ -40,7 +40,7 @@ public class fragment_list2 extends Fragment implements OnItemClickListener {
 		FragmentManager fragmentManager = getFragmentManager();
 		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 		fragment2 fragment2 = new fragment2();
-		fragmentTransaction.add(R.id.fragment_container2, fragment2);
+		fragmentTransaction.add(R.id.fragment_container, fragment2);
 		fragmentTransaction.commit();
 
 	}

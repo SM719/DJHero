@@ -48,6 +48,9 @@ public class DJInterface extends FragmentActivity implements OnSeekBarChangeList
 		fragmentTransaction2.add(R.id.fragment_container, fragment2);
 		fragmentTransaction2.commit();
 		
+		SeekBar bar = (SeekBar) findViewById(R.id.seekBar1);
+		bar.setOnSeekBarChangeListener(this); // set Seekbar listener.
+		bar.setProgress(myApp.djVolumeBar);
 
 	}
 
@@ -88,9 +91,8 @@ public class DJInterface extends FragmentActivity implements OnSeekBarChangeList
 		@Override
 		protected Integer doInBackground(Void... arg0) {
 
-			while (!myApp.djDoneLoad){
-				myApp.djDoneLoad = false;
-			}
+			while (!myApp.djDoneLoad);
+			myApp.djDoneLoad = false;
 			return 0;
 
 		}
@@ -239,11 +241,11 @@ public class DJInterface extends FragmentActivity implements OnSeekBarChangeList
 	@Override
 	// Update the volume progress as the user changes it
 	public void onProgressChanged(SeekBar arg0, int progress, boolean arg2) {
-		if ((progress % 10) < 5) {
-			progress = (progress / 10) * 10;
-		} else {
-			progress = ((progress / 10) * 10) + 10;
-		}
+//		if ((progress % 10) < 5) {
+//			progress = (progress / 10) * 10;
+//		} else {
+//			progress = ((progress / 10) * 10) + 10;
+//		}
 		myApp.djVolumeBar = progress;
 	}
 
