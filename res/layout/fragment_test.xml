@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-  	tools:context=".MainActivity" >
+    tools:context=".MainActivity" >
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -38,69 +38,69 @@
             android:src="@android:drawable/ic_media_rew" />
 
         <ImageButton
-            android:layout_marginTop="6dp"
             android:id="@+id/imageButton_forward"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/imageView1"
             android:layout_alignLeft="@+id/imageButton_rewind"
-            android:background="@drawable/selectable_item_bg"
             android:layout_marginBottom="3dp"
+            android:layout_marginTop="6dp"
+            android:background="@drawable/selectable_item_bg"
             android:src="@drawable/sforward" />
 
         <ImageButton
-            android:layout_marginTop="6dp"
             android:id="@+id/imageButton_rewind"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_above="@+id/imageButton_forward"
             android:layout_alignLeft="@+id/imageButton_rew"
-            android:background="@drawable/selectable_item_bg"
             android:layout_marginBottom="3dp"
+            android:layout_marginTop="6dp"
+            android:background="@drawable/selectable_item_bg"
             android:src="@drawable/sback" />
 
-            <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_weight="1" >
-    </LinearLayout>
-   
-
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical" >
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:orientation="vertical" >
-        
-          <TextView
-        android:id="@+id/songNameFrag"
-        android:layout_width="160dp"
-        android:layout_height="25dp"
-        android:layout_alignLeft="@+id/imageView1"
-        android:text="@string/songName"
-        android:layout_marginLeft="15dp"
-        android:textAppearance="?android:attr/textAppearanceLarge" />
-          
-           <ImageView
-        android:id="@+id/imageView1"
-        android:layout_width="140dp"
-        android:layout_height="140dp"
-        android:layout_below="@+id/imageButton_add"
-        android:layout_marginLeft="18dp"
-        android:layout_marginTop="14dp"
-        android:layout_toRightOf="@+id/imageButton_rew"
-        android:src="@drawable/defaultsong" />
-           
-           <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_weight="1" >
-    </LinearLayout>
-    </LinearLayout>
 
+        <TextView
+            android:id="@+id/songNameFrag"
+            android:layout_width="160dp"
+            android:layout_height="34dp"
+            android:layout_alignLeft="@+id/imageView1"
+            android:layout_marginLeft="15dp"
+            android:gravity="center_vertical"
+            android:inputType="textMultiLine"
+            android:scrollHorizontally="false"
+            android:layout_marginBottom="0dp"
+            android:singleLine="false"
+            android:text="@string/songName"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textSize="13dip" />
 
+        <ImageView
+            android:id="@+id/imageView1"
+            android:layout_width="140dp"
+            android:layout_height="140dp"
+            android:layout_marginLeft="18dp"
+            android:layout_marginTop="14dp"
+            android:src="@drawable/defaultsong" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:orientation="vertical" >
+        </LinearLayout>
+    </LinearLayout>
 
 </LinearLayout>

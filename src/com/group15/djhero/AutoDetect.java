@@ -1,6 +1,8 @@
 package com.group15.djhero;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -54,7 +56,7 @@ public class AutoDetect extends Activity implements OnItemClickListener {
 		if (myApp.sock == null) {
 			textView.setText("Not Connected");
 
-			String connectTo = "192.168.0.102";
+			String connectTo = "192.168.12.216";
 			new SocketConnect().execute(connectTo);
 			myApp.availableDE2s.clear();
 			myApp.availableDE2s.add(connectTo);
@@ -62,7 +64,7 @@ public class AutoDetect extends Activity implements OnItemClickListener {
 			myApp.connectedTo = myApp.availableDE2s.get(0);
 			TCPReadTimerTask tcp_task = new TCPReadTimerTask();
 			Timer tcp_timer = new Timer();
-			tcp_timer.schedule(tcp_task, 3000, 500);
+			tcp_timer.schedule(tcp_task, 3000, 75);
 		} else {
 			adapter = new ListIpAddresses(AutoDetect.this, myApp.availableDE2s);
 			m_listview.setAdapter(adapter);
@@ -197,11 +199,9 @@ public class AutoDetect extends Activity implements OnItemClickListener {
 						MyApplication myApp = (MyApplication) AutoDetect.this
 						        .getApplication();
 
-						if (s.startsWith("Rfile")){
-							myApp.receivingFile = true;
-							
-						}
-						else if(s.startsWith("djdoneload")){
+						
+						
+						if(s.contains("djdj")){
 							myApp.djDoneLoad = true;
 						}
 						else{
