@@ -87,6 +87,6 @@
      android:layout_below="@+id/fragment_container2"
      android:layout_centerHorizontal="true"
      android:layout_gravity="center"
-     android:max="70" />
+     android:max="140" />
 
 </LinearLayout>
