@@ -2,6 +2,13 @@ package com.group15.djhero;
 
 import android.app.Fragment;
 import android.app.FragmentTransaction;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Bitmap.Config;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +19,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.ImageView.ScaleType;
 
 public class fragment1 extends Fragment implements OnClickListener {
 
@@ -93,5 +101,20 @@ public class fragment1 extends Fragment implements OnClickListener {
 
 		}
 
+	}
+	public void makeMaskImage(ImageView mImageView, int mContent)
+	{
+		Bitmap original = BitmapFactory.decodeResource(getResources(), mContent);
+		Bitmap mask = BitmapFactory.decodeResource(getResources(),R.drawable.mask);
+		Bitmap result = Bitmap.createBitmap(mask.getWidth(), mask.getHeight(), Config.ARGB_8888);
+		Canvas mCanvas = new Canvas(result);
+		Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+		paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_IN));
+		mCanvas.drawBitmap(original, 0, 0, null);
+		mCanvas.drawBitmap(mask, 0, 0, paint);
+		paint.setXfermode(null);
+		mImageView.setImageBitmap(result);
+		mImageView.setScaleType(ScaleType.CENTER);
+		mImageView.setBackgroundResource(R.drawable.frame);
 	}
 }
