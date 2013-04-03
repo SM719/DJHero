@@ -219,7 +219,7 @@ public class MainScreen extends Activity implements OnItemClickListener {
 			for (int i = 0; i < myApp.mainSongList.Songs.size(); i++) {
 				myApp.images[i] = null;
 				new DownloadImages().execute(
-				        "http://24.84.17.127/itunes.php?type=jpg&size=255&track="
+				        "http://server.gursimran.net/test2.php?track="
 				                + myApp.mainSongList.Songs.get(i).Title.replace(" ", "+")
 				                + "&artist="
 				                + myApp.mainSongList.Songs.get(i).artist.replace(" ", "+"),
