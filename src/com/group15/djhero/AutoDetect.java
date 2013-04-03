@@ -54,7 +54,7 @@ public class AutoDetect extends Activity implements OnItemClickListener {
 		if (myApp.sock == null) {
 			textView.setText("Not Connected");
 
-			String connectTo = "192.168.0.102";
+			String connectTo = "192.168.12.205";
 			new SocketConnect().execute(connectTo);
 			myApp.availableDE2s.clear();
 			myApp.availableDE2s.add(connectTo);
@@ -192,14 +192,23 @@ public class AutoDetect extends Activity implements OnItemClickListener {
 
 						final String s = new String(buf, 0, bytes_avail,
 						        "US-ASCII");
-
+						
+						
 						MyApplication myApp = (MyApplication) AutoDetect.this
 						        .getApplication();
 
-						myApp.listComplete = myApp.mainSongList.addSongs(s);
-
-						Log.i("DE2list", s);
-						SendMessage.sendMessage("a", myApp.sock);
+						if (s.startsWith("Rfile")){
+							myApp.receivingFile = true;
+							
+						}
+						else if(s.startsWith("djdoneload")){
+							myApp.djDoneLoad = true;
+						}
+						else{
+							myApp.listComplete = myApp.mainSongList.addSongs(s);
+							Log.i("DE2list", s);
+							SendMessage.sendMessage("a", myApp.sock);
+						}
 						// As explained in the tutorials, the GUI can not be
 						// updated in an asyncrhonous task. So, update the GUI
 						// using the UI thread.
