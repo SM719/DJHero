@@ -192,14 +192,23 @@ public class AutoDetect extends Activity implements OnItemClickListener {
 
 						final String s = new String(buf, 0, bytes_avail,
 						        "US-ASCII");
-
+						
+						
 						MyApplication myApp = (MyApplication) AutoDetect.this
 						        .getApplication();
 
-						myApp.listComplete = myApp.mainSongList.addSongs(s);
-
-						Log.i("DE2list", s);
-						SendMessage.sendMessage("a", myApp.sock);
+						if (s.startsWith("Rfile")){
+							myApp.receivingFile = true;
+							
+						}
+						else if(s.startsWith("djdoneload")){
+							myApp.djDoneLoad = true;
+						}
+						else{
+							myApp.listComplete = myApp.mainSongList.addSongs(s);
+							Log.i("DE2list", s);
+							SendMessage.sendMessage("a", myApp.sock);
+						}
 						// As explained in the tutorials, the GUI can not be
 						// updated in an asyncrhonous task. So, update the GUI
 						// using the UI thread.

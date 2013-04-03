@@ -5,6 +5,9 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import com.group15.djhero.MainScreen.DownloadImages;
+import com.group15.djhero.MainScreen.RefreshProgressDialog;
+
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
@@ -18,37 +21,50 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.SeekBar;
+import android.widget.SeekBar.OnSeekBarChangeListener;
 
-public class DJInterface extends FragmentActivity {
+public class DJInterface extends FragmentActivity implements OnSeekBarChangeListener {
+	
+	MyApplication myApp;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_djinterface);
-
+		myApp = (MyApplication) DJInterface.this.getApplication();
+		
 		FragmentManager fragmentManager = getFragmentManager();
-		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+		FragmentTransaction fragmentTransaction1 = fragmentManager.beginTransaction();
 		FragmentTransaction fragmentTransaction2 = fragmentManager.beginTransaction();
 
 		fragment1 fragment = new fragment1();
-		fragmentTransaction.add(R.id.fragment_container, fragment);
-		fragmentTransaction.commit();
+		fragmentTransaction1.add(R.id.fragment_container2, fragment);
+		fragmentTransaction1.commit();
 
 		fragment2 fragment2 = new fragment2();
-		fragmentTransaction2.add(R.id.fragment_container2, fragment2);
+		fragmentTransaction2.add(R.id.fragment_container, fragment2);
 		fragmentTransaction2.commit();
+		
+		SeekBar bar = (SeekBar) findViewById(R.id.seekBar1);
+		bar.setOnSeekBarChangeListener(this); // set Seekbar listener.
+		bar.setProgress(myApp.djVolumeBar);
 
 	}
 
-	public void PausePlay(View view) {
-
-		FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-
-		fragment_list fl = new fragment_list();
-
-		fragmentTransaction.replace(R.id.fragment_container, fl);
-		fragmentTransaction.addToBackStack(null);
-		fragmentTransaction.commit();
+	//Send message to start playing songs specified  by id
+	//Message sent to DE2 is format of d id1 id2
+	public void PlayPause(View view) {
+		SendMessage.sendMessage("d "+String.valueOf(myApp.songSelectedLeft.id)+" "+String.valueOf(myApp.songSelectedRight.id), myApp.sock);
+		
+		// Display a progress dialog while the DE2 loads the songs to mix into memory
+		new DjProgressDialog().execute();
+	}
+	
+	public void cowBell(View view){
+		SendMessage.sendMessage("1", myApp.sock);
 	}
 
 	@Override
@@ -56,6 +72,35 @@ public class DJInterface extends FragmentActivity {
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.djinterface, menu);
 		return true;
+	}
+	
+	class DjProgressDialog extends AsyncTask<Void, Void, Integer> {
+
+		ProgressDialog progress;
+
+		@Override
+		protected void onPreExecute() {
+			progress = new ProgressDialog(DJInterface.this);
+			progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+			progress.setMessage("Loading...");
+			progress.setMax(100);
+			progress.setProgressNumberFormat(null);
+			progress.show();
+		}
+
+		@Override
+		protected Integer doInBackground(Void... arg0) {
+
+			while (!myApp.djDoneLoad);
+			myApp.djDoneLoad = false;
+			return 0;
+
+		}
+
+		@Override
+		protected void onPostExecute(Integer result) {
+			progress.dismiss();
+		}
 	}
 
 	@Override
@@ -112,7 +157,7 @@ public class DJInterface extends FragmentActivity {
 
 			// Send a request for the song list string
 			// SendMessage.sendMessage("l", myApp.sock); UNCOMMENT LATER
-			SendMessage.sendMessage("l ", myApp.sock);
+			SendMessage.sendMessage("l", myApp.sock);
 
 			// Display a progress dialog while we get the list from the DE2
 			new RefreshProgressDialog().execute();
@@ -187,6 +232,46 @@ public class DJInterface extends FragmentActivity {
 				return null;
 			}
 		}
+	}
+
+	public void recordMix(View view){
+		SendMessage.sendMessage("h", myApp.sock);
+	}
+	
+	@Override
+	// Update the volume progress as the user changes it
+	public void onProgressChanged(SeekBar arg0, int progress, boolean arg2) {
+//		if ((progress % 10) < 5) {
+//			progress = (progress / 10) * 10;
+//		} else {
+//			progress = ((progress / 10) * 10) + 10;
+//		}
+		myApp.djVolumeBar = progress;
+	}
+
+	@Override
+	public void onStopTrackingTouch(SeekBar arg0) {
+		MyApplication myApp = (MyApplication) DJInterface.this.getApplication();
+		int volume1 = 70;
+		int volume2 =70;
+		
+		if(myApp.djVolumeBar >70){
+			volume2 = 70;
+			volume1 = 140 - myApp.djVolumeBar; 
+		}
+		else if(myApp.djVolumeBar < 70){
+			volume1 =70;
+			volume2 = myApp.djVolumeBar;
+		}
+		
+		// Send desired volume to the DE2
+		SendMessage.sendMessage("i " + Integer.toString((volume1 / 10) * 10)+" "+Integer.toString((volume2 / 10) * 10) ,myApp.sock);
+		Log.i("VolumeTag", Integer.toString((myApp.Global_progress / 10) * 10));
+	}
+
+	@Override
+	public void onStartTrackingTouch(SeekBar seekBar) {
+		// TODO Auto-generated method stub
 	}
 
 }

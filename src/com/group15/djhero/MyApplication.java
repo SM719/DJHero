@@ -24,7 +24,9 @@ public class MyApplication extends Application {
 	List<Boolean> selectedPlayListsToDelete = null;
 	Song songSelectedLeft = new Song();
 	Song songSelectedRight = new Song();
-
+	Boolean receivingFile = false;
+	Boolean djDoneLoad = false;
+	
 	int lengthOfCurrentSong;
 	int progressTracker = 0;
 	int positionOfSong;
@@ -36,4 +38,8 @@ public class MyApplication extends Application {
 	TextView textViewforSongPosition;
 	TextView textViewforSongArtist;
 	int Global_progress = 40;
+	
+	int leftSpeed = 1;
+	int rightSpeed = 1;
+	int djVolumeBar = 70;
 }

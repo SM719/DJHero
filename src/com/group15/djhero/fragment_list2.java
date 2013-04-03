@@ -27,22 +27,20 @@ public class fragment_list2 extends Fragment implements OnItemClickListener {
 		myApp = (MyApplication) getActivity().getApplication();
 		LazyAdapter adapter = new LazyAdapter(getActivity(), myApp.mainSongList);
 		m_listview.setAdapter(adapter);
-
 		return V;
+		
 	}
 
 	@Override
 	public void onItemClick(AdapterView<?> adapter, View arg1, int position,
 	        long arg3) {
-		// TODO Auto-generated method stub
 		myApp.songSelectedRight = myApp.mainSongList.Songs.get(position);
-
 		getActivity().getFragmentManager().beginTransaction().remove(this).commit();
 
 		FragmentManager fragmentManager = getFragmentManager();
 		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 		fragment2 fragment2 = new fragment2();
-		fragmentTransaction.add(R.id.fragment_container2, fragment2);
+		fragmentTransaction.add(R.id.fragment_container, fragment2);
 		fragmentTransaction.commit();
 
 	}

@@ -168,7 +168,6 @@ public class MainScreen extends Activity implements OnItemClickListener {
 			myApp.mainSongList.clearList();
 
 			// Send a request for the song list string
-			// SendMessage.sendMessage("l", myApp.sock); UNCOMMENT LATER
 			SendMessage.sendMessage("l ", myApp.sock);
 
 			// Display a progress dialog while we get the list from the DE2
