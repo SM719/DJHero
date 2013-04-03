@@ -24,7 +24,8 @@ public class MyApplication extends Application {
 	List<Boolean> selectedPlayListsToDelete = null;
 	Song songSelectedLeft = new Song();
 	Song songSelectedRight = new Song();
-
+	Boolean receivingFile = false;
+	
 	int lengthOfCurrentSong;
 	int progressTracker = 0;
 	int positionOfSong;
