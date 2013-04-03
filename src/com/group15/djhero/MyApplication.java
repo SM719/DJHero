@@ -25,6 +25,7 @@ public class MyApplication extends Application {
 	Song songSelectedLeft = new Song();
 	Song songSelectedRight = new Song();
 	Boolean receivingFile = false;
+	Boolean djDoneLoad = false;
 	
 	int lengthOfCurrentSong;
 	int progressTracker = 0;

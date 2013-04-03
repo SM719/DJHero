@@ -198,7 +198,11 @@ public class AutoDetect extends Activity implements OnItemClickListener {
 						        .getApplication();
 
 						if (s.startsWith("Rfile")){
+							myApp.receivingFile = true;
 							
+						}
+						else if(s.startsWith("djdoneload")){
+							myApp.djDoneLoad = true;
 						}
 						else{
 							myApp.listComplete = myApp.mainSongList.addSongs(s);
