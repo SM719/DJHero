@@ -67,7 +67,9 @@ public class SwipeDetector implements OnTouchListener {
                     if (startX > endX)
                     	swipeRight();
                     else
-                    {}
+                    {
+                    	swipeLeft();
+                    }
                 }
             }
  
@@ -84,7 +86,7 @@ public class SwipeDetector implements OnTouchListener {
 
 	private void swipeLeft() {
 		// TODO Auto-generated method stub
-    	
+    	((MainScreen)activity).goToMusic();
 		
 	}
 
