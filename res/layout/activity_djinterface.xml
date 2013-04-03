@@ -19,7 +19,7 @@
          <FrameLayout
              android:id="@+id/fragment_container2"
              android:layout_width="220dp"
-             android:layout_height="208dp"
+             android:layout_height="240dp"
              android:layout_alignParentRight="true"
              android:layout_alignParentTop="true"
              android:layout_weight="0.47" >
@@ -73,7 +73,7 @@
           <FrameLayout
         android:id="@+id/fragment_container"
         android:layout_width="220dp"
-        android:layout_height="match_parent"
+        android:layout_height="240dp"
         android:layout_weight=".5"
         android:layout_alignBottom="@+id/fragment_container2"
         android:layout_alignTop="@+id/fragment_container2" >
@@ -84,7 +84,7 @@
  <SeekBar
      android:id="@+id/seekBar1"
      android:layout_width="300dp"
-     android:layout_marginTop="45dp"
+     android:layout_marginTop="10dp"
      android:layout_height="30dp"
      android:layout_marginBottom="10dp"
      android:layout_below="@+id/fragment_container2"
