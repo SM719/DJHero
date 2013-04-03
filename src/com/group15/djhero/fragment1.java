@@ -12,20 +12,32 @@ import android.widget.TextView;
 
 public class fragment1 extends Fragment implements OnClickListener {
 
-	ImageButton imageButton1;
-	ImageButton imageButton_add;
-	boolean playButton = false;
 	MyApplication myApp;
+	ImageButton imageButton_add;
+	ImageButton imageButton_ff;
+	ImageButton	imageButton_rew;
+	ImageButton imageButton_forward;
+	ImageButton imageButton_rewind;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 	        Bundle savedInstanceState) {
 		// Inflate the layout for this fragment
 		View V = inflater.inflate(R.layout.fragment_test, container, false);
+		
 		imageButton_add = (ImageButton) V.findViewById(R.id.imageButton_add);
+		imageButton_ff = (ImageButton) V.findViewById(R.id.imageButton_ff);
+		imageButton_rew = (ImageButton) V.findViewById(R.id.imageButton_rew);
+		imageButton_forward = (ImageButton) V.findViewById(R.id.imageButton_forward);
+		imageButton_rewind = (ImageButton) V.findViewById(R.id.imageButton_rewind);
+		
 		imageButton_add.setOnClickListener(this);
+		imageButton_ff.setOnClickListener(this);
+		imageButton_rew.setOnClickListener(this);
+		imageButton_forward.setOnClickListener(this);
+		imageButton_rewind.setOnClickListener(this);
+		
 		return V;
-
 	}
 
 	@Override
@@ -42,12 +54,31 @@ public class fragment1 extends Fragment implements OnClickListener {
 		switch (V.getId()) {
 			case R.id.imageButton_add:
 				FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-
 				fragment_list fl = new fragment_list();
-
 				fragmentTransaction.replace(R.id.fragment_container, fl);
 				fragmentTransaction.addToBackStack(null);
 				fragmentTransaction.commit();
+				break;
+			
+			case R.id.imageButton_ff:
+				myApp.leftSpeed = (myApp.leftSpeed +1) % 3;
+				SendMessage.sendMessage("t "+ String.valueOf(myApp.leftSpeed)+" "+String.valueOf(myApp.rightSpeed), myApp.sock);
+				break;
+				
+			case R.id.imageButton_rew:
+				if(myApp.leftSpeed > 0){
+				myApp.leftSpeed = myApp.leftSpeed -1;
+				}
+				SendMessage.sendMessage("t "+ String.valueOf(myApp.leftSpeed)+" "+String.valueOf(myApp.rightSpeed), myApp.sock);
+				break;
+			
+			case R.id.imageButton_forward:
+				SendMessage.sendMessage("y 1 0", myApp.sock);
+				break;
+				
+			case R.id.imageButton_rewind:
+				SendMessage.sendMessage("w 1 0", myApp.sock);
+				break;
 
 		}
 

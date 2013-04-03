@@ -18,21 +18,26 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.SeekBar;
+import android.widget.SeekBar.OnSeekBarChangeListener;
 
-public class DJInterface extends FragmentActivity {
+public class DJInterface extends FragmentActivity implements OnSeekBarChangeListener {
+	
+	MyApplication myApp;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_djinterface);
-
+		myApp = (MyApplication) DJInterface.this.getApplication();
+		
 		FragmentManager fragmentManager = getFragmentManager();
-		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+		FragmentTransaction fragmentTransaction1 = fragmentManager.beginTransaction();
 		FragmentTransaction fragmentTransaction2 = fragmentManager.beginTransaction();
 
 		fragment1 fragment = new fragment1();
-		fragmentTransaction.add(R.id.fragment_container, fragment);
-		fragmentTransaction.commit();
+		fragmentTransaction1.add(R.id.fragment_container, fragment);
+		fragmentTransaction1.commit();
 
 		fragment2 fragment2 = new fragment2();
 		fragmentTransaction2.add(R.id.fragment_container2, fragment2);
@@ -40,15 +45,14 @@ public class DJInterface extends FragmentActivity {
 
 	}
 
-	public void PausePlay(View view) {
-
-		FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-
-		fragment_list fl = new fragment_list();
-
-		fragmentTransaction.replace(R.id.fragment_container, fl);
-		fragmentTransaction.addToBackStack(null);
-		fragmentTransaction.commit();
+	//Send message to start playing songs specified  by id
+	//Message sent to DE2 is format of d id1 id2
+	public void PlayPause(View view) {
+		SendMessage.sendMessage("d "+String.valueOf(myApp.songSelectedLeft.id)+" "+String.valueOf(myApp.songSelectedRight.id), myApp.sock);
+	}
+	
+	public void cowBell(View view){
+		SendMessage.sendMessage("1", myApp.sock);
 	}
 
 	@Override
@@ -187,6 +191,35 @@ public class DJInterface extends FragmentActivity {
 				return null;
 			}
 		}
+	}
+
+	@Override
+	// Update the volume progress as the user changes it
+	public void onProgressChanged(SeekBar arg0, int progress, boolean arg2) {
+		if ((progress % 10) < 5) {
+			progress = (progress / 10) * 10;
+		} else {
+			progress = ((progress / 10) * 10) + 10;
+		}
+		myApp.djVolumeBar = progress;
+	}
+
+	@Override
+	public void onStopTrackingTouch(SeekBar arg0) {
+		MyApplication myApp = (MyApplication) DJInterface.this.getApplication();
+		int volume1;
+		int volume2;
+		
+		volume1 = myApp.djVolumeBar ;
+		
+		// Send desired volume to the DE2
+		//SendMessage.sendMessage("i " + Integer.toString((myApp.Global_progress / 10) * 10)+" "+"" ,myApp.sock);
+		Log.i("VolumeTag", Integer.toString((myApp.Global_progress / 10) * 10));
+	}
+
+	@Override
+	public void onStartTrackingTouch(SeekBar seekBar) {
+		// TODO Auto-generated method stub
 	}
 
 }

@@ -36,4 +36,10 @@ public class MyApplication extends Application {
 	TextView textViewforSongPosition;
 	TextView textViewforSongArtist;
 	int Global_progress = 40;
+	
+	int leftSpeed = 1;
+	int rightSpeed = 1;
+	int djVolumeBar = 35;
+	
+
 }
