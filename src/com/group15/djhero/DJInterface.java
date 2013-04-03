@@ -6,6 +6,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import com.group15.djhero.MainScreen.DownloadImages;
+import com.group15.djhero.MainScreen.RefreshProgressDialog;
 
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
@@ -40,18 +41,13 @@ public class DJInterface extends FragmentActivity implements OnSeekBarChangeList
 		FragmentTransaction fragmentTransaction2 = fragmentManager.beginTransaction();
 
 		fragment1 fragment = new fragment1();
-		fragmentTransaction1.add(R.id.fragment_container, fragment);
+		fragmentTransaction1.add(R.id.fragment_container2, fragment);
 		fragmentTransaction1.commit();
 
 		fragment2 fragment2 = new fragment2();
-		fragmentTransaction2.add(R.id.fragment_container2, fragment2);
+		fragmentTransaction2.add(R.id.fragment_container, fragment2);
 		fragmentTransaction2.commit();
 		
-		
-		Animation rotate = AnimationUtils.loadAnimation(this, R.anim.rotate);
-		findViewById(R.id.imageButton1).startAnimation(rotate);
-		rotate.reset();
-		rotate.start();
 
 	}
 
@@ -59,6 +55,9 @@ public class DJInterface extends FragmentActivity implements OnSeekBarChangeList
 	//Message sent to DE2 is format of d id1 id2
 	public void PlayPause(View view) {
 		SendMessage.sendMessage("d "+String.valueOf(myApp.songSelectedLeft.id)+" "+String.valueOf(myApp.songSelectedRight.id), myApp.sock);
+		
+		// Display a progress dialog while the DE2 loads the songs to mix into memory
+		new DjProgressDialog().execute();
 	}
 	
 	public void cowBell(View view){
@@ -89,8 +88,9 @@ public class DJInterface extends FragmentActivity implements OnSeekBarChangeList
 		@Override
 		protected Integer doInBackground(Void... arg0) {
 
-			while (!myApp.djDoneLoad)
-				;
+			while (!myApp.djDoneLoad){
+				myApp.djDoneLoad = false;
+			}
 			return 0;
 
 		}

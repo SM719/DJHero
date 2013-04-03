@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
@@ -37,6 +39,11 @@ public class fragment1 extends Fragment implements OnClickListener {
 		imageButton_forward.setOnClickListener(this);
 		imageButton_rewind.setOnClickListener(this);
 		
+		Animation rotate = AnimationUtils.loadAnimation(getActivity(), R.anim.rotate);
+		V.findViewById(R.id.imageView1).startAnimation(rotate);
+		rotate.reset();
+		rotate.start();
+		
 		return V;
 	}
 
@@ -55,7 +62,7 @@ public class fragment1 extends Fragment implements OnClickListener {
 			case R.id.imageButton_add:
 				FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
 				fragment_list fl = new fragment_list();
-				fragmentTransaction.replace(R.id.fragment_container, fl);
+				fragmentTransaction.replace(R.id.fragment_container2, fl);
 				fragmentTransaction.addToBackStack(null);
 				fragmentTransaction.commit();
 				break;

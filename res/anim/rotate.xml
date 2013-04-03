@@ -8,4 +8,4 @@
 	android:pivotY="50%"
 	android:repeatCount="10000"
 	android:repeatMode="restart"
-	android:duration="150" />
+	android:duration="75" />
