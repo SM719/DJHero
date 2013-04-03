@@ -49,6 +49,7 @@
         <activity
             android:name="com.group15.djhero.DJInterface"
             android:label="@string/title_activity_djinterface"
+            android:launchMode = "singleInstance"
             android:screenOrientation="landscape" >
         </activity>
         <activity

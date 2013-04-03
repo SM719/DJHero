@@ -23,6 +23,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 
@@ -51,6 +53,10 @@ public class DJInterface extends FragmentActivity implements OnSeekBarChangeList
 		SeekBar bar = (SeekBar) findViewById(R.id.seekBar1);
 		bar.setOnSeekBarChangeListener(this); // set Seekbar listener.
 		bar.setProgress(myApp.djVolumeBar);
+		
+		SwipeDetector gesture = new SwipeDetector(this);
+		LinearLayout currentLayout = (LinearLayout)this.findViewById(R.id.dj_interface_layout);
+		currentLayout.setOnTouchListener(gesture);
 
 	}
 
@@ -274,4 +280,9 @@ public class DJInterface extends FragmentActivity implements OnSeekBarChangeList
 		// TODO Auto-generated method stub
 	}
 
+	public void goToMusic() {
+		// TODO Auto-generated method stub
+		finish();
+		
+	}
 }

@@ -14,7 +14,7 @@ public class SwipeDetector implements OnTouchListener {
  
     private long downTime;
     private float startX, startY;
-    private float MIN_SWIPE_DISTANCE = 5;
+    private float MIN_SWIPE_DISTANCE = 1;
 
  
     private Activity activity;
@@ -65,9 +65,9 @@ public class SwipeDetector implements OnTouchListener {
                 else
                 {
                     if (startX > endX)
-                    {}
+                    	swipeRight();
                     else
-                        swipeRight();
+                    {}
                 }
             }
  
