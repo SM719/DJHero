@@ -3,13 +3,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
-
-   <EditText
-       android:id="@+id/edittext_done"
-       android:layout_width="180dp"
-       android:layout_height="wrap_content"
-       android:hint="@string/Default_play_list_name"
-       android:singleLine="true" />
     
      <ListView
          android:id="@+id/new_playlist_list_view2"
