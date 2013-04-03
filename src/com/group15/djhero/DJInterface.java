@@ -5,6 +5,8 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import com.group15.djhero.MainScreen.DownloadImages;
+
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
@@ -18,6 +20,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 
@@ -42,6 +46,12 @@ public class DJInterface extends FragmentActivity implements OnSeekBarChangeList
 		fragment2 fragment2 = new fragment2();
 		fragmentTransaction2.add(R.id.fragment_container2, fragment2);
 		fragmentTransaction2.commit();
+		
+		
+		Animation rotate = AnimationUtils.loadAnimation(this, R.anim.rotate);
+		findViewById(R.id.imageButton1).startAnimation(rotate);
+		rotate.reset();
+		rotate.start();
 
 	}
 
@@ -60,6 +70,35 @@ public class DJInterface extends FragmentActivity implements OnSeekBarChangeList
 		// Inflate the menu; this adds items to the action bar if it is present.
 		getMenuInflater().inflate(R.menu.djinterface, menu);
 		return true;
+	}
+	
+	class DjProgressDialog extends AsyncTask<Void, Void, Integer> {
+
+		ProgressDialog progress;
+
+		@Override
+		protected void onPreExecute() {
+			progress = new ProgressDialog(DJInterface.this);
+			progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+			progress.setMessage("Loading...");
+			progress.setMax(100);
+			progress.setProgressNumberFormat(null);
+			progress.show();
+		}
+
+		@Override
+		protected Integer doInBackground(Void... arg0) {
+
+			while (!myApp.djDoneLoad)
+				;
+			return 0;
+
+		}
+
+		@Override
+		protected void onPostExecute(Integer result) {
+			progress.dismiss();
+		}
 	}
 
 	@Override

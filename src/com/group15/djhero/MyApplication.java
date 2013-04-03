@@ -40,6 +40,7 @@ public class MyApplication extends Application {
 	int leftSpeed = 1;
 	int rightSpeed = 1;
 	int djVolumeBar = 35;
+	Boolean djDoneLoad;
 	
 
 }

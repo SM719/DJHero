@@ -40,7 +40,8 @@
                      android:background="@drawable/selectable_item_bg"
                      android:onClick="PlayPause"
                      android:layout_marginRight="10dp"
-                     android:src="@drawable/play_48" />
+                     android:src="@drawable/play_48"
+                      />
 
     <ImageButton
         android:id="@+id/imageButton2"
@@ -51,6 +52,7 @@
         android:layout_gravity="bottom"
         android:layout_weight=".5"
         android:background="@drawable/selectable_item_bg"
+        android:onClick="recordMix"
         android:src="@drawable/mic" />
 
     <ImageButton
