@@ -36,7 +36,7 @@ public class fragment_list extends Fragment implements OnItemClickListener {
 	        long arg3) {
 		// TODO Auto-generated method stub
 
-		myApp.songSelectedLeft = myApp.mainSongList.Songs.get(position);
+		myApp.songSelectedRight = myApp.mainSongList.Songs.get(position);
 
 		getActivity().getFragmentManager().beginTransaction().remove(this).commit();
 		FragmentManager fragmentManager = getFragmentManager();

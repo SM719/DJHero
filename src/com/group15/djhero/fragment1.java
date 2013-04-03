@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class fragment1 extends Fragment implements OnClickListener {
@@ -44,6 +45,9 @@ public class fragment1 extends Fragment implements OnClickListener {
 		rotate.reset();
 		rotate.start();
 		
+
+		
+		
 		return V;
 	}
 
@@ -52,7 +56,7 @@ public class fragment1 extends Fragment implements OnClickListener {
 		super.onResume();
 		myApp = (MyApplication) getActivity().getApplication();
 		TextView textViewforSongPosition = (TextView) getView().findViewById(R.id.songNameFrag);
-		textViewforSongPosition.setText(myApp.songSelectedLeft.Title);
+		textViewforSongPosition.setText(myApp.songSelectedRight.Title);
 	}
 
 	@Override

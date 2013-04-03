@@ -52,7 +52,7 @@ public class fragment2 extends Fragment implements OnClickListener {
 		super.onResume();
 		myApp = (MyApplication) getActivity().getApplication();
 		TextView textViewforSongPosition = (TextView) getView().findViewById(R.id.songNameFrag);
-		textViewforSongPosition.setText(myApp.songSelectedRight.Title);
+		textViewforSongPosition.setText(myApp.songSelectedLeft.Title);
 	}
 
 	@Override

@@ -12,7 +12,7 @@
   	  android:id="@+id/textViewPlayListSelect"
   	  android:layout_width="fill_parent"
 	  android:layout_height="wrap_content"
-	  android:layout_weight="3" android:layout_gravity="left|center_vertical" android:textSize="20dip" android:layout_marginLeft="10dip"/>
+	  android:layout_weight=".5" android:layout_gravity="left|center_vertical" android:textSize="20dip" android:layout_marginLeft="10dip"/>
 
   <CheckBox
       android:id="@+id/checkBoxPlayListSelect"
@@ -21,6 +21,7 @@
       android:clickable="false"
       android:focusable="false"
       android:gravity="right"
+      android:layout_weight="0"
       android:layout_marginTop="10dip"
       android:layout_marginRight="10dip"
       android:text="@string/empty" />
