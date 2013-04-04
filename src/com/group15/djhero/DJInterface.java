@@ -253,7 +253,7 @@ public class DJInterface extends FragmentActivity implements OnSeekBarChangeList
 	}
 
 	public void stopMix(View view) {
-		SendMessage.sendMessage("s", myApp.sock);
+		SendMessage.sendMessage("o", myApp.sock);
 	}
 
 	@Override
@@ -270,22 +270,45 @@ public class DJInterface extends FragmentActivity implements OnSeekBarChangeList
 	@Override
 	public void onStopTrackingTouch(SeekBar arg0) {
 		MyApplication myApp = (MyApplication) DJInterface.this.getApplication();
-		int volume1 = 70;
-		int volume2 = 70;
-
-		if (myApp.djVolumeBar > 70) {
-			volume2 = 70;
-			volume1 = 140 - myApp.djVolumeBar;
-		}
-		else if (myApp.djVolumeBar < 70) {
-			volume1 = 70;
-			volume2 = myApp.djVolumeBar;
-		}
-
+//		int volume1 = 70;
+//		int volume2 = 70;
+//
+//		if (myApp.djVolumeBar > 70) {
+//			volume2 = 70;
+//			volume1 = 140 - myApp.djVolumeBar;
+//		}
+//		else if (myApp.djVolumeBar < 70) {
+//			volume1 = 70;
+//			volume2 = myApp.djVolumeBar;
+//		}
 		// Send desired volume to the DE2
-		SendMessage.sendMessage(
-		        "i " + Integer.toString((volume1 / 10) * 10) + " "
-		                + Integer.toString((volume2 / 10) * 10), myApp.sock);
+//		SendMessage.sendMessage(
+//		        "i " + Integer.toString((volume1 / 10) * 10) + " "
+//		                + Integer.toString((volume2 / 10) * 10), myApp.sock);
+		
+		if( myApp.djVolumeBar <= 20) {
+			SendMessage.sendMessage("i 70 0", myApp.sock);
+		}
+			
+		else if ((myApp.djVolumeBar >= 20) && (myApp.djVolumeBar < 40)){
+			SendMessage.sendMessage("i 70 60", myApp.sock);
+		}
+		
+		else if((myApp.djVolumeBar >= 40) && (myApp.djVolumeBar < 100)){
+			SendMessage.sendMessage("i 70 70", myApp.sock);
+		}
+		
+		else if((myApp.djVolumeBar >= 100) && (myApp.djVolumeBar < 120)){
+			SendMessage.sendMessage("i 60 70", myApp.sock);
+		}
+		
+		else {
+			SendMessage.sendMessage("i 0 70", myApp.sock);
+		}
+		
+		
+		
+		//SendMessage.sendMessage("i 60, 50", myApp.sock);
 		Log.i("VolumeTag", Integer.toString((myApp.Global_progress / 10) * 10));
 	}
 

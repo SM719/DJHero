@@ -56,17 +56,23 @@ public class fragment1 extends Fragment implements OnClickListener {
 	}
 
 	public void turncw(){
+		try{
 		Animation rotate = AnimationUtils.loadAnimation(getActivity(), R.anim.rotate);
 		V.findViewById(R.id.imageView1).startAnimation(rotate);
 		rotate.reset();
 		rotate.start();
+		} catch (NullPointerException e) {
+		} catch (IndexOutOfBoundsException e){}
 	}
 	
 	public void turnccw(){
+		try{
 		Animation rotate = AnimationUtils.loadAnimation(getActivity(), R.anim.reverserotate);
 		V.findViewById(R.id.imageView1).startAnimation(rotate);
 		rotate.reset();
 		rotate.start();
+		} catch (NullPointerException e) {
+		} catch (IndexOutOfBoundsException e){}
 	}
 	
 	@Override

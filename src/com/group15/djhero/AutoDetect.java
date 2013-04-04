@@ -38,7 +38,8 @@ public class AutoDetect extends Activity implements OnItemClickListener {
 	private ListView m_listview;
 	ListIpAddresses adapter;
 	TextView textView;
-
+	public static final double SCAN_NETWORK = 100.0;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		MyApplication myApp = (MyApplication) getApplication();
@@ -53,15 +54,18 @@ public class AutoDetect extends Activity implements OnItemClickListener {
 		setTitle("Connect to DE2");
 		if (myApp.sock == null) {
 			textView.setText("Not Connected");
-			String connectTo = "192.168.2.4";
-			new SocketConnect().execute(connectTo);
-			myApp.availableDE2s.clear();
-			myApp.availableDE2s.add(connectTo);
-			this.adapter = new ListIpAddresses(this, myApp.availableDE2s);
-			myApp.connectedTo = myApp.availableDE2s.get(0);
-			TCPReadTimerTask tcp_task = new TCPReadTimerTask();
-			Timer tcp_timer = new Timer();
-			tcp_timer.schedule(tcp_task, 3000, 75);
+			new FindDE2sOnNetwork().execute();
+			
+			
+//			String connectTo = "192.168.2.4";
+//			new SocketConnect().execute(connectTo);
+//			myApp.availableDE2s.clear();
+//			myApp.availableDE2s.add(connectTo);
+//			this.adapter = new ListIpAddresses(this, myApp.availableDE2s);
+//			myApp.connectedTo = myApp.availableDE2s.get(0);
+//			TCPReadTimerTask tcp_task = new TCPReadTimerTask();
+//			Timer tcp_timer = new Timer();
+//			tcp_timer.schedule(tcp_task, 3000, 75);
 		} else {
 			adapter = new ListIpAddresses(AutoDetect.this, myApp.availableDE2s);
 			m_listview.setAdapter(adapter);
@@ -241,7 +245,7 @@ public class AutoDetect extends Activity implements OnItemClickListener {
 			System.out.println(ip);
 			try {
 
-				for (int i = 0; i < 255; i++) {
+				for (int i = 0; i < SCAN_NETWORK; i++) {
 					// build the next IP address
 					String addr = ip.substring(0, ip.lastIndexOf('.') + 1)
 					        + (i);
@@ -263,7 +267,7 @@ public class AutoDetect extends Activity implements OnItemClickListener {
 						System.out.println("in try");
 						// s = new Socket(pingAddr, 50002);
 						// s.connect(sock, 500);
-						s.connect(socks, 1000);
+						s.connect(socks, 500);
 						s.close();
 						result.add(pingAddr.getHostAddress());
 						count = count + 1;
@@ -292,7 +296,7 @@ public class AutoDetect extends Activity implements OnItemClickListener {
 
 		@Override
 		protected void onProgressUpdate(Integer... is) {
-			progress.setProgress((int) ((is[0].intValue() / 255.0) * 100));
+			progress.setProgress((int) ((is[0].intValue() / SCAN_NETWORK) * 100));
 			if (is[1].intValue() > 0) {
 				progress.setMessage("Discovering DE2s...\nFound "
 				        + is[1].toString());
