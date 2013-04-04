@@ -47,15 +47,27 @@ public class fragment2 extends Fragment implements OnClickListener {
 		imageButton_rew.setOnClickListener(this);
 		imageButton_forward.setOnClickListener(this);
 		imageButton_rewind.setOnClickListener(this);
-		
-		Animation rotate = AnimationUtils.loadAnimation(getActivity(), R.anim.rotate);
-		V.findViewById(R.id.imageView1).startAnimation(rotate);
-		rotate.reset();
-		rotate.start();
+		turncw(V);
 		
 		return V;
 	}
 
+	
+	public void turncw(View V){
+		Animation rotate = AnimationUtils.loadAnimation(getActivity(), R.anim.rotate);
+		V.findViewById(R.id.imageView1).startAnimation(rotate);
+		rotate.reset();
+		rotate.start();
+	}
+	
+	public void turnccw(View V){
+		Animation rotate = AnimationUtils.loadAnimation(getActivity(), R.anim.reverserotate);
+		V.findViewById(R.id.imageView1).startAnimation(rotate);
+		rotate.reset();
+		rotate.start();
+	}
+	
+	
 	@Override
 	public void onResume() {
 		super.onResume();

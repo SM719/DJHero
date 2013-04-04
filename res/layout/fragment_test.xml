@@ -90,7 +90,7 @@
 
         <com.group15.djhero.MaskImage
             android:id="@+id/imageView1"
-            maskimage:image="@drawable/cover"
+            maskimage:image="@drawable/defaultsong"
             maskimage:mask="@drawable/mask" 
             maskimage:frame="@drawable/frame" 
             android:layout_width="wrap_content"
