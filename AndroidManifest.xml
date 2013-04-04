@@ -12,6 +12,7 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
 
     <application
         android:name="com.group15.djhero.MyApplication"
@@ -23,8 +24,10 @@
             android:name="com.group15.djhero.MainScreen"
             android:label="@string/app_name"
             android:screenOrientation="portrait" >
-            <meta-data android:name="android.app.default_searchable"
-                   android:value=".SearchSongs" />
+            <meta-data
+                android:name="android.app.default_searchable"
+                android:value=".SearchSongs" />
+
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -49,7 +52,7 @@
         <activity
             android:name="com.group15.djhero.DJInterface"
             android:label="@string/title_activity_djinterface"
-            android:launchMode = "singleInstance"
+            android:launchMode="singleInstance"
             android:screenOrientation="landscape" >
         </activity>
         <activity
@@ -83,6 +86,7 @@
             android:name="com.group15.djhero.Share"
             android:label="@string/title_activity_share" >
         </activity>
+
     </application>
 
 </manifest>

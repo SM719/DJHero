@@ -33,37 +33,31 @@
 
                  <ImageButton
                      android:id="@+id/imageButton1"
-                     android:layout_width="wrap_content"
+                     android:layout_width="match_parent"
                      android:layout_height="wrap_content"
-                     android:layout_centerHorizontal="true"
-                     android:layout_centerVertical="true"
-                     android:layout_weight=".5"
+                     android:layout_weight="0.41"
+                     android:layout_gravity="center"
                      android:background="@drawable/selectable_item_bg"
                      android:onClick="PlayPause"
-                     android:layout_marginRight="10dp"
-                     android:src="@drawable/play_48"
-                      />
+                     android:src="@drawable/play_48" />
+
                   <ImageButton
-                     android:id="@+id/imageStopDJ"
-                     android:layout_width="wrap_content"
-                     android:layout_height="wrap_content"
-                     android:layout_centerHorizontal="true"
-                     android:layout_centerVertical="true"
-                     android:layout_weight=".5"
-                     android:background="@drawable/selectable_item_bg"
-                     android:onClick="stopMix"
-                     android:layout_marginRight="10dp"
-                     android:src="@drawable/ic_media_stop"
-                      />
+                      android:id="@+id/imageStopDJ"
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:layout_weight="0.45"
+                      android:background="@drawable/selectable_item_bg"
+                      android:onClick="stopMix"
+                      android:src="@drawable/ic_media_stop_48" />
 
     <ImageButton
         android:id="@+id/imageButton2"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/imageButton1"
         android:layout_alignLeft="@+id/imageButton1"
         android:layout_gravity="bottom"
-        android:layout_weight=".5"
+        android:layout_weight="0.43"
         android:background="@drawable/selectable_item_bg"
         android:onClick="recordMix"
         android:src="@drawable/mic" />
@@ -95,7 +89,7 @@
 
  <SeekBar
      android:id="@+id/seekBar1"
-     android:layout_width="300dp"
+     android:layout_width="450dp"
      android:layout_marginTop="10dp"
      android:layout_height="30dp"
      android:layout_marginBottom="10dp"

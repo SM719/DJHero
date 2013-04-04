@@ -49,6 +49,7 @@
     <string name="artistPlaceholder">Artist Name</string>
     <string name="action_playlist">Playlist</string>
     <string name="action_sort">Sort</string>
+    <string name="action_speaker">Speak</string>
     <string name="title_activity_search_songs">SearchSongs</string>
     <string name="title_activity_share">Share</string>
     <string name="need_external_storage">Need mounted SD card for this demo app</string>
@@ -57,5 +58,6 @@
     <string name="sc_app_not_found">SoundCloud App not found or not compatible!</string>
     <string name="sc_app_not_found_message">Do you want to install it now?</string>
     <string name="share">Share</string>
+    
 
 </resources>
