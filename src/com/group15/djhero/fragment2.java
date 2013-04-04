@@ -48,7 +48,9 @@ public class fragment2 extends Fragment implements OnClickListener {
 		imageButton_forward.setOnClickListener(this);
 		imageButton_rewind.setOnClickListener(this);
 		turncw(V);
-		
+		SwipeDetector gesture = new SwipeDetector(this);
+		ImageView currentLayout = (ImageView) V.findViewById(R.id.imageView1);
+		currentLayout.setOnTouchListener(gesture);
 		return V;
 	}
 
@@ -109,6 +111,13 @@ public class fragment2 extends Fragment implements OnClickListener {
 
 		}
 
+	}
+	public void rewindFrag2(){
+		SendMessage.sendMessage("w 0 1", myApp.sock);
+	}
+	
+	public void forwardFrag2(){
+		SendMessage.sendMessage("y 0 1", myApp.sock);
 	}
 	
 	public void makeMaskImage(ImageView mImageView, int mContent)

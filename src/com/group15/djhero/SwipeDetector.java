@@ -1,6 +1,7 @@
 package com.group15.djhero;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -18,11 +19,15 @@ public class SwipeDetector implements OnTouchListener {
 
  
     private Activity activity;
+    private Fragment fragment;
     
     public SwipeDetector(Activity activity){
     	this.activity = activity;
     }
     
+    public SwipeDetector(Fragment fragment){
+    	this.fragment = fragment;
+    }
 
  
     @Override
@@ -59,9 +64,13 @@ public class SwipeDetector implements OnTouchListener {
                 if(dy > dx)
                 {
                     if (startY > endY)
-                    {}
+                    {
+                    	swipeDown();
+                    }
                     else
-                    {}
+                    {
+                    	swipeUp();
+                    }
                     }
                //If the swipe was a left/right movement
                 else
@@ -94,6 +103,23 @@ public class SwipeDetector implements OnTouchListener {
 		((DJInterface)activity).goToMusic();
     	}
 	}
-
+    
+    private void swipeUp(){
+    	if(fragment instanceof fragment1){
+    		((fragment1) fragment).forwardFrag1();
+    	}
+    	else if(fragment instanceof fragment2){
+    		((fragment2) fragment).forwardFrag2();
+    	}
+	}
+    
+    private void swipeDown(){
+    	if(fragment instanceof fragment1){
+    		((fragment1) fragment).rewindFrag1();
+    	}
+    	else if(fragment instanceof fragment2){
+    		((fragment2) fragment).rewindFrag2();
+    	}
+	}
 
 }
