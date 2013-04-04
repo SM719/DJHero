@@ -61,6 +61,7 @@ public class fragment1 extends Fragment implements OnClickListener {
 		V.findViewById(R.id.imageView1).startAnimation(rotate);
 		rotate.reset();
 		rotate.start();
+		onResume();
 	}
 	
 	public void turnccw(){
