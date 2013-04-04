@@ -56,6 +56,7 @@ public class AutoDetect extends Activity implements OnItemClickListener {
 		if (myApp.sock == null) {
 			textView.setText("Not Connected");
 
+
 			String connectTo = "192.168.0.113";
 			new SocketConnect().execute(connectTo);
 			myApp.availableDE2s.clear();
