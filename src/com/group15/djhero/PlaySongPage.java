@@ -107,6 +107,15 @@ public class PlaySongPage extends Activity implements OnSeekBarChangeListener {
 		}
 	}
 
+	public void StopMusic(View view){
+		MyApplication myApp = (MyApplication) PlaySongPage.this
+				.getApplication();
+		SendMessage.sendMessage("s", myApp.sock);
+		myApp.playButton = true;
+		imageButton.setImageResource((R.drawable.play));
+		myApp.stopSignal = true;
+	}
+	
 	public void PausePlay(View view) {
 		MyApplication myApp = (MyApplication) PlaySongPage.this
 				.getApplication();
@@ -117,7 +126,15 @@ public class PlaySongPage extends Activity implements OnSeekBarChangeListener {
 			imageButton.setImageResource((R.drawable.play));
 			myApp.playButton = true;
 		} else {
-			SendMessage.sendMessage("r ", myApp.sock);
+			
+			if(myApp.stopSignal == false){
+				SendMessage.sendMessage("r ", myApp.sock);
+			}
+			else{
+				SendMessage.sendMessage("p "+ myApp.mainSongList.Songs.get(myApp.positionOfSong).id, myApp.sock);
+				myApp.stopSignal = false;
+			}
+			
 			imageButton.setImageResource((R.drawable.pause));
 			myApp.playButton = false;
 		}

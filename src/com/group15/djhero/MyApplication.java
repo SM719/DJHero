@@ -42,4 +42,5 @@ public class MyApplication extends Application {
 	int leftSpeed = 1;
 	int rightSpeed = 1;
 	int djVolumeBar = 70;
+	boolean stopSignal = false;
 }
