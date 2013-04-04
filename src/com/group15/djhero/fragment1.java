@@ -48,7 +48,7 @@ public class fragment1 extends Fragment implements OnClickListener {
 		imageButton_rew.setOnClickListener(this);
 		imageButton_forward.setOnClickListener(this);
 		imageButton_rewind.setOnClickListener(this);
-		turncw(V);
+		turnccw(V);
 		SwipeDetector gesture = new SwipeDetector(this);
 		ImageView currentLayout = (ImageView) V.findViewById(R.id.imageView1);
 		currentLayout.setOnTouchListener(gesture);
