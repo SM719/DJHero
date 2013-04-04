@@ -114,6 +114,10 @@ public class PlaySongPage extends Activity implements OnSeekBarChangeListener {
 		myApp.playButton = true;
 		imageButton.setImageResource((R.drawable.play));
 		myApp.stopSignal = true;
+		myApp.progressTracker = 0;
+		myApp.songProgressBar.setProgress(myApp.progressTracker);
+		myApp.timeLeft.setText(String.valueOf((myApp.lengthOfCurrentSong - myApp.progressTracker+1)/60)+":"+String.format("%02d", Integer.valueOf(((myApp.lengthOfCurrentSong - myApp.progressTracker+2)%60))));
+		
 	}
 	
 	public void PausePlay(View view) {
