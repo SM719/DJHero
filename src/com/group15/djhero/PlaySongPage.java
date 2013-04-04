@@ -1,15 +1,19 @@
 package com.group15.djhero;
 
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.SearchManager;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.speech.RecognizerIntent;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -30,6 +34,7 @@ public class PlaySongPage extends Activity implements OnSeekBarChangeListener {
 	private ShakeListener mShaker;
 	final Context context = this;
 	private SensorManager mySensorManager;
+	private static final int VOICE_RECOGNITION_REQUEST_CODE = 1001;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -135,6 +140,11 @@ public class PlaySongPage extends Activity implements OnSeekBarChangeListener {
 			case android.R.id.home:
 				super.onBackPressed();
 				return true;
+
+			case R.id.action_speaker:
+				speak(null);
+				return true;
+
 			default:
 				return super.onOptionsItemSelected(item);
 		}
@@ -180,6 +190,110 @@ public class PlaySongPage extends Activity implements OnSeekBarChangeListener {
 			imageButton.setImageResource((R.drawable.pause));
 			myApp.playButton = false;
 		}
+	}
+
+	public void speak(View view) {
+		Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+		// Specify the calling package to identify your application
+		intent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, getClass()
+		        .getPackage().getName());
+
+		// // Display an hint to the user about what he should say.
+		// intent.putExtra(RecognizerIntent.EXTRA_PROMPT, metTextHint.getText()
+		// .toString());
+
+		// // Given an hint to the recognizer about what the user is going to say
+		// intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
+		// RecognizerIntent.LANGUAGE_MODEL_WEB_SEARCH);
+
+		// // If number of Matches is not selected then return show toast message
+		// if (msTextMatches.getSelectedItemPosition() == AdapterView.INVALID_POSITION) {
+		// Toast.makeText(this, "Please select No. of Matches from spinner",
+		// Toast.LENGTH_SHORT).show();
+		// return;
+		// }
+
+		int noOfMatches = Integer.parseInt("1");
+		// Specify how many results you want to receive. The results will be
+		// sorted where the first result is the one with higher confidence.
+
+		intent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, noOfMatches);
+
+		startActivityForResult(intent, VOICE_RECOGNITION_REQUEST_CODE);
+	}
+
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		if (requestCode == VOICE_RECOGNITION_REQUEST_CODE)
+
+			// If Voice recognition is successful then it returns RESULT_OK
+			if (resultCode == RESULT_OK) {
+
+				ArrayList<String> textMatchList = data
+				        .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+
+				if (!textMatchList.isEmpty()) {
+					// If first Match contains the 'search' word
+					// Then start web search.
+					if (textMatchList.get(0).contains("search")) {
+
+						String searchQuery = textMatchList.get(0).replace("search",
+						        " ");
+						Intent search = new Intent(Intent.ACTION_WEB_SEARCH);
+						search.putExtra(SearchManager.QUERY, searchQuery);
+						startActivity(search);
+					} else {
+
+						if (textMatchList.get(0).contains("play")
+						        || textMatchList.get(0).contains("pause")) {
+							PausePlay(null);
+
+						}
+						else if (textMatchList.get(0).contains("next")) {
+							songNext(null);
+						}
+						else if (textMatchList.get(0).contains("previous")) {
+							songPrevious(null);
+						}
+						else if (textMatchList.get(0).contains("stop")) {
+							StopMusic(null);
+						}
+						else if (textMatchList.get(0).contains("volume up")) {
+							if (myApp.Global_progress <= 70) {
+								myApp.Global_progress += 10;
+							}
+							else {
+								myApp.Global_progress = 80;
+							}
+							bar.setProgress(myApp.Global_progress);
+							SendMessage
+							        .sendMessage(
+							                "v "
+							                        + Integer
+							                                .toString((myApp.Global_progress / 10) * 10),
+							                myApp.sock);
+						}
+						else if (textMatchList.get(0).contains("volume down")) {
+							if (myApp.Global_progress >= 10) {
+								myApp.Global_progress -= 10;
+							}
+							else {
+								myApp.Global_progress = 0;
+							}
+							bar.setProgress(myApp.Global_progress);
+							SendMessage
+							        .sendMessage(
+							                "v "
+							                        + Integer
+							                                .toString((myApp.Global_progress / 10) * 10),
+							                myApp.sock);
+						}
+					}
+
+				}
+				// Result code for various error.
+			}
+		super.onActivityResult(requestCode, resultCode, data);
 	}
 
 	public void songNext(View view) {
@@ -331,4 +445,5 @@ public class PlaySongPage extends Activity implements OnSeekBarChangeListener {
 
 		}
 	}
+
 }
