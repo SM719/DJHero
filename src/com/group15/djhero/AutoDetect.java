@@ -1,8 +1,6 @@
 package com.group15.djhero;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -56,7 +54,7 @@ public class AutoDetect extends Activity implements OnItemClickListener {
 		if (myApp.sock == null) {
 			textView.setText("Not Connected");
 
-			String connectTo = "192.168.12.216";
+			String connectTo = "192.168.0.102";
 			new SocketConnect().execute(connectTo);
 			myApp.availableDE2s.clear();
 			myApp.availableDE2s.add(connectTo);
@@ -194,17 +192,14 @@ public class AutoDetect extends Activity implements OnItemClickListener {
 
 						final String s = new String(buf, 0, bytes_avail,
 						        "US-ASCII");
-						
-						
+
 						MyApplication myApp = (MyApplication) AutoDetect.this
 						        .getApplication();
 
-						
-						
-						if(s.contains("djdj")){
+						if (s.contains("djdj")) {
 							myApp.djDoneLoad = true;
 						}
-						else{
+						else {
 							myApp.listComplete = myApp.mainSongList.addSongs(s);
 							Log.i("DE2list", s);
 							SendMessage.sendMessage("a", myApp.sock);
@@ -212,7 +207,7 @@ public class AutoDetect extends Activity implements OnItemClickListener {
 						// As explained in the tutorials, the GUI can not be
 						// updated in an asyncrhonous task. So, update the GUI
 						// using the UI thread.
-						
+
 					}
 				} catch (IOException e) {
 					e.printStackTrace();

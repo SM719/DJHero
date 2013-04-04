@@ -41,6 +41,7 @@ public class MainScreen extends Activity implements OnItemClickListener {
 		// Set up the action bar.
 		final ActionBar actionBar = getActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+
 	}
 
 	@Override
@@ -80,7 +81,7 @@ public class MainScreen extends Activity implements OnItemClickListener {
 			case R.id.action_search:
 				onSearchRequested();
 				return true;
-		
+
 			case R.id.action_update:
 				try {
 					onRefreshClick();
@@ -127,12 +128,14 @@ public class MainScreen extends Activity implements OnItemClickListener {
 	public void onResume() {
 		super.onResume();
 		myApp = (MyApplication) MainScreen.this.getApplication();
-		try{
-		LazyAdapter adapter = new LazyAdapter(MainScreen.this,
+		try {
+			LazyAdapter adapter = new LazyAdapter(MainScreen.this,
 
-				myApp.mainSongList);
-		m_listview.setAdapter(adapter);}
-		catch(NullPointerException e){}catch(IndexOutOfBoundsException e){}
+			        myApp.mainSongList);
+			m_listview.setAdapter(adapter);
+		} catch (NullPointerException e) {
+		} catch (IndexOutOfBoundsException e) {
+		}
 	}
 
 	@Override
