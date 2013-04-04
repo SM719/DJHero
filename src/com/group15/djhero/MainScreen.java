@@ -224,6 +224,7 @@ public class MainScreen extends Activity implements OnItemClickListener {
 
 		@Override
 		protected void onPostExecute(Integer result) {
+		try{
 			progress.dismiss();
 			myApp.listComplete = false;
 			myApp.images = new Bitmap[myApp.mainSongList.Songs.size()];
@@ -241,6 +242,8 @@ public class MainScreen extends Activity implements OnItemClickListener {
 				                + myApp.mainSongList.Songs.get(i).artist.replace(" ", "+"),
 				        String.valueOf(i));
 			}
+		 }catch(IndexOutOfBoundsException e){}
+		 catch(NullPointerException e){}
 		}
 	}
 

@@ -38,7 +38,8 @@ public class AutoDetect extends Activity implements OnItemClickListener {
 	private ListView m_listview;
 	ListIpAddresses adapter;
 	TextView textView;
-
+	public static final double SCAN_NETWORK = 100.0;
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		MyApplication myApp = (MyApplication) getApplication();
@@ -244,7 +245,7 @@ public class AutoDetect extends Activity implements OnItemClickListener {
 			System.out.println(ip);
 			try {
 
-				for (int i = 0; i < 255; i++) {
+				for (int i = 0; i < SCAN_NETWORK; i++) {
 					// build the next IP address
 					String addr = ip.substring(0, ip.lastIndexOf('.') + 1)
 					        + (i);
@@ -266,7 +267,7 @@ public class AutoDetect extends Activity implements OnItemClickListener {
 						System.out.println("in try");
 						// s = new Socket(pingAddr, 50002);
 						// s.connect(sock, 500);
-						s.connect(socks, 200);
+						s.connect(socks, 500);
 						s.close();
 						result.add(pingAddr.getHostAddress());
 						count = count + 1;
@@ -295,7 +296,7 @@ public class AutoDetect extends Activity implements OnItemClickListener {
 
 		@Override
 		protected void onProgressUpdate(Integer... is) {
-			progress.setProgress((int) ((is[0].intValue() / 255.0) * 100));
+			progress.setProgress((int) ((is[0].intValue() / SCAN_NETWORK) * 100));
 			if (is[1].intValue() > 0) {
 				progress.setMessage("Discovering DE2s...\nFound "
 				        + is[1].toString());
