@@ -43,6 +43,18 @@
                      android:layout_marginRight="10dp"
                      android:src="@drawable/play_48"
                       />
+                  <ImageButton
+                     android:id="@+id/imageStopDJ"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_centerHorizontal="true"
+                     android:layout_centerVertical="true"
+                     android:layout_weight=".5"
+                     android:background="@drawable/selectable_item_bg"
+                     android:onClick="stopMix"
+                     android:layout_marginRight="10dp"
+                     android:src="@drawable/ic_media_stop"
+                      />
 
     <ImageButton
         android:id="@+id/imageButton2"

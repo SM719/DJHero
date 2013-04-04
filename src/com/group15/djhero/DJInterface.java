@@ -253,6 +253,10 @@ public class DJInterface extends FragmentActivity implements OnSeekBarChangeList
 		SendMessage.sendMessage("h", myApp.sock);
 	}
 	
+	public void stopMix(View view){
+		SendMessage.sendMessage("s", myApp.sock);
+	}
+	
 	@Override
 	// Update the volume progress as the user changes it
 	public void onProgressChanged(SeekBar arg0, int progress, boolean arg2) {
