@@ -140,7 +140,7 @@ public class SwipeDetector implements OnTouchListener {
 		protected Integer doInBackground(Void... arg0) {
 
     		try {
-				Thread.sleep(2000);
+				Thread.sleep(1000);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -161,7 +161,7 @@ public class SwipeDetector implements OnTouchListener {
 		protected Integer doInBackground(Void... arg0) {
 
     		try {
-				Thread.sleep(2000);
+				Thread.sleep(1000);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
