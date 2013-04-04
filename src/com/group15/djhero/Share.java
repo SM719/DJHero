@@ -42,8 +42,8 @@ public class Share extends Activity {
     private static final int SHARE_SOUND  = 2;
 
     private static final File RECORDING = new File(
-    		Environment.getDataDirectory(),
-            "boing.wav");
+    		Environment.getExternalStorageDirectory(),
+            "MIX.wav");
 
     private static final Uri MARKET_URI = Uri.parse("market://details?id=com.soundcloud.android");
     private static final int DIALOG_NOT_INSTALLED = 0;
@@ -133,7 +133,7 @@ public class Share extends Activity {
                 .putExtra("com.soundcloud.android.extra.title", title)
                 .putExtra("com.soundcloud.android.extra.where", location)
                 .putExtra("com.soundcloud.android.extra.description", description)
-                .putExtra("com.soundcloud.android.extra.public", false)
+                .putExtra("com.soundcloud.android.extra.public", true)
                 .putExtra("com.soundcloud.android.extra.tags", tags)
                 .putExtra("com.soundcloud.android.extra.genre", genre)
                 .putExtra("com.soundcloud.android.extra.location", getLocation());
