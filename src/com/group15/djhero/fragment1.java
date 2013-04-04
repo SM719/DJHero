@@ -75,6 +75,9 @@ public class fragment1 extends Fragment implements OnClickListener {
 		myApp = (MyApplication) getActivity().getApplication();
 		TextView textViewforSongPosition = (TextView) getView().findViewById(R.id.songNameFrag);
 		textViewforSongPosition.setText(myApp.songSelectedRight.Title);
+		
+		MaskImage record = (MaskImage) getView().findViewById(R.id.imageView1);
+		record.setContentImage(myApp.songSelectedRightBitmap);
 	}
 
 	@Override

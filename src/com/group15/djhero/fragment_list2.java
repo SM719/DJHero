@@ -34,9 +34,11 @@ public class fragment_list2 extends Fragment implements OnItemClickListener {
 	@Override
 	public void onItemClick(AdapterView<?> adapter, View arg1, int position,
 	        long arg3) {
+		
 		myApp.songSelectedLeft = myApp.mainSongList.Songs.get(position);
+		myApp.songSelectedLeftBitmap = myApp.images[position];
+		
 		getActivity().getFragmentManager().beginTransaction().remove(this).commit();
-
 		FragmentManager fragmentManager = getFragmentManager();
 		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
 		fragment2 fragment2 = new fragment2();
