@@ -37,9 +37,13 @@ public class MainScreen extends Activity implements OnItemClickListener {
 		m_listview = (ListView) findViewById(R.id.main_list_view);
 		m_listview.setOnItemClickListener(this);
 
-		SwipeDetector gesture = new SwipeDetector(this);
-		RelativeLayout currentLayout = (RelativeLayout)this.findViewById(R.id.RelativeLayoutMain);
-		currentLayout.setOnTouchListener(gesture);
+//		SwipeDetector gesture = new SwipeDetector(this);
+//		ListView currentLayout = (ListView)this.findViewById(R.id.main_list_view);
+//		currentLayout.setOnTouchListener(gesture);
+		
+		SwipeDetector gesture2 = new SwipeDetector(this);
+		RelativeLayout currentLayout2 = (RelativeLayout) this.findViewById(R.id.RelativeLayoutMain);
+		currentLayout2.setOnTouchListener(gesture2);
 		
 		// Set up the action bar.
 		final ActionBar actionBar = getActionBar();

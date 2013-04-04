@@ -110,7 +110,7 @@ public class PlaySongPage extends Activity implements OnSeekBarChangeListener {
 			public void onShake() {
 				songNext(null);
 				Log.i("shake:", "sending next\n");
-				// vibe.vibrate(100);
+				 vibe.vibrate(100);
 				try {
 					Thread.sleep(500);
 				} catch (InterruptedException e) {

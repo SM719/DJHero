@@ -53,15 +53,18 @@ public class AutoDetect extends Activity implements OnItemClickListener {
 		setTitle("Connect to DE2");
 		if (myApp.sock == null) {
 			textView.setText("Not Connected");
-			String connectTo = "192.168.0.102";
-			new SocketConnect().execute(connectTo);
-			myApp.availableDE2s.clear();
-			myApp.availableDE2s.add(connectTo);
-			this.adapter = new ListIpAddresses(this, myApp.availableDE2s);
-			myApp.connectedTo = myApp.availableDE2s.get(0);
-			TCPReadTimerTask tcp_task = new TCPReadTimerTask();
-			Timer tcp_timer = new Timer();
-			tcp_timer.schedule(tcp_task, 3000, 75);
+			new FindDE2sOnNetwork().execute();
+			
+			
+//			String connectTo = "192.168.2.4";
+//			new SocketConnect().execute(connectTo);
+//			myApp.availableDE2s.clear();
+//			myApp.availableDE2s.add(connectTo);
+//			this.adapter = new ListIpAddresses(this, myApp.availableDE2s);
+//			myApp.connectedTo = myApp.availableDE2s.get(0);
+//			TCPReadTimerTask tcp_task = new TCPReadTimerTask();
+//			Timer tcp_timer = new Timer();
+//			tcp_timer.schedule(tcp_task, 3000, 75);
 		} else {
 			adapter = new ListIpAddresses(AutoDetect.this, myApp.availableDE2s);
 			m_listview.setAdapter(adapter);
@@ -263,7 +266,7 @@ public class AutoDetect extends Activity implements OnItemClickListener {
 						System.out.println("in try");
 						// s = new Socket(pingAddr, 50002);
 						// s.connect(sock, 500);
-						s.connect(socks, 1000);
+						s.connect(socks, 200);
 						s.close();
 						result.add(pingAddr.getHostAddress());
 						count = count + 1;

@@ -253,7 +253,7 @@ public class DJInterface extends FragmentActivity implements OnSeekBarChangeList
 	}
 
 	public void stopMix(View view) {
-		SendMessage.sendMessage("s", myApp.sock);
+		SendMessage.sendMessage("o", myApp.sock);
 	}
 
 	@Override
