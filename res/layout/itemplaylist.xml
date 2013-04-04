@@ -1,30 +1,33 @@
-<?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-  xmlns:android="http://schemas.android.com/apk/res/android"
-  android:layout_width="fill_parent"
-  android:layout_height="wrap_content">
-  <ImageView
-  	  android:id="@+id/imagePlayListSelect"
-	  android:layout_width="50dip"
-	  android:layout_height="50dip" 
-	  android:scaleType="centerCrop"/>
-  <TextView
-  	  android:id="@+id/textViewPlayListSelect"
-  	  android:layout_width="fill_parent"
-	  android:layout_height="wrap_content"
-	  android:layout_weight=".5" android:layout_gravity="left|center_vertical" android:textSize="20dip" android:layout_marginLeft="10dip"/>
+ <RelativeLayout 
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal"
+    android:layout_width="fill_parent" 
+    android:layout_height="wrap_content">
 
-  <CheckBox
-      android:id="@+id/checkBoxPlayListSelect"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:clickable="false"
-      android:focusable="false"
-      android:gravity="right"
-      android:layout_weight="0"
-      android:layout_marginTop="10dip"
-      android:layout_marginRight="10dip"
-      android:text="@string/empty" />
+    <ImageView
+        android:id="@+id/imagePlayListSelect"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:scaleType="centerCrop"
+        android:layout_alignParentLeft="true"/>
 
-</LinearLayout>
+    <TextView
+        android:id="@+id/textViewPlayListSelect"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/imagePlayListSelect"
+        android:textSize="20sp" />
+
+    <CheckBox
+        android:id="@+id/checkBoxPlayListSelect"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:clickable="false"
+        android:focusable="false"
+        android:text="@string/empty" />
+
+</RelativeLayout>
 
