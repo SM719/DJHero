@@ -8,7 +8,7 @@ public class Song {
 	
 	public Song(){
 		id = 0;
-		Title = "List of Songs";
+		Title = "Select song";
 		Length = 0;
 		artist = "artist";
 	}

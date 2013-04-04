@@ -14,7 +14,7 @@ public class SwipeDetector implements OnTouchListener {
  
     private long downTime;
     private float startX, startY;
-    private float MIN_SWIPE_DISTANCE = 1;
+    private float MIN_SWIPE_DISTANCE = 100;
 
  
     private Activity activity;
@@ -28,7 +28,6 @@ public class SwipeDetector implements OnTouchListener {
     @Override
     public boolean onTouch(View view, MotionEvent event)
     {
-    	System.out.println("in onTouch");
         // if no listener has been registered, ignore the event.
  
         if (event.getAction() == MotionEvent.ACTION_DOWN)
@@ -55,6 +54,8 @@ public class SwipeDetector implements OnTouchListener {
             {
                 float dx = Math.abs(startX - endX);
                 float dy = Math.abs(startY - endY);
+               
+                //See if the swipe was up/down movement
                 if(dy > dx)
                 {
                     if (startY > endY)
@@ -62,6 +63,7 @@ public class SwipeDetector implements OnTouchListener {
                     else
                     {}
                     }
+               //If the swipe was a left/right movement
                 else
                 {
                     if (startX > endX)
@@ -81,13 +83,16 @@ public class SwipeDetector implements OnTouchListener {
  
     private void swipeRight() {
 		// TODO Auto-generated method stub
-    	((MainScreen)activity).goToDJ();
+    	if (activity instanceof MainScreen){
+    		((MainScreen)activity).goToDJ();
+    	}
     	}
 
 	private void swipeLeft() {
 		// TODO Auto-generated method stub
-    	((DJInterface)activity).goToMusic();
-		
+    	if (activity instanceof DJInterface){
+		((DJInterface)activity).goToMusic();
+    	}
 	}
 
 
