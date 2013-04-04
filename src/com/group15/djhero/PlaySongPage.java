@@ -78,7 +78,9 @@ public class PlaySongPage extends Activity implements OnSeekBarChangeListener {
 		
 		myApp.timeLeft.setTextColor(Color.WHITE);
 		myApp.timeLeft.setText(String.valueOf((myApp.lengthOfCurrentSong - myApp.progressTracker+1)/60)+":"+String.format("%02d", Integer.valueOf(((myApp.lengthOfCurrentSong - myApp.progressTracker+1)%60))));
-
+		
+		setTitle(myApp.mainSongList.Songs.get(myApp.positionOfSong).Title);
+		
 		// Set up a timer task. We will use the timer to check the
 		// to update the song progress bar
 		if(!myApp.timeFlag){
@@ -138,6 +140,8 @@ public class PlaySongPage extends Activity implements OnSeekBarChangeListener {
 		myApp.lengthOfCurrentSong = (myApp.songlist.Songs.get(myApp.positionOfSong).Length) / 1000;
 		myApp.songProgressBar.setMax(myApp.lengthOfCurrentSong);
 		
+		setTitle(myApp.mainSongList.Songs.get(myApp.positionOfSong).Title);
+		
 		try {
 			myApp.imageView.setImageBitmap(myApp.images[myApp.positionOfSong]);
 		} catch (NullPointerException e) {
@@ -169,6 +173,8 @@ public class PlaySongPage extends Activity implements OnSeekBarChangeListener {
 		myApp.lengthOfCurrentSong = (myApp.songlist.Songs.get(myApp.positionOfSong).Length) / 1000;
 		myApp.songProgressBar.setMax(myApp.lengthOfCurrentSong);
 
+		setTitle(myApp.mainSongList.Songs.get(myApp.positionOfSong).Title);
+		
 		try {
 			myApp.imageView.setImageBitmap(myApp.images[myApp.positionOfSong]);
 		} catch (NullPointerException e) {

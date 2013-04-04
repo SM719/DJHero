@@ -67,8 +67,8 @@ public class DJInterface extends FragmentActivity implements OnSeekBarChangeList
 	//Message sent to DE2 is format of d id1 id2
 	public void PlayPause(View view) {
 		SendMessage.sendMessage("d "+String.valueOf(myApp.songSelectedLeft.id)+" "+String.valueOf(myApp.songSelectedRight.id), myApp.sock);
-//		for(int i =0; i<20000; i++);
-//		SendMessage.sendMessage("d "+String.valueOf(myApp.songSelectedLeft.id)+" "+String.valueOf(myApp.songSelectedRight.id), myApp.sock);
+		for(int i =0; i<20000; i++);
+		SendMessage.sendMessage("d "+String.valueOf(myApp.songSelectedLeft.id)+" "+String.valueOf(myApp.songSelectedRight.id), myApp.sock);
 		
 		// Display a progress dialog while the DE2 loads the songs to mix into memory
 		new DjProgressDialog().execute();
@@ -251,6 +251,10 @@ public class DJInterface extends FragmentActivity implements OnSeekBarChangeList
 
 	public void recordMix(View view){
 		SendMessage.sendMessage("h", myApp.sock);
+	}
+	
+	public void stopMix(View view){
+		SendMessage.sendMessage("s", myApp.sock);
 	}
 	
 	@Override
