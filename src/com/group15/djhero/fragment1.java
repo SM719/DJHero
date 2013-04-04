@@ -30,12 +30,13 @@ public class fragment1 extends Fragment implements OnClickListener {
 	ImageButton	imageButton_rew;
 	ImageButton imageButton_forward;
 	ImageButton imageButton_rewind;
+	View V;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 	        Bundle savedInstanceState) {
 		// Inflate the layout for this fragment
-		View V = inflater.inflate(R.layout.fragment_test, container, false);
+		V = inflater.inflate(R.layout.fragment_test, container, false);
 		
 		imageButton_add = (ImageButton) V.findViewById(R.id.imageButton_add);
 		imageButton_ff = (ImageButton) V.findViewById(R.id.imageButton_ff);
@@ -48,21 +49,21 @@ public class fragment1 extends Fragment implements OnClickListener {
 		imageButton_rew.setOnClickListener(this);
 		imageButton_forward.setOnClickListener(this);
 		imageButton_rewind.setOnClickListener(this);
-		turncw(V);
+
 		SwipeDetector gesture = new SwipeDetector(this);
 		ImageView currentLayout = (ImageView) V.findViewById(R.id.imageView1);
 		currentLayout.setOnTouchListener(gesture);
 		return V;
 	}
 
-	public void turncw(View V){
+	public void turncw(){
 		Animation rotate = AnimationUtils.loadAnimation(getActivity(), R.anim.rotate);
 		V.findViewById(R.id.imageView1).startAnimation(rotate);
 		rotate.reset();
 		rotate.start();
 	}
 	
-	public void turnccw(View V){
+	public void turnccw(){
 		Animation rotate = AnimationUtils.loadAnimation(getActivity(), R.anim.reverserotate);
 		V.findViewById(R.id.imageView1).startAnimation(rotate);
 		rotate.reset();
@@ -135,8 +136,4 @@ public class fragment1 extends Fragment implements OnClickListener {
 		mImageView.setBackgroundResource(R.drawable.frame);
 	}
 
-	static public void test() {
-		// TODO Auto-generated method stub
-		
-	}
 }

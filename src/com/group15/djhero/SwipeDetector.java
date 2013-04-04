@@ -1,7 +1,13 @@
 package com.group15.djhero;
 
+import com.group15.djhero.DJInterface.DjProgressDialog;
+import com.group15.djhero.DJInterface.DownloadImages;
+
 import android.app.Activity;
 import android.app.Fragment;
+import android.app.ProgressDialog;
+import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
@@ -65,11 +71,11 @@ public class SwipeDetector implements OnTouchListener {
                 {
                     if (startY > endY)
                     {
-                    	swipeDown();
+                    	swipeUp();
                     }
                     else
                     {
-                    	swipeUp();
+                    	swipeDown();
                     }
                     }
                //If the swipe was a left/right movement
@@ -107,6 +113,7 @@ public class SwipeDetector implements OnTouchListener {
     private void swipeUp(){
     	if(fragment instanceof fragment1){
     		((fragment1) fragment).forwardFrag1();
+    		
     	}
     	else if(fragment instanceof fragment2){
     		((fragment2) fragment).forwardFrag2();
@@ -116,10 +123,56 @@ public class SwipeDetector implements OnTouchListener {
     private void swipeDown(){
     	if(fragment instanceof fragment1){
     		((fragment1) fragment).rewindFrag1();
+    		((fragment1) fragment).turnccw();
+    		new RotateWait1().execute();
     	}
+    	
     	else if(fragment instanceof fragment2){
     		((fragment2) fragment).rewindFrag2();
+    		((fragment2) fragment).turnccw();
+    		new RotateWait2().execute();
     	}
 	}
+    
+    class RotateWait1 extends AsyncTask<Void, Void, Integer> {
 
+    	@Override
+		protected Integer doInBackground(Void... arg0) {
+
+    		try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return 0;
+
+		}
+
+		@Override
+		protected void onPostExecute(Integer result) {
+	    		((fragment1) fragment).turncw();
+		}
+    }
+    
+    class RotateWait2 extends AsyncTask<Void, Void, Integer> {
+
+    	@Override
+		protected Integer doInBackground(Void... arg0) {
+
+    		try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return 0;
+
+		}
+
+		@Override
+		protected void onPostExecute(Integer result) {
+	    		((fragment2) fragment).turncw();
+		}
+    }
 }

@@ -31,6 +31,8 @@ import android.widget.SeekBar.OnSeekBarChangeListener;
 public class DJInterface extends FragmentActivity implements OnSeekBarChangeListener {
 	
 	MyApplication myApp;
+	fragment1 fragment;
+	fragment2 fragment2;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -42,11 +44,11 @@ public class DJInterface extends FragmentActivity implements OnSeekBarChangeList
 		FragmentTransaction fragmentTransaction1 = fragmentManager.beginTransaction();
 		FragmentTransaction fragmentTransaction2 = fragmentManager.beginTransaction();
 
-		fragment1 fragment = new fragment1();
+		fragment = new fragment1();
 		fragmentTransaction1.add(R.id.fragment_container2, fragment);
 		fragmentTransaction1.commit();
 
-		fragment2 fragment2 = new fragment2();
+		 fragment2 = new fragment2();
 		fragmentTransaction2.add(R.id.fragment_container, fragment2);
 		fragmentTransaction2.commit();
 		
@@ -65,8 +67,8 @@ public class DJInterface extends FragmentActivity implements OnSeekBarChangeList
 	//Message sent to DE2 is format of d id1 id2
 	public void PlayPause(View view) {
 		SendMessage.sendMessage("d "+String.valueOf(myApp.songSelectedLeft.id)+" "+String.valueOf(myApp.songSelectedRight.id), myApp.sock);
-		for(int i =0; i<20000; i++);
-		SendMessage.sendMessage("d "+String.valueOf(myApp.songSelectedLeft.id)+" "+String.valueOf(myApp.songSelectedRight.id), myApp.sock);
+//		for(int i =0; i<20000; i++);
+//		SendMessage.sendMessage("d "+String.valueOf(myApp.songSelectedLeft.id)+" "+String.valueOf(myApp.songSelectedRight.id), myApp.sock);
 		
 		// Display a progress dialog while the DE2 loads the songs to mix into memory
 		new DjProgressDialog().execute();
@@ -109,6 +111,9 @@ public class DJInterface extends FragmentActivity implements OnSeekBarChangeList
 		@Override
 		protected void onPostExecute(Integer result) {
 			progress.dismiss();
+			fragment.turncw();
+			fragment2.turncw();
+			
 		}
 	}
 
@@ -212,6 +217,7 @@ public class DJInterface extends FragmentActivity implements OnSeekBarChangeList
 
 		}
 	}
+	
 
 	// This is the asynchronous task. It is extended from AsyncTask
 	class DownloadImages extends
