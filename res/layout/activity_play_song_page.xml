@@ -35,7 +35,7 @@
             
         <TextView
         android:id="@+id/songName"
-         android:layout_marginTop="20dp"
+         android:layout_marginTop="15dp"
 android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/progressBar1"
@@ -114,8 +114,9 @@ android:layout_width="match_parent"
         android:id="@+id/seekBar0"
         android:gravity="center_vertical"
         android:layout_width="300dp"
+        android:layout_gravity="center"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="15dp"
+        android:layout_marginBottom="10dp"
         android:max="80" />
 
 </LinearLayout>
