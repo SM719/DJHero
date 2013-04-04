@@ -85,11 +85,14 @@ public class PlaySongPage extends Activity implements OnSeekBarChangeListener {
 		myApp.songProgressBar.setMax(myApp.lengthOfCurrentSong);
 
 		myApp.timeLeft.setTextColor(Color.WHITE);
+
 		myApp.timeLeft.setText(String
 		        .valueOf((myApp.lengthOfCurrentSong - myApp.progressTracker + 1) / 60)
 		        + ":"
 		        + String.format("%02d", Integer.valueOf(((myApp.lengthOfCurrentSong
 		                - myApp.progressTracker + 1) % 60))));
+
+		setTitle(myApp.mainSongList.Songs.get(myApp.positionOfSong).Title);
 
 		// Set up a timer task. We will use the timer to check the
 		// to update the song progress bar
@@ -137,6 +140,23 @@ public class PlaySongPage extends Activity implements OnSeekBarChangeListener {
 		}
 	}
 
+	public void StopMusic(View view) {
+		MyApplication myApp = (MyApplication) PlaySongPage.this
+		        .getApplication();
+		SendMessage.sendMessage("s", myApp.sock);
+		myApp.playButton = true;
+		imageButton.setImageResource((R.drawable.play));
+		myApp.stopSignal = true;
+		myApp.progressTracker = 0;
+		myApp.songProgressBar.setProgress(myApp.progressTracker);
+		myApp.timeLeft.setText(String
+		        .valueOf((myApp.lengthOfCurrentSong - myApp.progressTracker + 1) / 60)
+		        + ":"
+		        + String.format("%02d", Integer.valueOf(((myApp.lengthOfCurrentSong
+		                - myApp.progressTracker + 2) % 60))));
+
+	}
+
 	public void PausePlay(View view) {
 		MyApplication myApp = (MyApplication) PlaySongPage.this
 		        .getApplication();
@@ -147,7 +167,16 @@ public class PlaySongPage extends Activity implements OnSeekBarChangeListener {
 			imageButton.setImageResource((R.drawable.play));
 			myApp.playButton = true;
 		} else {
-			SendMessage.sendMessage("r ", myApp.sock);
+
+			if (myApp.stopSignal == false) {
+				SendMessage.sendMessage("r ", myApp.sock);
+			}
+			else {
+				SendMessage.sendMessage("p "
+				        + myApp.mainSongList.Songs.get(myApp.positionOfSong).id, myApp.sock);
+				myApp.stopSignal = false;
+			}
+
 			imageButton.setImageResource((R.drawable.pause));
 			myApp.playButton = false;
 		}
@@ -172,6 +201,7 @@ public class PlaySongPage extends Activity implements OnSeekBarChangeListener {
 		myApp.lengthOfCurrentSong =
 		        (myApp.songlist.Songs.get(myApp.positionOfSong).Length) / 1000;
 		myApp.songProgressBar.setMax(myApp.lengthOfCurrentSong);
+		setTitle(myApp.mainSongList.Songs.get(myApp.positionOfSong).Title);
 
 		try {
 			myApp.imageView.setImageBitmap(myApp.images[myApp.positionOfSong]);
@@ -205,6 +235,8 @@ public class PlaySongPage extends Activity implements OnSeekBarChangeListener {
 		myApp.lengthOfCurrentSong =
 		        (myApp.songlist.Songs.get(myApp.positionOfSong).Length) / 1000;
 		myApp.songProgressBar.setMax(myApp.lengthOfCurrentSong);
+
+		setTitle(myApp.mainSongList.Songs.get(myApp.positionOfSong).Title);
 
 		try {
 			myApp.imageView.setImageBitmap(myApp.images[myApp.positionOfSong]);

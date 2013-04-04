@@ -53,7 +53,6 @@ public class AutoDetect extends Activity implements OnItemClickListener {
 		setTitle("Connect to DE2");
 		if (myApp.sock == null) {
 			textView.setText("Not Connected");
-
 			String connectTo = "192.168.0.102";
 			new SocketConnect().execute(connectTo);
 			myApp.availableDE2s.clear();

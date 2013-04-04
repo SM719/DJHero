@@ -22,6 +22,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 
 public class MainScreen extends Activity implements OnItemClickListener {
 
@@ -36,8 +37,10 @@ public class MainScreen extends Activity implements OnItemClickListener {
 		m_listview = (ListView) findViewById(R.id.main_list_view);
 		m_listview.setOnItemClickListener(this);
 
-		System.out.println(getApplicationContext().getFilesDir().toString());
-
+		SwipeDetector gesture = new SwipeDetector(this);
+		RelativeLayout currentLayout = (RelativeLayout)this.findViewById(R.id.RelativeLayoutMain);
+		currentLayout.setOnTouchListener(gesture);
+		
 		// Set up the action bar.
 		final ActionBar actionBar = getActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
@@ -159,6 +162,12 @@ public class MainScreen extends Activity implements OnItemClickListener {
 		}
 	}
 
+	public void goToDJ(){
+		Intent djIntent = new Intent(this, DJInterface.class);
+		djIntent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+		this.startActivity(djIntent);
+	}
+	
 	public void onRefreshClick() throws InterruptedException {
 		if (myApp.sock == null) {
 			// Take the user to the settings view if the socket is not open

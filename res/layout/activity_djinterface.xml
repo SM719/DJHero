@@ -1,5 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/dj_interface_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginBottom="0dp"
@@ -18,7 +19,7 @@
          <FrameLayout
              android:id="@+id/fragment_container2"
              android:layout_width="220dp"
-             android:layout_height="208dp"
+             android:layout_height="240dp"
              android:layout_alignParentRight="true"
              android:layout_alignParentTop="true"
              android:layout_weight="0.47" >
@@ -41,6 +42,18 @@
                      android:onClick="PlayPause"
                      android:layout_marginRight="10dp"
                      android:src="@drawable/play_48"
+                      />
+                  <ImageButton
+                     android:id="@+id/imageStopDJ"
+                     android:layout_width="wrap_content"
+                     android:layout_height="wrap_content"
+                     android:layout_centerHorizontal="true"
+                     android:layout_centerVertical="true"
+                     android:layout_weight=".5"
+                     android:background="@drawable/selectable_item_bg"
+                     android:onClick="stopMix"
+                     android:layout_marginRight="10dp"
+                     android:src="@drawable/ic_media_stop"
                       />
 
     <ImageButton
@@ -72,7 +85,7 @@
           <FrameLayout
         android:id="@+id/fragment_container"
         android:layout_width="220dp"
-        android:layout_height="match_parent"
+        android:layout_height="240dp"
         android:layout_weight=".5"
         android:layout_alignBottom="@+id/fragment_container2"
         android:layout_alignTop="@+id/fragment_container2" >
@@ -83,11 +96,12 @@
  <SeekBar
      android:id="@+id/seekBar1"
      android:layout_width="300dp"
-     android:layout_marginTop="45dp"
+     android:layout_marginTop="10dp"
      android:layout_height="30dp"
      android:layout_marginBottom="10dp"
      android:layout_below="@+id/fragment_container2"
      android:layout_centerHorizontal="true"
+   	 android:progressDrawable="@android:color/transparent"
      android:layout_gravity="center"
      android:max="140" />
 

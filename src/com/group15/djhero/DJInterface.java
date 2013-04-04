@@ -18,12 +18,15 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 
 public class DJInterface extends FragmentActivity implements OnSeekBarChangeListener {
 
 	MyApplication myApp;
+	fragment1 fragment;
+	fragment2 fragment2;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -35,11 +38,11 @@ public class DJInterface extends FragmentActivity implements OnSeekBarChangeList
 		FragmentTransaction fragmentTransaction1 = fragmentManager.beginTransaction();
 		FragmentTransaction fragmentTransaction2 = fragmentManager.beginTransaction();
 
-		fragment1 fragment = new fragment1();
+		fragment = new fragment1();
 		fragmentTransaction1.add(R.id.fragment_container2, fragment);
 		fragmentTransaction1.commit();
 
-		fragment2 fragment2 = new fragment2();
+		fragment2 = new fragment2();
 		fragmentTransaction2.add(R.id.fragment_container, fragment2);
 		fragmentTransaction2.commit();
 
@@ -47,11 +50,21 @@ public class DJInterface extends FragmentActivity implements OnSeekBarChangeList
 		bar.setOnSeekBarChangeListener(this); // set Seekbar listener.
 		bar.setProgress(myApp.djVolumeBar);
 
+		SwipeDetector gesture = new SwipeDetector(this);
+		LinearLayout currentLayout = (LinearLayout) this.findViewById(R.id.dj_interface_layout);
+		currentLayout.setOnTouchListener(gesture);
+
 	}
 
 	// Send message to start playing songs specified by id
 	// Message sent to DE2 is format of d id1 id2
 	public void PlayPause(View view) {
+
+		SendMessage.sendMessage(
+		        "d " + String.valueOf(myApp.songSelectedLeft.id) + " "
+		                + String.valueOf(myApp.songSelectedRight.id), myApp.sock);
+		for (int i = 0; i < 20000; i++)
+			;
 		SendMessage.sendMessage(
 		        "d " + String.valueOf(myApp.songSelectedLeft.id) + " "
 		                + String.valueOf(myApp.songSelectedRight.id), myApp.sock);
@@ -98,6 +111,9 @@ public class DJInterface extends FragmentActivity implements OnSeekBarChangeList
 		@Override
 		protected void onPostExecute(Integer result) {
 			progress.dismiss();
+			fragment.turncw();
+			fragment2.turncw();
+
 		}
 	}
 
@@ -236,6 +252,10 @@ public class DJInterface extends FragmentActivity implements OnSeekBarChangeList
 		SendMessage.sendMessage("h", myApp.sock);
 	}
 
+	public void stopMix(View view) {
+		SendMessage.sendMessage("s", myApp.sock);
+	}
+
 	@Override
 	// Update the volume progress as the user changes it
 	public void onProgressChanged(SeekBar arg0, int progress, boolean arg2) {
@@ -274,4 +294,9 @@ public class DJInterface extends FragmentActivity implements OnSeekBarChangeList
 		// TODO Auto-generated method stub
 	}
 
+	public void goToMusic() {
+		// TODO Auto-generated method stub
+		finish();
+
+	}
 }
