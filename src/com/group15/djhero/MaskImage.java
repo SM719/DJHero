@@ -17,6 +17,9 @@ public class MaskImage extends ImageView{
 	int mMaskSource=0;
 	int mBackgroundSource=0;
 	RuntimeException mException;
+	Bitmap original;
+	Bitmap mask;
+	Bitmap result;
 
 	public MaskImage(Context context, AttributeSet attrs) {
 		super(context, attrs);
@@ -33,9 +36,9 @@ public class MaskImage extends ImageView{
 		if (mException != null) 
 			throw mException;
 
-		Bitmap original = BitmapFactory.decodeResource(getResources(), mImageSource);
-		Bitmap mask = BitmapFactory.decodeResource(getResources(), mMaskSource);
-		Bitmap result = Bitmap.createBitmap(mask.getWidth(), mask.getHeight(), Config.ARGB_8888);
+		original = BitmapFactory.decodeResource(getResources(), mImageSource);
+		mask = BitmapFactory.decodeResource(getResources(), mMaskSource);
+		result = Bitmap.createBitmap(mask.getWidth(), mask.getHeight(), Config.ARGB_8888);
 		Canvas mCanvas = new Canvas(result);
 		Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
 		paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_IN));
@@ -47,5 +50,18 @@ public class MaskImage extends ImageView{
 		setBackgroundResource(mBackgroundSource);
 		
 		a.recycle();
+	}
+	
+	public void setContentImage(Bitmap content){
+		original = Bitmap.createScaledBitmap(content, mask.getWidth(), mask.getHeight(), false);
+		Canvas mCanvas = new Canvas(result);
+		Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+		paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_IN));
+		mCanvas.drawBitmap(original, 0, 0, null);
+		mCanvas.drawBitmap(mask, 0, 0, paint);
+		paint.setXfermode(null);
+		setImageBitmap(result);
+		setScaleType(ScaleType.CENTER);
+		setBackgroundResource(mBackgroundSource);
 	}
 }

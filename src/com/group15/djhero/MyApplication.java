@@ -24,6 +24,8 @@ public class MyApplication extends Application {
 	List<Boolean> selectedPlayListsToDelete = null;
 	Song songSelectedLeft = new Song();
 	Song songSelectedRight = new Song();
+	Bitmap songSelectedLeftBitmap = Bitmap.createBitmap(280,280,Bitmap.Config.ARGB_8888);
+	Bitmap songSelectedRightBitmap = Bitmap.createBitmap(280,280,Bitmap.Config.ARGB_8888);
 	Boolean receivingFile = false;
 	Boolean djDoneLoad = false;
 	
