@@ -1,9 +1,8 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
-
-    <item
-        android:id="@+id/action_speaker"
-        android:orderInCategory="100"
-        android:showAsAction="never"
-        android:title="@string/action_speaker"/>
+    
+    <item android:id="@+id/action_speaker"
+          android:title="@string/action_speaker"
+           android:icon="@drawable/perm_group_microphone"
+          android:showAsAction="always|withText"/>
 
 </menu>
