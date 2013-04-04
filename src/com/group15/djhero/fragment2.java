@@ -78,9 +78,14 @@ public class fragment2 extends Fragment implements OnClickListener {
 		TextView textViewforSongPosition = (TextView) getView().findViewById(R.id.songNameFrag);
 		textViewforSongPosition.setText(myApp.songSelectedLeft.Title);
 		
+		try{
 		MaskImage record = (MaskImage) getView().findViewById(R.id.imageView1);
 		record.setContentImage(myApp.songSelectedLeftBitmap);
+		}
+		catch(NullPointerException e){}
+		catch(IndexOutOfBoundsException e){}
 	}
+		
 
 	@Override
 	public void onClick(View V) {
