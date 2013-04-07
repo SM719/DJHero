@@ -12,6 +12,9 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+/*
+ * Custom list adapter to display list of songs with images
+ */
 public class LazyAdapter extends BaseAdapter {
 
 	private Activity activity;
@@ -20,6 +23,7 @@ public class LazyAdapter extends BaseAdapter {
 	List<View> vi_ = new ArrayList<View>();
 	int count;
 
+	// initialize list view
 	public LazyAdapter(Activity a, songList d) {
 		activity = a;
 		data = d;
@@ -28,6 +32,7 @@ public class LazyAdapter extends BaseAdapter {
 		count = 0;
 	}
 
+	// get size of list
 	@Override
 	public int getCount() {
 		if (data.Songs == null)
@@ -35,16 +40,19 @@ public class LazyAdapter extends BaseAdapter {
 		return data.Songs.size();
 	}
 
+	// return item at position
 	@Override
 	public Object getItem(int position) {
 		return vi_.get(position);
 	}
 
+	// return id of item at position
 	@Override
 	public long getItemId(int position) {
 		return vi_.get(position).getId();
 	}
 
+	// get view at position
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View vi = convertView;

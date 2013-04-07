@@ -7,6 +7,9 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.widget.Toast;
 
+/*
+ * Class to detect shakes using accelerometer
+ */
 public class ShakeListener implements SensorEventListener
 {
 	private static final int FORCE_THRESHOLD = 2000;

@@ -1,17 +1,15 @@
 package com.group15.djhero;
 
-import com.group15.djhero.DJInterface.DjProgressDialog;
-import com.group15.djhero.DJInterface.DownloadImages;
-
 import android.app.Activity;
 import android.app.Fragment;
-import android.app.ProgressDialog;
-import android.graphics.Bitmap;
 import android.os.AsyncTask;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
 
+/*
+ * Class to detect swipes on pages
+ */
 public class SwipeDetector implements OnTouchListener {
  
     public static final int DIRECTION_SWIPE_LEFT = 0;
@@ -19,7 +17,6 @@ public class SwipeDetector implements OnTouchListener {
     public static final int DIRECTION_SWIPE_UP = 2;
     public static final int DIRECTION_SWIPE_DOWN = 3;
  
-    private long downTime;
     private float startX, startY;
     private float MIN_SWIPE_DISTANCE = 100;
 
@@ -27,39 +24,39 @@ public class SwipeDetector implements OnTouchListener {
     private Activity activity;
     private Fragment fragment;
     
+    //constructor when called swipe from an activity
     public SwipeDetector(Activity activity){
     	this.activity = activity;
     }
     
+    //constructor when swipe called from fragment
     public SwipeDetector(Fragment fragment){
     	this.fragment = fragment;
     }
 
  
+    //when the user touches the screen
     @Override
     public boolean onTouch(View view, MotionEvent event)
     {
         // if no listener has been registered, ignore the event.
  
+    	//get position of touch of user
         if (event.getAction() == MotionEvent.ACTION_DOWN)
         {
-            downTime = System.currentTimeMillis();
             startX = event.getRawX();
             startY = event.getRawY();
             return true;
         }
  
+        //when user raises finger, get position and calculate distance moved, if user moves more than set minimum do swipe action
         if (event.getAction() == MotionEvent.ACTION_UP)
         {
             float endX, endY;
             endX = event.getRawX();
             endY = event.getRawY();
  
-            long upTime = System.currentTimeMillis();
-            long swipeTime = (upTime - downTime) / 1000;
- 
             float swipeDistance = (float)Math.sqrt(Math.pow(startX - endX, 2) + Math.pow(startY - endY, 2));
-            float velocity = swipeDistance / swipeTime;
  
             if(swipeDistance >= MIN_SWIPE_DISTANCE)
             {
@@ -96,20 +93,21 @@ public class SwipeDetector implements OnTouchListener {
         return false;
     }
  
+    //if user is on music player then go to dj
     private void swipeRight() {
-		// TODO Auto-generated method stub
     	if (activity instanceof MainScreen){
     		((MainScreen)activity).goToDJ();
     	}
     	}
 
+    //if user is on dj then go to music player
 	private void swipeLeft() {
-		// TODO Auto-generated method stub
     	if (activity instanceof DJInterface){
 		((DJInterface)activity).goToMusic();
     	}
 	}
     
+	//if user is on fragment 1 (turn table 1) then fast forward song 1 else fast forward song 2
     private void swipeUp(){
     	if(fragment instanceof fragment1){
     		((fragment1) fragment).forwardFrag1();
@@ -120,6 +118,7 @@ public class SwipeDetector implements OnTouchListener {
     	}
 	}
     
+	//if user is on fragment 1 (turn table 1) then rewind song 1 else rewind song 2
     private void swipeDown(){
     	if(fragment instanceof fragment1){
     		((fragment1) fragment).rewindFrag1();

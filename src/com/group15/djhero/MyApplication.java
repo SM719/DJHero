@@ -10,6 +10,9 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+/*
+ * Global variables used in the app
+ */
 public class MyApplication extends Application {
 	Socket sock = null;
 	songList songlist = new songList();

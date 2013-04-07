@@ -26,120 +26,131 @@ public class fragment2 extends Fragment implements OnClickListener {
 	MyApplication myApp;
 	ImageButton imageButton_add;
 	ImageButton imageButton_ff;
-	ImageButton	imageButton_rew;
+	ImageButton imageButton_rew;
 	ImageButton imageButton_forward;
 	ImageButton imageButton_rewind;
 	View V;
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-	        Bundle savedInstanceState) {
+			Bundle savedInstanceState) {
 		// Inflate the layout for this fragment
-		 V = inflater.inflate(R.layout.fragment_test, container, false);
-		
-		imageButton_add = (ImageButton) V.findViewById(R.id.imageButton_add);	
+		V = inflater.inflate(R.layout.fragment_test, container, false);
+
+		imageButton_add = (ImageButton) V.findViewById(R.id.imageButton_add);
 		imageButton_ff = (ImageButton) V.findViewById(R.id.imageButton_ff);
 		imageButton_rew = (ImageButton) V.findViewById(R.id.imageButton_rew);
-		imageButton_forward = (ImageButton) V.findViewById(R.id.imageButton_forward);
-		imageButton_rewind = (ImageButton) V.findViewById(R.id.imageButton_rewind);
-		
+		imageButton_forward = (ImageButton) V
+				.findViewById(R.id.imageButton_forward);
+		imageButton_rewind = (ImageButton) V
+				.findViewById(R.id.imageButton_rewind);
+
 		imageButton_add.setOnClickListener(this);
 		imageButton_ff.setOnClickListener(this);
 		imageButton_rew.setOnClickListener(this);
 		imageButton_forward.setOnClickListener(this);
 		imageButton_rewind.setOnClickListener(this);
-		
+
 		SwipeDetector gesture = new SwipeDetector(this);
 		ImageView currentLayout = (ImageView) V.findViewById(R.id.imageView1);
 		currentLayout.setOnTouchListener(gesture);
 		return V;
 	}
 
-	
-	public void turncw(){
-		try{
-		Animation rotate = AnimationUtils.loadAnimation(getActivity(), R.anim.rotate);
-		V.findViewById(R.id.imageView1).startAnimation(rotate);
-		rotate.reset();
-		rotate.start();
-	 } catch (NullPointerException e) {
-	 } catch (IndexOutOfBoundsException e){}
-	}
-	
-	public void turnccw(){
-		try{
-		Animation rotate = AnimationUtils.loadAnimation(getActivity(), R.anim.reverserotate);
-		V.findViewById(R.id.imageView1).startAnimation(rotate);
-		rotate.reset();
-		rotate.start();
+	public void turncw() {
+		try {
+			Animation rotate = AnimationUtils.loadAnimation(getActivity(),
+					R.anim.rotate);
+			V.findViewById(R.id.imageView1).startAnimation(rotate);
+			rotate.reset();
+			rotate.start();
 		} catch (NullPointerException e) {
-		} catch (IndexOutOfBoundsException e){}
+		} catch (IndexOutOfBoundsException e) {
+		}
 	}
-	
-	
+
+	public void turnccw() {
+		try {
+			Animation rotate = AnimationUtils.loadAnimation(getActivity(),
+					R.anim.reverserotate);
+			V.findViewById(R.id.imageView1).startAnimation(rotate);
+			rotate.reset();
+			rotate.start();
+		} catch (NullPointerException e) {
+		} catch (IndexOutOfBoundsException e) {
+		}
+	}
+
 	@Override
 	public void onResume() {
 		super.onResume();
 		myApp = (MyApplication) getActivity().getApplication();
-		TextView textViewforSongPosition = (TextView) getView().findViewById(R.id.songNameFrag);
+		TextView textViewforSongPosition = (TextView) getView().findViewById(
+				R.id.songNameFrag);
 		textViewforSongPosition.setText(myApp.songSelectedLeft.Title);
-		
-		try{
-		MaskImage record = (MaskImage) getView().findViewById(R.id.imageView1);
-		record.setContentImage(myApp.songSelectedLeftBitmap);
+
+		try {
+			MaskImage record = (MaskImage) getView().findViewById(
+					R.id.imageView1);
+			record.setContentImage(myApp.songSelectedLeftBitmap);
+		} catch (NullPointerException e) {
+		} catch (IndexOutOfBoundsException e) {
 		}
-		catch(NullPointerException e){}
-		catch(IndexOutOfBoundsException e){}
 	}
-		
 
 	@Override
 	public void onClick(View V) {
 		switch (V.getId()) {
-			case R.id.imageButton_add:
-				FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
-				fragment_list2 fl = new fragment_list2();
-				fragmentTransaction.replace(R.id.fragment_container, fl);
-				fragmentTransaction.addToBackStack(null);
-				fragmentTransaction.commit();
-				break;
-			
-			case R.id.imageButton_ff:
-				myApp.rightSpeed = (myApp.rightSpeed +1) % 3;
-				SendMessage.sendMessage("t "+ String.valueOf(myApp.leftSpeed)+" "+String.valueOf(myApp.rightSpeed), myApp.sock);
-				break;
-				
-			case R.id.imageButton_rew:
-				if(myApp.rightSpeed > 0){
-					myApp.rightSpeed = myApp.rightSpeed -1;
-					}
-					SendMessage.sendMessage("t "+ String.valueOf(myApp.leftSpeed)+" "+String.valueOf(myApp.rightSpeed), myApp.sock);
-					break;
-			
-			case R.id.imageButton_forward:
-				SendMessage.sendMessage("y 0 1", myApp.sock);
-				break;
-				
-			case R.id.imageButton_rewind:
-				SendMessage.sendMessage("w 0 1", myApp.sock);
-				break;
+		case R.id.imageButton_add:
+			FragmentTransaction fragmentTransaction = getFragmentManager()
+					.beginTransaction();
+			fragment_list2 fl = new fragment_list2();
+			fragmentTransaction.replace(R.id.fragment_container, fl);
+			fragmentTransaction.addToBackStack(null);
+			fragmentTransaction.commit();
+			break;
+
+		case R.id.imageButton_ff:
+			myApp.rightSpeed = (myApp.rightSpeed + 1) % 3;
+			SendMessage.sendMessage("t " + String.valueOf(myApp.leftSpeed)
+					+ " " + String.valueOf(myApp.rightSpeed), myApp.sock);
+			break;
+
+		case R.id.imageButton_rew:
+			if (myApp.rightSpeed > 0) {
+				myApp.rightSpeed = myApp.rightSpeed - 1;
+			}
+			SendMessage.sendMessage("t " + String.valueOf(myApp.leftSpeed)
+					+ " " + String.valueOf(myApp.rightSpeed), myApp.sock);
+			break;
+
+		case R.id.imageButton_forward:
+			SendMessage.sendMessage("y 0 1", myApp.sock);
+			break;
+
+		case R.id.imageButton_rewind:
+			SendMessage.sendMessage("w 0 1", myApp.sock);
+			break;
 
 		}
 
 	}
-	public void rewindFrag2(){
+
+	public void rewindFrag2() {
 		SendMessage.sendMessage("w 0 1", myApp.sock);
 	}
-	
-	public void forwardFrag2(){
+
+	public void forwardFrag2() {
 		SendMessage.sendMessage("y 0 1", myApp.sock);
 	}
-	
-	public void makeMaskImage(ImageView mImageView, int mContent)
-	{
-		Bitmap original = BitmapFactory.decodeResource(getResources(), mContent);
-		Bitmap mask = BitmapFactory.decodeResource(getResources(),R.drawable.mask);
-		Bitmap result = Bitmap.createBitmap(mask.getWidth(), mask.getHeight(), Config.ARGB_8888);
+
+	public void makeMaskImage(ImageView mImageView, int mContent) {
+		Bitmap original = BitmapFactory
+				.decodeResource(getResources(), mContent);
+		Bitmap mask = BitmapFactory.decodeResource(getResources(),
+				R.drawable.mask);
+		Bitmap result = Bitmap.createBitmap(mask.getWidth(), mask.getHeight(),
+				Config.ARGB_8888);
 		Canvas mCanvas = new Canvas(result);
 		Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
 		paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_IN));

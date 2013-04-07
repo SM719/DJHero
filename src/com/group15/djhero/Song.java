@@ -1,5 +1,8 @@
 package com.group15.djhero;
 
+/*
+ * Song class to store data for every song
+ */
 public class Song {
 	public int id;
 	public String Title;

@@ -4,8 +4,12 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.net.Socket;
 
+/*
+ * Class to send message to de2
+ */
 public class SendMessage {
 
+	//Static method that is called to send message to de2
 	public static void sendMessage(String message, Socket sock){
 		// Get the message from the box
 		

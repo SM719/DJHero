@@ -25,6 +25,9 @@ import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
+/*
+ * Class to display song being played
+ */
 public class PlaySongPage extends Activity implements OnSeekBarChangeListener {
 	ImageButton imageButton;
 	private SeekBar bar; // declare seekbar object variable
@@ -36,6 +39,7 @@ public class PlaySongPage extends Activity implements OnSeekBarChangeListener {
 	private SensorManager mySensorManager;
 	private static final int VOICE_RECOGNITION_REQUEST_CODE = 1001;
 
+	// Initialize list view and images and menu bar
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -43,6 +47,7 @@ public class PlaySongPage extends Activity implements OnSeekBarChangeListener {
 		final ActionBar actionBar = getActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
 
+		// set view attributes to song data
 		myApp = (MyApplication) PlaySongPage.this.getApplication();
 		myApp.imageView = (ImageView) findViewById(R.id.imageView1);
 		myApp.textViewforSongPosition = (TextView) findViewById(R.id.songName);
@@ -51,51 +56,66 @@ public class PlaySongPage extends Activity implements OnSeekBarChangeListener {
 		bar = (SeekBar) findViewById(R.id.seekBar0); // make seekbar object
 		myApp.songProgressBar = (ProgressBar) findViewById(R.id.progressBar1);
 		myApp.timeLeft = (TextView) findViewById(R.id.textView1);
-
 		String songName = getIntent().getStringExtra("songName");
 		myApp.textViewforSongPosition.setText(songName);
 
+		// if song is not being played then send message to de2 to start playing
+		// song
 		if (!myApp.timeFlag) {
 			myApp.positionOfSong = getIntent().getIntExtra("position", 0);
-			SendMessage.sendMessage("p " + myApp.songlist.Songs.get(myApp.positionOfSong).id,
-			        myApp.sock);
+			SendMessage.sendMessage(
+					"p " + myApp.songlist.Songs.get(myApp.positionOfSong).id,
+					myApp.sock);
 		}
+		// iF song is being played then set button to pause else play
 		if (!myApp.playButton)
 			imageButton.setImageResource((R.drawable.pause));
 		else
 			imageButton.setImageResource((R.drawable.play));
 
-		if (myApp.positionOfSong != getIntent().getIntExtra("position", 0))
-		{
+		// if song selected is not already being played then send message to de2
+		// to start the new song selected
+		if (myApp.positionOfSong != getIntent().getIntExtra("position", 0)) {
 			myApp.positionOfSong = getIntent().getIntExtra("position", 0);
-			SendMessage.sendMessage("p " + myApp.songlist.Songs.get(myApp.positionOfSong).id,
-			        myApp.sock);
+			SendMessage.sendMessage(
+					"p " + myApp.songlist.Songs.get(myApp.positionOfSong).id,
+					myApp.sock);
 			imageButton.setImageResource((R.drawable.pause));
 			myApp.playButton = false;
 			myApp.progressTracker = 0;
 		}
-		myApp.lengthOfCurrentSong =
-		        (myApp.songlist.Songs.get(myApp.positionOfSong).Length) / 1000;
-		myApp.textViewforSongArtist
-		        .setText(myApp.songlist.Songs.get(myApp.positionOfSong).artist);
 
+		// set global variables to song length of current song being played
+		myApp.lengthOfCurrentSong = (myApp.songlist.Songs
+				.get(myApp.positionOfSong).Length) / 1000;
+		myApp.textViewforSongArtist.setText(myApp.songlist.Songs
+				.get(myApp.positionOfSong).artist);
+
+		// set image to artwaork of song
 		if (myApp.images[myApp.positionOfSong] != null) {
 			myApp.imageView.setImageBitmap(myApp.images[myApp.positionOfSong]);
 		}
 
+		// initialize volume bar
 		bar.setOnSeekBarChangeListener(this); // set Seekbar listener.
-		bar.setProgress(myApp.Global_progress); // default value for volume Seekbar
+		bar.setProgress(myApp.Global_progress); // default value for volume
+												// Seekbar
 
+		// initialize progress bar of song being played
 		myApp.songProgressBar.setProgress(myApp.progressTracker);
 		myApp.songProgressBar.setMax(myApp.lengthOfCurrentSong);
 
+		// set color of text of song time remian to white
 		myApp.timeLeft.setTextColor(Color.WHITE);
 
-		myApp.timeLeft.setText(String
-		        .valueOf((myApp.lengthOfCurrentSong - myApp.progressTracker + 1) / 60)
-		        + ":"
-		        + String.format("%02d", Integer.valueOf(((myApp.lengthOfCurrentSong
-		                - myApp.progressTracker + 1) % 60))));
+		// change time from milliseconds to mm:ss
+		myApp.timeLeft.setText(String.valueOf((myApp.lengthOfCurrentSong
+				- myApp.progressTracker + 1) / 60)
+				+ ":"
+				+ String.format(
+						"%02d",
+						Integer.valueOf(((myApp.lengthOfCurrentSong
+								- myApp.progressTracker + 1) % 60))));
 
 		setTitle(myApp.mainSongList.Songs.get(myApp.positionOfSong).Title);
 
@@ -107,6 +127,7 @@ public class PlaySongPage extends Activity implements OnSeekBarChangeListener {
 			myApp.timeFlag = true;
 		}
 
+		// initialize accelerometer to work for shake to next
 		final Vibrator vibe = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 		mShaker = new ShakeListener(this);
 		mShaker.setOnShakeListener(new ShakeListener.OnShakeListener() {
@@ -115,7 +136,7 @@ public class PlaySongPage extends Activity implements OnSeekBarChangeListener {
 			public void onShake() {
 				songNext(null);
 				Log.i("shake:", "sending next\n");
-				 vibe.vibrate(100);
+				vibe.vibrate(100);
 				try {
 					Thread.sleep(500);
 				} catch (InterruptedException e) {
@@ -135,41 +156,50 @@ public class PlaySongPage extends Activity implements OnSeekBarChangeListener {
 		return true;
 	}
 
+	// menu bar item
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-			case android.R.id.home:
-				super.onBackPressed();
-				return true;
 
-			case R.id.action_speaker:
-				speak(null);
-				return true;
+		// go to previous page
+		case android.R.id.home:
+			super.onBackPressed();
+			return true;
 
-			default:
-				return super.onOptionsItemSelected(item);
+			// start voice to text
+		case R.id.action_speaker:
+			speak(null);
+			return true;
+
+		default:
+			return super.onOptionsItemSelected(item);
 		}
 	}
 
+	// stop currently playing song
 	public void StopMusic(View view) {
+		// re initialize all song variables
 		MyApplication myApp = (MyApplication) PlaySongPage.this
-		        .getApplication();
+				.getApplication();
 		SendMessage.sendMessage("s", myApp.sock);
 		myApp.playButton = true;
 		imageButton.setImageResource((R.drawable.play));
 		myApp.stopSignal = true;
 		myApp.progressTracker = 0;
 		myApp.songProgressBar.setProgress(myApp.progressTracker);
-		myApp.timeLeft.setText(String
-		        .valueOf((myApp.lengthOfCurrentSong - myApp.progressTracker + 1) / 60)
-		        + ":"
-		        + String.format("%02d", Integer.valueOf(((myApp.lengthOfCurrentSong
-		                - myApp.progressTracker + 2) % 60))));
+		myApp.timeLeft.setText(String.valueOf((myApp.lengthOfCurrentSong
+				- myApp.progressTracker + 1) / 60)
+				+ ":"
+				+ String.format(
+						"%02d",
+						Integer.valueOf(((myApp.lengthOfCurrentSong
+								- myApp.progressTracker + 2) % 60))));
 
 	}
 
+	// if song has started then pause else play song
 	public void PausePlay(View view) {
 		MyApplication myApp = (MyApplication) PlaySongPage.this
-		        .getApplication();
+				.getApplication();
 		imageButton = (ImageButton) findViewById(R.id.imageButton1);
 
 		if (myApp.playButton == false) {
@@ -180,10 +210,12 @@ public class PlaySongPage extends Activity implements OnSeekBarChangeListener {
 
 			if (myApp.stopSignal == false) {
 				SendMessage.sendMessage("r ", myApp.sock);
-			}
-			else {
-				SendMessage.sendMessage("p "
-				        + myApp.mainSongList.Songs.get(myApp.positionOfSong).id, myApp.sock);
+			} else {
+				SendMessage.sendMessage(
+						"p "
+								+ myApp.mainSongList.Songs
+										.get(myApp.positionOfSong).id,
+						myApp.sock);
 				myApp.stopSignal = false;
 			}
 
@@ -192,36 +224,22 @@ public class PlaySongPage extends Activity implements OnSeekBarChangeListener {
 		}
 	}
 
+	// Start Voice to text
 	public void speak(View view) {
 		Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
 		// Specify the calling package to identify your application
 		intent.putExtra(RecognizerIntent.EXTRA_CALLING_PACKAGE, getClass()
-		        .getPackage().getName());
+				.getPackage().getName());
 
-		// // Display an hint to the user about what he should say.
-		// intent.putExtra(RecognizerIntent.EXTRA_PROMPT, metTextHint.getText()
-		// .toString());
+		int noOfMatches = 1;
 
-		// // Given an hint to the recognizer about what the user is going to say
-		// intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
-		// RecognizerIntent.LANGUAGE_MODEL_WEB_SEARCH);
-
-		// // If number of Matches is not selected then return show toast message
-		// if (msTextMatches.getSelectedItemPosition() == AdapterView.INVALID_POSITION) {
-		// Toast.makeText(this, "Please select No. of Matches from spinner",
-		// Toast.LENGTH_SHORT).show();
-		// return;
-		// }
-
-		int noOfMatches = Integer.parseInt("1");
-		// Specify how many results you want to receive. The results will be
-		// sorted where the first result is the one with higher confidence.
-
+		// Set how many results to receive
 		intent.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, noOfMatches);
-
 		startActivityForResult(intent, VOICE_RECOGNITION_REQUEST_CODE);
 	}
 
+	// When returned from speech to text, check result if it matched any of the
+	// actions we need to perform
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (requestCode == VOICE_RECOGNITION_REQUEST_CODE)
@@ -230,63 +248,69 @@ public class PlaySongPage extends Activity implements OnSeekBarChangeListener {
 			if (resultCode == RESULT_OK) {
 
 				ArrayList<String> textMatchList = data
-				        .getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+						.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
 
 				if (!textMatchList.isEmpty()) {
 					// If first Match contains the 'search' word
 					// Then start web search.
 					if (textMatchList.get(0).contains("search")) {
 
-						String searchQuery = textMatchList.get(0).replace("search",
-						        " ");
+						String searchQuery = textMatchList.get(0).replace(
+								"search", " ");
 						Intent search = new Intent(Intent.ACTION_WEB_SEARCH);
 						search.putExtra(SearchManager.QUERY, searchQuery);
 						startActivity(search);
 					} else {
 
+						// If result contains play then play/pause song
 						if (textMatchList.get(0).contains("play")
-						        || textMatchList.get(0).contains("pause")) {
+								|| textMatchList.get(0).contains("pause")) {
 							PausePlay(null);
 
 						}
+						// If result contains next then play next song
 						else if (textMatchList.get(0).contains("next")) {
 							songNext(null);
 						}
+						// If result contains previous then play previous song
 						else if (textMatchList.get(0).contains("previous")) {
 							songPrevious(null);
 						}
+						// If result contains stop then stop song
 						else if (textMatchList.get(0).contains("stop")) {
 							StopMusic(null);
 						}
+						// If result contains volume up then increase volume by
+						// 10 points
 						else if (textMatchList.get(0).contains("volume up")) {
 							if (myApp.Global_progress <= 70) {
 								myApp.Global_progress += 10;
-							}
-							else {
+							} else {
 								myApp.Global_progress = 80;
 							}
 							bar.setProgress(myApp.Global_progress);
 							SendMessage
-							        .sendMessage(
-							                "v "
-							                        + Integer
-							                                .toString((myApp.Global_progress / 10) * 10),
-							                myApp.sock);
+									.sendMessage(
+											"v "
+													+ Integer
+															.toString((myApp.Global_progress / 10) * 10),
+											myApp.sock);
 						}
+						// If result contains volume down then decrease volume
+						// by 10 points
 						else if (textMatchList.get(0).contains("volume down")) {
 							if (myApp.Global_progress >= 10) {
 								myApp.Global_progress -= 10;
-							}
-							else {
+							} else {
 								myApp.Global_progress = 0;
 							}
 							bar.setProgress(myApp.Global_progress);
 							SendMessage
-							        .sendMessage(
-							                "v "
-							                        + Integer
-							                                .toString((myApp.Global_progress / 10) * 10),
-							                myApp.sock);
+									.sendMessage(
+											"v "
+													+ Integer
+															.toString((myApp.Global_progress / 10) * 10),
+											myApp.sock);
 						}
 					}
 
@@ -296,71 +320,89 @@ public class PlaySongPage extends Activity implements OnSeekBarChangeListener {
 		super.onActivityResult(requestCode, resultCode, data);
 	}
 
+	// Next song method
 	public void songNext(View view) {
 		MyApplication myApp = (MyApplication) PlaySongPage.this
-		        .getApplication();
+				.getApplication();
+		// set play image button to puase
 		imageButton.setImageResource((R.drawable.pause));
-		myApp.positionOfSong = (++myApp.positionOfSong) % myApp.songlist.Songs.size();
-		Log.i("position", Integer.toString(myApp.positionOfSong));
-		// Song thisSong = myApp.songlist.Songs.get(myApp.positionOfSong);
+		myApp.positionOfSong = (++myApp.positionOfSong)
+				% myApp.songlist.Songs.size();
 
-		myApp.textViewforSongPosition
-		        .setText(myApp.songlist.Songs.get(myApp.positionOfSong).Title);
+		// set title
+		myApp.textViewforSongPosition.setText(myApp.songlist.Songs
+				.get(myApp.positionOfSong).Title);
 
-		myApp.textViewforSongArtist
-		        .setText(myApp.songlist.Songs.get(myApp.positionOfSong).artist);
+		// set artist
+		myApp.textViewforSongArtist.setText(myApp.songlist.Songs
+				.get(myApp.positionOfSong).artist);
 
+		// set progress bar to 0 and get length of new song
 		myApp.progressTracker = 0;
 		myApp.songProgressBar.setProgress(myApp.progressTracker);
-		myApp.lengthOfCurrentSong =
-		        (myApp.songlist.Songs.get(myApp.positionOfSong).Length) / 1000;
+		myApp.lengthOfCurrentSong = (myApp.songlist.Songs
+				.get(myApp.positionOfSong).Length) / 1000;
 		myApp.songProgressBar.setMax(myApp.lengthOfCurrentSong);
 		setTitle(myApp.mainSongList.Songs.get(myApp.positionOfSong).Title);
 
+		// set image of new song
 		try {
 			myApp.imageView.setImageBitmap(myApp.images[myApp.positionOfSong]);
 		} catch (NullPointerException e) {
 			myApp.imageView.setImageResource(R.drawable.defaultsong);
 		} catch (IndexOutOfBoundsException e) {
 		}
-		SendMessage.sendMessage("p " + String.valueOf((myApp.songlist.Songs
-		        .get(myApp.positionOfSong).id)), myApp.sock);
+
+		// send message to de2 to play song
+		SendMessage.sendMessage(
+				"p "
+						+ String.valueOf((myApp.songlist.Songs
+								.get(myApp.positionOfSong).id)), myApp.sock);
 
 	}
 
+	// previous song method
 	public void songPrevious(View view) {
 		MyApplication myApp = (MyApplication) PlaySongPage.this
-		        .getApplication();
+				.getApplication();
+
+		// set play image button to puase
 		imageButton.setImageResource((R.drawable.pause));
-		Log.i("positionBefore", Integer.toString(myApp.positionOfSong));
+
 		if (myApp.positionOfSong > 0)
 			myApp.positionOfSong = myApp.positionOfSong - 1;
-		Log.i("positionAfter", Integer.toString(myApp.positionOfSong));
 
+		// set artist
 		Song thisSong = myApp.songlist.Songs.get(myApp.positionOfSong);
-		myApp.textViewforSongArtist
-		        .setText(myApp.songlist.Songs.get(myApp.positionOfSong).artist);
+		myApp.textViewforSongArtist.setText(myApp.songlist.Songs
+				.get(myApp.positionOfSong).artist);
 
+		// set song name
 		TextView textViewforSongPosition = (TextView) findViewById(R.id.songName);
 		textViewforSongPosition.setText(thisSong.Title);
 
+		// reset progress bar of song
 		myApp.progressTracker = 0;
 		myApp.songProgressBar.setProgress(myApp.progressTracker);
-		myApp.lengthOfCurrentSong =
-		        (myApp.songlist.Songs.get(myApp.positionOfSong).Length) / 1000;
+		myApp.lengthOfCurrentSong = (myApp.songlist.Songs
+				.get(myApp.positionOfSong).Length) / 1000;
 		myApp.songProgressBar.setMax(myApp.lengthOfCurrentSong);
 
 		setTitle(myApp.mainSongList.Songs.get(myApp.positionOfSong).Title);
 
+		// set image of new song
 		try {
 			myApp.imageView.setImageBitmap(myApp.images[myApp.positionOfSong]);
 		} catch (NullPointerException e) {
 			myApp.imageView.setImageResource(R.drawable.defaultsong);
 		} catch (IndexOutOfBoundsException e) {
 		}
+
+		// send message to de2 to play previous song
 		SendMessage.sendMessage(
-		        "p " + String.valueOf((myApp.songlist.Songs.get(myApp.positionOfSong).id)),
-		        myApp.sock);
+				"p "
+						+ String.valueOf((myApp.songlist.Songs
+								.get(myApp.positionOfSong).id)), myApp.sock);
 	}
 
 	@Override
@@ -374,14 +416,19 @@ public class PlaySongPage extends Activity implements OnSeekBarChangeListener {
 		myApp.Global_progress = progress;
 	}
 
+	// send new volume to de2
 	@Override
 	public void onStopTrackingTouch(SeekBar arg0) {
-		MyApplication myApp = (MyApplication) PlaySongPage.this.getApplication();
+		MyApplication myApp = (MyApplication) PlaySongPage.this
+				.getApplication();
 
 		// Send desired volume to the DE2
-		SendMessage.sendMessage("volume " + Integer.toString((myApp.Global_progress / 10) * 10),
-		        myApp.sock);
-		Log.i("VolumeTag", Integer.toString((myApp.Global_progress / 10) * 10));
+		SendMessage
+				.sendMessage(
+						"volume "
+								+ Integer
+										.toString((myApp.Global_progress / 10) * 10),
+						myApp.sock);
 	}
 
 	@Override
@@ -389,34 +436,41 @@ public class PlaySongPage extends Activity implements OnSeekBarChangeListener {
 		// TODO Auto-generated method stub
 	}
 
+	// Timer task to update song progress every minute
 	public class UpdateSongProgress extends TimerTask {
 		public void run() {
-			System.out.println("in timer");
+			// check if song has not finished and is not paused then increment
+			// progress
 			if (myApp.lengthOfCurrentSong + 1 >= myApp.progressTracker) {
 				if (!myApp.playButton) {
 					runOnUiThread(new Runnable() {
 						@Override
 						public void run() {
-							myApp.timeLeft.setText(String.valueOf((myApp.lengthOfCurrentSong
-							        - myApp.progressTracker + 1) / 60)
-							        + ":"
-							        + String.format(
-							                "%02d",
-							                Integer.valueOf(((myApp.lengthOfCurrentSong
-							                        - myApp.progressTracker + 2) % 60))));
+							myApp.timeLeft
+									.setText(String
+											.valueOf((myApp.lengthOfCurrentSong
+													- myApp.progressTracker + 1) / 60)
+											+ ":"
+											+ String.format(
+													"%02d",
+													Integer.valueOf(((myApp.lengthOfCurrentSong
+															- myApp.progressTracker + 2) % 60))));
 
 						}
 					});
 					myApp.songProgressBar.setProgress(myApp.progressTracker++);
 				}
 
-			} else {
-				myApp.positionOfSong = (++myApp.positionOfSong) % myApp.songlist.Songs.size();
-				SendMessage
-				        .sendMessage(
-				                "p "
-				                        + String.valueOf((myApp.songlist.Songs
-				                                .get(myApp.positionOfSong).id)), myApp.sock);
+			}
+			// if song has finished move to next song
+			else {
+				myApp.positionOfSong = (++myApp.positionOfSong)
+						% myApp.songlist.Songs.size();
+				SendMessage.sendMessage(
+						"p "
+								+ String.valueOf((myApp.songlist.Songs
+										.get(myApp.positionOfSong).id)),
+						myApp.sock);
 
 				try {
 					Thread.sleep(1750);
@@ -425,19 +479,23 @@ public class PlaySongPage extends Activity implements OnSeekBarChangeListener {
 
 				myApp.progressTracker = 0;
 				myApp.songProgressBar.setProgress(myApp.progressTracker);
-				myApp.lengthOfCurrentSong =
-				        (myApp.songlist.Songs.get(myApp.positionOfSong).Length) / 1000;
+				myApp.lengthOfCurrentSong = (myApp.songlist.Songs
+						.get(myApp.positionOfSong).Length) / 1000;
 				myApp.songProgressBar.setMax(myApp.lengthOfCurrentSong);
 
+				// update progress bar on ui thread
 				runOnUiThread(new Runnable() {
 					@Override
 					public void run() {
 
-						myApp.textViewforSongPosition.setText(myApp.songlist.Songs
-						        .get(myApp.positionOfSong).Title);
-						myApp.imageView.setImageBitmap(myApp.images[myApp.positionOfSong]);
-						myApp.textViewforSongArtist.setText(myApp.songlist.Songs
-						        .get(myApp.positionOfSong).artist);
+						myApp.textViewforSongPosition
+								.setText(myApp.songlist.Songs
+										.get(myApp.positionOfSong).Title);
+						myApp.imageView
+								.setImageBitmap(myApp.images[myApp.positionOfSong]);
+						myApp.textViewforSongArtist
+								.setText(myApp.songlist.Songs
+										.get(myApp.positionOfSong).artist);
 					}
 				});
 

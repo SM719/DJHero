@@ -11,13 +11,17 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
+/*
+ * Class for fragment list to display list of songs that the user selects in dj mode
+ */
 public class fragment_list extends Fragment implements OnItemClickListener {
 	private ListView m_listview;
 	MyApplication myApp;
 
+	// initialize list view
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-	        Bundle savedInstanceState) {
+			Bundle savedInstanceState) {
 
 		// Inflate the layout for this fragment
 		View V = inflater.inflate(R.layout.fragment_list, container, false);
@@ -31,17 +35,18 @@ public class fragment_list extends Fragment implements OnItemClickListener {
 		return V;
 	}
 
+	// when an item is selected, close the fragment and set one of the songs of
+	// DJ to the selected one
 	@Override
 	public void onItemClick(AdapterView<?> adapter, View arg1, int position,
-	        long arg3) {
-		// TODO Auto-generated method stub
-
+			long arg3) {
 		myApp.songSelectedRight = myApp.mainSongList.Songs.get(position);
 		myApp.songSelectedRightBitmap = myApp.images[position];
-
-		getActivity().getFragmentManager().beginTransaction().remove(this).commit();
+		getActivity().getFragmentManager().beginTransaction().remove(this)
+				.commit();
 		FragmentManager fragmentManager = getFragmentManager();
-		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+		FragmentTransaction fragmentTransaction = fragmentManager
+				.beginTransaction();
 		fragment1 fragment1 = new fragment1();
 		fragmentTransaction.add(R.id.fragment_container2, fragment1);
 		fragmentTransaction.commit();

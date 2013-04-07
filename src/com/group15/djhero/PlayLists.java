@@ -16,6 +16,8 @@ public class PlayLists extends Activity implements OnItemClickListener {
 	private ListView p_listview;
 	ListIpAddresses adapter;
 	int REQUEST_CODE;
+
+	// initialize list view
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -27,16 +29,16 @@ public class PlayLists extends Activity implements OnItemClickListener {
 		actionBar.setDisplayHomeAsUpEnabled(true);
 	}
 
-	
+	// display name of all playlists
 	@Override
-	protected void onResume(){
-		//call list adapter
+	protected void onResume() {
+		// call list adapter
 		super.onResume();
 		MyApplication myApp = (MyApplication) PlayLists.this.getApplication();
 		adapter = new ListIpAddresses(PlayLists.this, myApp.playLists);
 		p_listview.setAdapter(adapter);
 	}
-	
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -44,19 +46,23 @@ public class PlayLists extends Activity implements OnItemClickListener {
 		return true;
 	}
 
+	// menu bar
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item){
-		switch(item.getItemId()){
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		// go back to previous page
 		case android.R.id.home:
 			super.onBackPressed();
 			return true;
-		
+
+			// add a new playlist
 		case R.id.action_add_new_playlist:
 			Intent newPlaylist = new Intent(this, PlayListModify.class);
 			newPlaylist.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 			this.startActivity(newPlaylist);
 			return true;
-	
+
+			// go to delete playlist page
 		case R.id.action_delete_playlist:
 			Intent deletePlaylist = new Intent(this, DeletePlaylist.class);
 			deletePlaylist.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
@@ -67,14 +73,13 @@ public class PlayLists extends Activity implements OnItemClickListener {
 		}
 	}
 
-
+	// Open playlist selected
 	@Override
 	public void onItemClick(AdapterView<?> adapter, View arg1, int position,
 			long arg3) {
-				Intent intent = new Intent(this, OnePlayList.class);
-				intent.putExtra("playlistSelected", position);
-				startActivity(intent);
+		Intent intent = new Intent(this, OnePlayList.class);
+		intent.putExtra("playlistSelected", position);
+		startActivity(intent);
 	}
-	
 
 }

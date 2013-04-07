@@ -11,13 +11,17 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
+/*
+ * Class for fragment list to display list of songs that the user selects in dj mode
+ */
 public class fragment_list2 extends Fragment implements OnItemClickListener {
 	private ListView m_listview;
 	MyApplication myApp;
 
+	// initialize list view
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
-	        Bundle savedInstanceState) {
+			Bundle savedInstanceState) {
 
 		// Inflate the layout for this fragment
 		View V = inflater.inflate(R.layout.fragment_list, container, false);
@@ -28,19 +32,23 @@ public class fragment_list2 extends Fragment implements OnItemClickListener {
 		LazyAdapter adapter = new LazyAdapter(getActivity(), myApp.mainSongList);
 		m_listview.setAdapter(adapter);
 		return V;
-		
+
 	}
 
+	// when an item is selected, close the fragment and set one of the songs of
+	// DJ to the selected one
 	@Override
 	public void onItemClick(AdapterView<?> adapter, View arg1, int position,
-	        long arg3) {
-		
+			long arg3) {
+
 		myApp.songSelectedLeft = myApp.mainSongList.Songs.get(position);
 		myApp.songSelectedLeftBitmap = myApp.images[position];
-		
-		getActivity().getFragmentManager().beginTransaction().remove(this).commit();
+
+		getActivity().getFragmentManager().beginTransaction().remove(this)
+				.commit();
 		FragmentManager fragmentManager = getFragmentManager();
-		FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+		FragmentTransaction fragmentTransaction = fragmentManager
+				.beginTransaction();
 		fragment2 fragment2 = new fragment2();
 		fragmentTransaction.add(R.id.fragment_container, fragment2);
 		fragmentTransaction.commit();

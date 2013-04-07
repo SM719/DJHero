@@ -7,34 +7,42 @@ import java.util.List;
 import android.annotation.SuppressLint;
 import android.util.Log;
 
+/*
+ * Class songlist to store list of songs
+ */
 @SuppressLint("UseValueOf")
 public class songList {
 	public List<Song> Songs;
 	public static String TERMINATING_STRING = "xx";
 
+	// initialize empty song list
 	public songList() {
 		Songs = new ArrayList<Song>();
 		// Songs.add(new Song());
 	}
 
+	// initialize song list using a string (parse string into song objects and
+	// add to list)
 	public songList(String songliststring) {
 		Songs = new ArrayList<Song>();
 		addSongs(songliststring);
 	}
 
+	// Add songs to song list from string
 	public boolean addSongs(String songliststring) {
 
+		// if string is empty then return
 		if (songliststring.isEmpty()) {
-			Log.i("SongList", "Skipped - Songlist string is empty");
 			return false;
 		}
 		String[] parsed = songliststring.split("\\|");
 		String temp;
+
+		// if string contaings 'xx' then return true, indicating no more songs
+		// expected from de2
 		for (int i = 0; i < parsed.length; i++) {
 			temp = parsed[i];
 			if (temp.equals(TERMINATING_STRING)) {
-				Log.i("SongList", "Finished adding songs - " + Songs.size()
-						+ " songs in songlist");
 				return true;
 			} else {
 				try {
@@ -50,6 +58,7 @@ public class songList {
 		return false;
 	}
 
+	// log all artist names of all songs
 	public void getListTitles() {
 		Iterator<Song> it = Songs.iterator();
 		while (it.hasNext()) {
@@ -57,10 +66,12 @@ public class songList {
 		}
 	}
 
+	// add one song
 	public void addSong(Song song) {
 		Songs.add(song);
 	}
 
+	// clear all songs
 	public void clearList() {
 		Songs.clear();
 	}

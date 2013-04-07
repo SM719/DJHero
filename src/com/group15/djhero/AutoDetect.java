@@ -1,9 +1,7 @@
 package com.group15.djhero;
 
-import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.NetworkInterface;
@@ -32,6 +30,9 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 
+/*
+ * Class to detect available de2s on the network
+ */
 public class AutoDetect extends Activity implements OnItemClickListener {
 
 	Button button;
@@ -39,38 +40,36 @@ public class AutoDetect extends Activity implements OnItemClickListener {
 	ListIpAddresses adapter;
 	TextView textView;
 	public static final double SCAN_NETWORK = 100.0;
-	
+
+	/*
+	 * Check if the app is connected top a de2, if it is then display the option
+	 * to disconnect or connect to another DE2. If the app is not connected then
+	 * search for DE2s.
+	 */
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		MyApplication myApp = (MyApplication) getApplication();
-		// This call will result in better error messages if you
-		// try to do things in the wrong thread.
-
 		super.onCreate(savedInstanceState);
+
+		// Initialize text views and list adapters
 		setContentView(R.layout.activity_auto_detect);
 		m_listview = (ListView) findViewById(R.id.ip_list_view);
 		m_listview.setOnItemClickListener(this);
 		textView = (TextView) findViewById(R.id.connectedIPDisplay);
 		setTitle("Connect to DE2");
+
+		// if socket is not connected, display a message and start searching for
+		// de2s
 		if (myApp.sock == null) {
 			textView.setText("Not Connected");
 			new FindDE2sOnNetwork().execute();
-			
-			
-//			String connectTo = "192.168.2.4";
-//			new SocketConnect().execute(connectTo);
-//			myApp.availableDE2s.clear();
-//			myApp.availableDE2s.add(connectTo);
-//			this.adapter = new ListIpAddresses(this, myApp.availableDE2s);
-//			myApp.connectedTo = myApp.availableDE2s.get(0);
-//			TCPReadTimerTask tcp_task = new TCPReadTimerTask();
-//			Timer tcp_timer = new Timer();
-//			tcp_timer.schedule(tcp_task, 3000, 75);
 		} else {
 			adapter = new ListIpAddresses(AutoDetect.this, myApp.availableDE2s);
 			m_listview.setAdapter(adapter);
 			textView.setText("Connected to: " + myApp.connectedTo);
 		}
+
+		// set the action bar
 		final ActionBar actionBar = getActionBar();
 		actionBar.setDisplayHomeAsUpEnabled(true);
 	}
@@ -81,13 +80,16 @@ public class AutoDetect extends Activity implements OnItemClickListener {
 		return true;
 	}
 
+	/*
+	 * Go back when the back button in the action bar is pressed
+	 */
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-			case android.R.id.home:
-				super.onBackPressed();
-				return true;
-			default:
-				return super.onOptionsItemSelected(item);
+		case android.R.id.home:
+			super.onBackPressed();
+			return true;
+		default:
+			return super.onOptionsItemSelected(item);
 		}
 	}
 
@@ -106,15 +108,18 @@ public class AutoDetect extends Activity implements OnItemClickListener {
 		}
 	}
 
+	/*
+	 * Get the local IP address of the phone, i.e the wifi address of the phone
+	 */
 	public String getLocalIpAddress() {
 		try {
 			String Ip = null;
 			for (Enumeration<NetworkInterface> en = NetworkInterface
-			        .getNetworkInterfaces(); en.hasMoreElements();) {
+					.getNetworkInterfaces(); en.hasMoreElements();) {
 				NetworkInterface intf = en.nextElement();
 
 				for (Enumeration<InetAddress> enumIpAddr = intf
-				        .getInetAddresses(); enumIpAddr.hasMoreElements();) {
+						.getInetAddresses(); enumIpAddr.hasMoreElements();) {
 					InetAddress inetAddress = enumIpAddr.nextElement();
 					if (!inetAddress.isLoopbackAddress()) {
 						Ip = inetAddress.getHostAddress().toString();
@@ -155,11 +160,12 @@ public class AutoDetect extends Activity implements OnItemClickListener {
 
 		// After executing the doInBackground method, this is
 		// automatically called, in the UI (main) thread to store
-		// the socket in this app's persistent storage
+		// the socket in this app's persistent storage and update the
+		// view to display the de2 connected to or error message
 
 		protected void onPostExecute(Socket s) {
 			MyApplication myApp = (MyApplication) AutoDetect.this
-			        .getApplication();
+					.getApplication();
 			myApp.sock = s;
 			if (myApp.sock != null) {
 				textView.setText("Connected to: " + myApp.connectedTo);
@@ -170,15 +176,15 @@ public class AutoDetect extends Activity implements OnItemClickListener {
 		}
 	}
 
-	// This is a timer Task. Be sure to work through the tutorials
-	// on Timer Tasks before trying to understand this code.
+	// This is a timer Task to read data from the middleman every 500 ms
+	// once a connection has been established to the DE2
 
 	public class TCPReadTimerTask extends TimerTask {
 		public void run() {
 			MyApplication app = (MyApplication) AutoDetect.this
-			        .getApplication();
+					.getApplication();
 			if (app.sock != null && app.sock.isConnected()
-			        && !app.sock.isClosed()) {
+					&& !app.sock.isClosed()) {
 
 				try {
 					InputStream in = app.sock.getInputStream();
@@ -194,23 +200,30 @@ public class AutoDetect extends Activity implements OnItemClickListener {
 						in.read(buf);
 
 						final String s = new String(buf, 0, bytes_avail,
-						        "US-ASCII");
+								"US-ASCII");
 
 						MyApplication myApp = (MyApplication) AutoDetect.this
-						        .getApplication();
+								.getApplication();
+
+						// check if the message contains "djdj". This is to
+						// identify when the two songs chosen
+						// for DJ ahve been brought in to memory on the de2, so
+						// the loading bar on the android
+						// can be dismissed
 
 						if (s.contains("djdj")) {
 							myApp.djDoneLoad = true;
 						}
+
+						// this is for receiveing song list from the de2. Once
+						// the message has been recieved, the app
+						// sends "a" to the DE2 acknowledging the part of the
+						// list has been transferred
 						else {
 							myApp.listComplete = myApp.mainSongList.addSongs(s);
 							Log.i("DE2list", s);
 							SendMessage.sendMessage("a", myApp.sock);
 						}
-						// As explained in the tutorials, the GUI can not be
-						// updated in an asyncrhonous task. So, update the GUI
-						// using the UI thread.
-
 					}
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -219,11 +232,14 @@ public class AutoDetect extends Activity implements OnItemClickListener {
 		}
 	}
 
+	// This is an asynchronous task that goes thru the network to search for
+	// available de2s
 	class FindDE2sOnNetwork extends AsyncTask<Void, Integer, List<String>> {
 
 		ProgressDialog progress;
 		MyApplication app = (MyApplication) AutoDetect.this.getApplication();
 
+		// Display a progress bar
 		@Override
 		protected void onPreExecute() {
 			progress = new ProgressDialog(AutoDetect.this);
@@ -236,57 +252,32 @@ public class AutoDetect extends Activity implements OnItemClickListener {
 			progress.show();
 		}
 
+		// build a new ip to check, check if port 50002 is open then add it to
+		// the available de2 list else timeout in 500ms
+		// and check for the next one
 		@Override
 		protected List<String> doInBackground(Void... arg0) {
 			int port = 50002;
 			List<String> result = new ArrayList<String>();
 			int count = 0;
 			String ip = getLocalIpAddress();
-			System.out.println(ip);
 			try {
-
 				for (int i = 0; i < SCAN_NETWORK; i++) {
 					// build the next IP address
 					String addr = ip.substring(0, ip.lastIndexOf('.') + 1)
-					        + (i);
-					System.out.println(addr);
+							+ (i);
 					InetAddress pingAddr = InetAddress.getByName(addr);
-					// System.out.println(ping(addr));
-					// 50ms Timeout for the "ping"
-					// System.out.println(ping(""));
-
 					publishProgress(i, count);
-					// if(pingHost(addr) == 0){
-					System.out.println("--------------Testing port " + port);
-					// Socket s = null;
-
-					SocketAddress socks = new InetSocketAddress(pingAddr, 50002);
+					SocketAddress socks = new InetSocketAddress(pingAddr, port);
 					Socket s = new Socket();
-					System.out.println("in count: " + count);
 					try {
-						System.out.println("in try");
-						// s = new Socket(pingAddr, 50002);
-						// s.connect(sock, 500);
 						s.connect(socks, 500);
 						s.close();
 						result.add(pingAddr.getHostAddress());
 						count = count + 1;
 					} catch (IOException e) {
 					} catch (IllegalArgumentException e) {
-					} finally {
-
-						// System.out.println("in finally");
-						//
-						// if( s != null){
-						// try {
-						// s.close();
-						// } catch (IOException e) {
-						//
-						// }
-						// }
 					}
-
-					// }
 				}
 			} catch (UnknownHostException ex) {
 			}
@@ -294,19 +285,24 @@ public class AutoDetect extends Activity implements OnItemClickListener {
 			return result;
 		}
 
+		// After every search of the computer on the network update the progress
+		// bar
+		// if a de2 is found then update the count of de2 found till now
 		@Override
 		protected void onProgressUpdate(Integer... is) {
 			progress.setProgress((int) ((is[0].intValue() / SCAN_NETWORK) * 100));
 			if (is[1].intValue() > 0) {
 				progress.setMessage("Discovering DE2s...\nFound "
-				        + is[1].toString());
+						+ is[1].toString());
 			}
 		}
 
+		// Display the list of all DE2s found and start the timer threads to get
+		// data from midlleman
 		@Override
 		protected void onPostExecute(List<String> result) {
 			MyApplication myApp = (MyApplication) AutoDetect.this
-			        .getApplication();
+					.getApplication();
 			progress.dismiss();
 			myApp.availableDE2s.clear();
 			myApp.availableDE2s.addAll(result);
@@ -318,9 +314,15 @@ public class AutoDetect extends Activity implements OnItemClickListener {
 		}
 	}
 
+	/*
+	 * When the user clicks on an IP from the available list, if the app is not
+	 * connected to the IP then connect to it else disconnect from that DE2. If
+	 * the user is connected to one DE2 and clicks on another one in the list
+	 * then disconnect from the current one and connect to the new one selected
+	 */
 	@Override
 	public void onItemClick(AdapterView<?> adapter, View arg1, int position,
-	        long arg3) {
+			long arg3) {
 		MyApplication myApp = (MyApplication) AutoDetect.this.getApplication();
 		if (myApp.sock != null) {
 			if (myApp.connectedTo.equals(myApp.availableDE2s.get(position))) {
@@ -338,78 +340,4 @@ public class AutoDetect extends Activity implements OnItemClickListener {
 		}
 
 	}
-
-	private static final String TAG = "Network.java";
-
-	public String pingError = null;
-
-	/**
-	 * Ping a host and return an int value of 0 or 1 or 2 0=success, 1=fail, 2=error Does not work
-	 * in Android emulator and also delay by '1' second if host not pingable In the Android emulator
-	 * only ping to 127.0.0.1 works
-	 * 
-	 * @param String
-	 *            host in dotted IP address format
-	 * @return
-	 * @throws IOException
-	 * @throws InterruptedException
-	 */
-	public int pingHost(String host) throws IOException, InterruptedException {
-		System.out.println("trying to ping");
-		Runtime runtime = Runtime.getRuntime();
-		Process proc = runtime.exec("ping -W 5000 -o " + host);
-		proc.waitFor();
-		int exit = proc.exitValue();
-		System.out.println(exit);
-		return exit;
-
-	}
-
-	public String ping(String host) throws IOException, InterruptedException {
-		StringBuffer echo = new StringBuffer();
-		Runtime runtime = Runtime.getRuntime();
-		Log.v(TAG, "About to ping using runtime.exec");
-		Process proc = runtime.exec("ping -W 300 -o " + host);
-		proc.waitFor();
-		int exit = proc.exitValue();
-		if (exit == 0) {
-			InputStreamReader reader = new InputStreamReader(
-			        proc.getInputStream());
-			BufferedReader buffer = new BufferedReader(reader);
-			String line = "";
-			while ((line = buffer.readLine()) != null) {
-				echo.append(line + "\n");
-			}
-			return getPingStats(echo.toString());
-		} else if (exit == 1) {
-			pingError = "failed, exit = 1";
-			return null;
-		} else {
-			pingError = "error, exit = 2";
-			return null;
-		}
-	}
-
-	public String getPingStats(String s) {
-		if (s.contains("0% packet loss")) {
-			int start = s.indexOf("/mdev = ");
-			int end = s.indexOf(" ms\n", start);
-			s = s.substring(start + 8, end);
-			String stats[] = s.split("/");
-			return stats[2];
-		} else if (s.contains("100% packet loss")) {
-			pingError = "100% packet loss";
-			return null;
-		} else if (s.contains("% packet loss")) {
-			pingError = "partial packet loss";
-			return null;
-		} else if (s.contains("unknown host")) {
-			pingError = "unknown host";
-			return null;
-		} else {
-			pingError = "unknown error in getPingStats";
-			return null;
-		}
-	}
-
 }

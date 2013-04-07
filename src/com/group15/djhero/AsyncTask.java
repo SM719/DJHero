@@ -16,6 +16,10 @@ package com.group15.djhero;
  * limitations under the License.
  */
 
+/*
+ * Changed the priority at which backgrounds threads are executed
+ */
+
 import java.util.ArrayDeque;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.Callable;

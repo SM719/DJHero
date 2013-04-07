@@ -13,6 +13,9 @@ import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+/*
+ * Custom list view adapter to display list of songs that are available to add to playlists
+ */
 public class PlayListSelectAdapter extends BaseAdapter {
 
 	private Activity activity;
@@ -22,6 +25,7 @@ public class PlayListSelectAdapter extends BaseAdapter {
 	int count;
 	MyApplication myApp;
 
+	// initialize list view
 	public PlayListSelectAdapter(Activity a, songList d, MyApplication myApp) {
 		activity = a;
 		data = d;
@@ -30,11 +34,13 @@ public class PlayListSelectAdapter extends BaseAdapter {
 		count = 0;
 		this.myApp = myApp;
 	}
-	
-	public View getViewAt(int position){
+
+	// return view at position
+	public View getViewAt(int position) {
 		return vi_.get(position);
 	}
 
+	// get size of list
 	@Override
 	public int getCount() {
 		if (data.Songs == null)
@@ -42,16 +48,19 @@ public class PlayListSelectAdapter extends BaseAdapter {
 		return data.Songs.size();
 	}
 
+	// get item at position
 	@Override
 	public Object getItem(int position) {
 		return vi_.get(position);
 	}
 
+	// get item id of item at position
 	@Override
 	public long getItemId(int position) {
 		return vi_.get(position).getId();
 	}
 
+	// get view at position with data in textview, checkbox and image
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		View vi = convertView;
@@ -62,7 +71,8 @@ public class PlayListSelectAdapter extends BaseAdapter {
 
 		TextView text = (TextView) vi.findViewById(R.id.textViewPlayListSelect);
 		ImageView image = (ImageView) vi.findViewById(R.id.imagePlayListSelect);
-		CheckBox checkBox = (CheckBox) vi.findViewById(R.id.checkBoxPlayListSelect);
+		CheckBox checkBox = (CheckBox) vi
+				.findViewById(R.id.checkBoxPlayListSelect);
 		checkBox.setChecked(myApp.selectedSongsForPlayList.get(position));
 		Song song = data.Songs.get(position);
 
@@ -70,7 +80,5 @@ public class PlayListSelectAdapter extends BaseAdapter {
 		image.setImageBitmap(myApp.images[position]);
 		return vi;
 	}
-	
-	
 
 }
